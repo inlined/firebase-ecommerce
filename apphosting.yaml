@@ -18,8 +18,8 @@ env:
   # The Google API key needs access to the Generative AI APIs. Create your key by visiting
   # https://ai.google.dev/gemini-api/docs and clicking "Get a Gemini API Key"
   # You can then run `firebase apphosting:secrets:set google-api-key and pasting the value.
-  - variable: GOOGLE_API_KEY
-    secret: google-api-key
+  - variable: GOOGLE_GENAI_API_KEY
+    secret: google-genai-api-key
 
   # To use stripe, you must create an account on stripe.com. From the stripe dashboard
   # You can copy the NEXT_PUBLIC_STRIPE_PUB_KEY from "Publishable key" in the dashboard.
@@ -40,3 +40,8 @@ env:
     secret: stripe-webhook-secret
   - variable: GOOGLE_GENAI_API_KEY
     secret: google-genai-api-key
+
+# Optional memcache address to enable caching. Can be either Cloud Memorystore
+# or a manual Memcache instance on Google Compute Engine.
+ -  variable: MEMCACHE_ADDR
+    value: 10.0.0.1:11211 
