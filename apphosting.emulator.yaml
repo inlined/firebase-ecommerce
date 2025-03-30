@@ -1,0 +1,5 @@
+env:
+  - variable: STRIPE_API_KEY
+    secret: test-stripe-api-key
+  - variable: MEMCACHE_ADDR
+    value: 127.0.0.1:11211

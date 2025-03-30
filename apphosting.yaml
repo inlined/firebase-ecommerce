@@ -1,0 +1,37 @@
+# Settings for Backend (on Cloud Run).
+# See https://firebase.google.com/docs/app-hosting/configure#cloud-run
+runConfig:
+  minInstances: 0
+
+# Environment variables and secrets.
+# Grant access to secrets in Cloud Secret Manager.
+# See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
+# If you would like to change any keys' values in local development with the emulator
+# (e.g. using Stripe Sandbox keys), you can overwrite values in apphosting.emulator.yaml
+env:
+- variable: NEXT_PUBLIC_FIREBASE_CONFIG
+  value: '{ "apiKey": "AIzaSyDDpq3U_5bCofUqPulnMk8bzPUil6hg8MI", "authDomain": "fire-next-25.firebaseapp.com", "projectId": "fire-next-25", "storageBucket": "fire-next-25.firebasestorage.app", "messagingSenderId": "714002880138", "appId": "1:714002880138:web:415dff53b5276976297f73" }'
+
+# The Google API key needs access to the Generative AI APIs. Create your key by visiting
+# https://ai.google.dev/gemini-api/docs and clicking "Get a Gemini API Key"
+# You can then run `firebase apphosting:secrets:set google-api-key and pasting the value.
+- variable: GOOGLE_API_KEY
+  secret: google-api-key
+
+# To use stripe, you must create an account on stripe.com. From the stripe dashboard
+# You can copy the NEXT_PUBLIC_STRIPE_PUB_KEY from "Publishable key" in the dashboard.
+# You can set STRIPE_SECRET_KEY by calling `firebase apphosting:secrets:set stripe-secret-key`
+# and pasting the value listed as "Secret key" in the dashboard.
+# To get the stripe webhook secret, create a stripe webhook as described in README.md,
+# go to the webhook details page and click "Reveal" under "Signing secret". Copy that value,
+# run `firebase apphosting:secrets:set stripe-webhook-secret` and paste the secret value when
+# prompted. The value for STRIPE_ACCOUNT_ID can be found in the upper right corner of the
+# webhook details page.
+- variable: NEXT_PUBLIC_STRIPE_PUB_KEY
+  value: pk_test_kDSImiqKEaqK2cjDKx7b1v0J
+- variable: STRIPE_SECRET_KEY
+  secret: stripe-secret-key
+- variable: STRIPE_ACCOUNT_ID
+  value: acct_1R6yTUPvaY6ZJMqF
+- variable: STRIPE_WEBHOOK_SECRET
+  secret: stripe-webhook-secret
