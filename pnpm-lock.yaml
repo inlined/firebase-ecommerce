@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@firebasegen/default-connector':
         specifier: file:dataconnect-generated/js/default-connector
-        version: file:dataconnect-generated/js/default-connector(firebase@11.1.0)
+        version: link:dataconnect-generated/js/default-connector
       '@google/generative-ai':
         specifier: ^0.21.0
         version: 0.21.0
@@ -333,12 +333,6 @@ packages:
 
   '@firebase/webchannel-wrapper@1.0.3':
     resolution: {integrity: sha512-2xCRM9q9FlzGZCdgDMJwc0gyUkWFtkosy7Xxr6sFgQwn+wMNIWd7xIvYNauU1r64B5L5rsGKy/n9TKJ0aAFeqQ==}
-
-  '@firebasegen/default-connector@file:dataconnect-generated/js/default-connector':
-    resolution: {directory: dataconnect-generated/js/default-connector, type: directory}
-    engines: {node: ' >=18.0'}
-    peerDependencies:
-      firebase: ^10.14.0 || ^11.0.0
 
   '@floating-ui/core@1.6.8':
     resolution: {integrity: sha512-7XJ9cPU+yI2QeLS+FCSlqNFZJq8arvswefkZrYI1yQBbftw6FyrZOxYSh+9S7z7TpeWlRt9zJ5IhM1WIL334jA==}
@@ -2835,10 +2829,6 @@ snapshots:
       tslib: 2.8.1
 
   '@firebase/webchannel-wrapper@1.0.3': {}
-
-  '@firebasegen/default-connector@file:dataconnect-generated/js/default-connector(firebase@11.1.0)':
-    dependencies:
-      firebase: 11.1.0
 
   '@floating-ui/core@1.6.8':
     dependencies:

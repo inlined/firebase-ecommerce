@@ -29,19 +29,21 @@ mutation CreateProducts {
   product_insertMany(
     data: [
       {
+        id: "b4cf88b7ec9f40a791e7e1d412baead0"
         handle: "amber-sunset-blazer-set"
         title: "Amber Sunset Blazer Set"
         description: "Drawing from the warm orange blazer paired with a complementary ivory outfit."
         availableForSale: true
         productType: "Blazer Set"
         seoId: "2d2275d085ee4ea790a5c69a1841d506"
-        titleEmbedding_embed: { model: "textembedding-gecko@003", text: "Amber Sunset Blazer Set" }
+        titleEmbedding_embed: { model: "text-embedding-005", text: "Amber Sunset Blazer Set" }
         descriptionEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Drawing from the warm orange blazer paired with a complementary ivory outfit."
         }
       }
       {
+        id: "db0fe344ad004877b0e9df2e22554ab9"
         handle: "classic-ivory-tailored-suit"
         title: "Classic Ivory Tailored Suit"
         description: "Highlighting the clean, classic design of the ivory suit in a minimalist background."
@@ -49,37 +51,39 @@ mutation CreateProducts {
         productType: "Tailored Suit"
         seoId: "1ba47f6cb41743d7903c897972eed31d"
         titleEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Classic Ivory Tailored Suit"
         }
         descriptionEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Highlighting the clean, classic design of the ivory suit in a minimalist background."
         }
       }
       {
+        id: "b81350c200e34f269cd139c988da9097"
         handle: "ebony-reed-blazer"
         title: "Ebony Reed Blazer"
         description: "Acknowledging the dark, textured blazer in the natural reed-filled setting."
         availableForSale: true
         productType: "Blazer"
         seoId: "b81350c200e34f269cd139c988da9097"
-        titleEmbedding_embed: { model: "textembedding-gecko@003", text: "Ebony Reed Blazer" }
+        titleEmbedding_embed: { model: "text-embedding-005", text: "Ebony Reed Blazer" }
         descriptionEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Acknowledging the dark, textured blazer in the natural reed-filled setting."
         }
       }
       {
+        id: "fd9f9ad5996342e48339a8b12ac52146"
         handle: "ivory-meadow-blazer"
         title: "Ivory Meadow Blazer"
         description: "Inspired by the serene outdoor setting and the ivory-tone jacket."
         availableForSale: true
         productType: "Blazer"
         seoId: "fd9f9ad5996342e48339a8b12ac52146"
-        titleEmbedding_embed: { model: "textembedding-gecko@003", text: "Ivory Meadow Blazer" }
+        titleEmbedding_embed: { model: "text-embedding-005", text: "Ivory Meadow Blazer" }
         descriptionEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Inspired by the serene outdoor setting and the ivory-tone jacket."
         }
       }
@@ -346,7 +350,7 @@ mutation CreateProductReviews {
         rating: 5
         content: "The amber color is absolutely stunning in person! The fabric quality is exceptional, and the complementary ivory pieces make it versatile for both work and special occasions."
         contentEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "The amber color is absolutely stunning in person! The fabric quality is exceptional, and the complementary ivory pieces make it versatile for both work and special occasions."
         }
       }
@@ -356,7 +360,7 @@ mutation CreateProductReviews {
         rating: 4
         content: "Beautiful blazer set, though the sleeves run slightly long. Had to get them tailored, but the quality is worth the extra effort."
         contentEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Beautiful blazer set, though the sleeves run slightly long. Had to get them tailored, but the quality is worth the extra effort."
         }
       }
@@ -367,7 +371,7 @@ mutation CreateProductReviews {
         rating: 5
         content: "Exceptional tailoring and the ivory color is pure elegance. Perfect for my wedding suit! The minimalist design is timeless."
         contentEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Exceptional tailoring and the ivory color is pure elegance. Perfect for my wedding suit! The minimalist design is timeless."
         }
       }
@@ -377,7 +381,7 @@ mutation CreateProductReviews {
         rating: 4
         content: "High-quality fabric and beautiful design. The suit requires careful maintenance to keep its pristine look, but it's worth it."
         contentEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "High-quality fabric and beautiful design. The suit requires careful maintenance to keep its pristine look, but it's worth it."
         }
       }
@@ -388,7 +392,7 @@ mutation CreateProductReviews {
         rating: 5
         content: "The texture of this blazer is amazing! The dark color is rich and sophisticated. Perfect for business meetings."
         contentEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "The texture of this blazer is amazing! The dark color is rich and sophisticated. Perfect for business meetings."
         }
       }
@@ -398,7 +402,7 @@ mutation CreateProductReviews {
         rating: 4
         content: "Love the unique texture and natural reed setting aesthetic. The buttons could be more secure, but overall excellent quality."
         contentEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Love the unique texture and natural reed setting aesthetic. The buttons could be more secure, but overall excellent quality."
         }
       }
@@ -409,7 +413,7 @@ mutation CreateProductReviews {
         rating: 5
         content: "This blazer is a dream! The ivory tone is perfect and it's incredibly versatile. The natural elegance makes it a wardrobe essential."
         contentEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "This blazer is a dream! The ivory tone is perfect and it's incredibly versatile. The natural elegance makes it a wardrobe essential."
         }
       }
@@ -419,7 +423,7 @@ mutation CreateProductReviews {
         rating: 4
         content: "Beautiful blazer with a serene aesthetic. Requires careful maintenance to keep the ivory color pristine, but the quality is outstanding."
         contentEmbedding_embed: {
-          model: "textembedding-gecko@003"
+          model: "text-embedding-005"
           text: "Beautiful blazer with a serene aesthetic. Requires careful maintenance to keep the ivory color pristine, but the quality is outstanding."
         }
       }
