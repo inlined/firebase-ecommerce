@@ -16,5 +16,8 @@
       "enalbed": true
     },
     "singleProjectMode": true
+  },
+  "dataconnect": {
+    "source": "dataconnect"
   }
 }
