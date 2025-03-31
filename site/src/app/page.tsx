@@ -10,7 +10,8 @@ import { getCollectionsByPage } from '@firebasegen/default-connector'
 import CardOverlay from '@/components/card-overlay'
 
 export default async function Home() {
-  const { data: collectionsData } = await getCollectionsByPage(dc, { page: 'home' })
+  const { data: collectionsData } = await getCollectionsByPage(dc, { page: 'home' });
+  console.log("Home page data is", JSON.stringify(collectionsData, null, 2));
   const [mainCollection, secondaryCollection, tertiaryCollection] = [
     ...(collectionsData?.collections || [])
   ].sort((a, b) => {
