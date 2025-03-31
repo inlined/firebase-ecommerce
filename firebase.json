@@ -1,7 +1,4 @@
 {
-  "dataconnect": {
-    "source": "dataconnect"
-  },
   "emulators": {
     "apphosting": {
       "port": 5002,
@@ -16,7 +13,7 @@
       "dataDir": "dataconnect/.dataconnect/pgliteData"
     },
     "ui": {
-      "enabled": true
+      "enalbed": true
     },
     "singleProjectMode": true
   }

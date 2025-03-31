@@ -43,5 +43,5 @@ env:
 
 # Optional memcache address to enable caching. Can be either Cloud Memorystore
 # or a manual Memcache instance on Google Compute Engine.
- -  variable: MEMCACHE_ADDR
-    value: 10.0.0.1:11211 
+  -  variable: MEMCACHE_ADDR
+     value: 10.0.0.1:11211 
