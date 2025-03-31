@@ -199,11 +199,11 @@ query SearchProductReviewContentUsingL2Similarity($query: String!) @auth(level: 
 }
 
 # Get the orders of a customer by ID
-query GetOrdersByCustomerId($customerId: String!) @auth(level: USER) {
+query GetOrdersByCustomerId($customerId: String!) @auth(level: PUBLIC) {
   orders: customer(id: $customerId) {
     orders_on_customer {
       id
-      customerId @check(expr: "this == auth.uid", message: "You may only see your own orders.")
+      customerId
       processedAt
       chargeId
       paymentIntentId
