@@ -1,0 +1,54 @@
+import { UpsertCustomerData, UpsertCustomerVariables, CreateProductReviewData, CreateProductReviewVariables, CreateOrderData, CreateOrderVariables, UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables, UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables, CreateOrderItemData, CreateOrderItemVariables, ListCustomersData, GetReviewsByHandleData, GetReviewsByHandleVariables, GetProductByHandleData, GetProductByHandleVariables, GetCollectionByHandleData, GetCollectionByHandleVariables, GetCollectionsByPageData, GetCollectionsByPageVariables, SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables, SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables, SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables, GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables, GetOrderByIdData, GetOrderByIdVariables } from '../';
+import { UseDataConnectQueryResult, useDataConnectQueryOptions, UseDataConnectMutationResult, useDataConnectMutationOptions} from '@tanstack-query-firebase/react/data-connect';
+import { UseQueryResult, UseMutationResult} from '@tanstack/react-query';
+import { DataConnect } from 'firebase/data-connect';
+import { FirebaseError } from 'firebase/app';
+
+
+export function useUpsertCustomer(options?: useDataConnectMutationOptions<UpsertCustomerData, FirebaseError, UpsertCustomerVariables>): UseDataConnectMutationResult<UpsertCustomerData, UpsertCustomerVariables>;
+export function useUpsertCustomer(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertCustomerData, FirebaseError, UpsertCustomerVariables>): UseDataConnectMutationResult<UpsertCustomerData, UpsertCustomerVariables>;
+
+export function useCreateProductReview(options?: useDataConnectMutationOptions<CreateProductReviewData, FirebaseError, CreateProductReviewVariables>): UseDataConnectMutationResult<CreateProductReviewData, CreateProductReviewVariables>;
+export function useCreateProductReview(dc: DataConnect, options?: useDataConnectMutationOptions<CreateProductReviewData, FirebaseError, CreateProductReviewVariables>): UseDataConnectMutationResult<CreateProductReviewData, CreateProductReviewVariables>;
+
+export function useCreateOrder(options?: useDataConnectMutationOptions<CreateOrderData, FirebaseError, CreateOrderVariables>): UseDataConnectMutationResult<CreateOrderData, CreateOrderVariables>;
+export function useCreateOrder(dc: DataConnect, options?: useDataConnectMutationOptions<CreateOrderData, FirebaseError, CreateOrderVariables>): UseDataConnectMutationResult<CreateOrderData, CreateOrderVariables>;
+
+export function useUpdateOrderByPaymentIntentId(options?: useDataConnectMutationOptions<UpdateOrderByPaymentIntentIdData, FirebaseError, UpdateOrderByPaymentIntentIdVariables>): UseDataConnectMutationResult<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+export function useUpdateOrderByPaymentIntentId(dc: DataConnect, options?: useDataConnectMutationOptions<UpdateOrderByPaymentIntentIdData, FirebaseError, UpdateOrderByPaymentIntentIdVariables>): UseDataConnectMutationResult<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+
+export function useUpdateOrderByChargeId(options?: useDataConnectMutationOptions<UpdateOrderByChargeIdData, FirebaseError, UpdateOrderByChargeIdVariables | void>): UseDataConnectMutationResult<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+export function useUpdateOrderByChargeId(dc: DataConnect, options?: useDataConnectMutationOptions<UpdateOrderByChargeIdData, FirebaseError, UpdateOrderByChargeIdVariables | void>): UseDataConnectMutationResult<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+
+export function useCreateOrderItem(options?: useDataConnectMutationOptions<CreateOrderItemData, FirebaseError, CreateOrderItemVariables>): UseDataConnectMutationResult<CreateOrderItemData, CreateOrderItemVariables>;
+export function useCreateOrderItem(dc: DataConnect, options?: useDataConnectMutationOptions<CreateOrderItemData, FirebaseError, CreateOrderItemVariables>): UseDataConnectMutationResult<CreateOrderItemData, CreateOrderItemVariables>;
+
+export function useListCustomers(options?: useDataConnectQueryOptions<ListCustomersData>): UseDataConnectQueryResult<ListCustomersData, undefined>;
+export function useListCustomers(dc: DataConnect, options?: useDataConnectQueryOptions<ListCustomersData>): UseDataConnectQueryResult<ListCustomersData, undefined>;
+
+export function useGetReviewsByHandle(vars: GetReviewsByHandleVariables, options?: useDataConnectQueryOptions<GetReviewsByHandleData>): UseDataConnectQueryResult<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+export function useGetReviewsByHandle(dc: DataConnect, vars: GetReviewsByHandleVariables, options?: useDataConnectQueryOptions<GetReviewsByHandleData>): UseDataConnectQueryResult<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+
+export function useGetProductByHandle(vars: GetProductByHandleVariables, options?: useDataConnectQueryOptions<GetProductByHandleData>): UseDataConnectQueryResult<GetProductByHandleData, GetProductByHandleVariables>;
+export function useGetProductByHandle(dc: DataConnect, vars: GetProductByHandleVariables, options?: useDataConnectQueryOptions<GetProductByHandleData>): UseDataConnectQueryResult<GetProductByHandleData, GetProductByHandleVariables>;
+
+export function useGetCollectionByHandle(vars: GetCollectionByHandleVariables, options?: useDataConnectQueryOptions<GetCollectionByHandleData>): UseDataConnectQueryResult<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+export function useGetCollectionByHandle(dc: DataConnect, vars: GetCollectionByHandleVariables, options?: useDataConnectQueryOptions<GetCollectionByHandleData>): UseDataConnectQueryResult<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+
+export function useGetCollectionsByPage(vars?: GetCollectionsByPageVariables, options?: useDataConnectQueryOptions<GetCollectionsByPageData>): UseDataConnectQueryResult<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+export function useGetCollectionsByPage(dc: DataConnect, vars?: GetCollectionsByPageVariables, options?: useDataConnectQueryOptions<GetCollectionsByPageData>): UseDataConnectQueryResult<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+
+export function useSearchProductDescriptionUsingL2similarity(vars: SearchProductDescriptionUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductDescriptionUsingL2similarityData>): UseDataConnectQueryResult<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
+export function useSearchProductDescriptionUsingL2similarity(dc: DataConnect, vars: SearchProductDescriptionUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductDescriptionUsingL2similarityData>): UseDataConnectQueryResult<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
+
+export function useSearchProductTitleUsingL2similarity(vars: SearchProductTitleUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductTitleUsingL2similarityData>): UseDataConnectQueryResult<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
+export function useSearchProductTitleUsingL2similarity(dc: DataConnect, vars: SearchProductTitleUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductTitleUsingL2similarityData>): UseDataConnectQueryResult<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
+
+export function useSearchProductReviewContentUsingL2similarity(vars: SearchProductReviewContentUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductReviewContentUsingL2similarityData>): UseDataConnectQueryResult<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
+export function useSearchProductReviewContentUsingL2similarity(dc: DataConnect, vars: SearchProductReviewContentUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductReviewContentUsingL2similarityData>): UseDataConnectQueryResult<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
+
+export function useGetOrdersByCustomerId(vars: GetOrdersByCustomerIdVariables, options?: useDataConnectQueryOptions<GetOrdersByCustomerIdData>): UseDataConnectQueryResult<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
+export function useGetOrdersByCustomerId(dc: DataConnect, vars: GetOrdersByCustomerIdVariables, options?: useDataConnectQueryOptions<GetOrdersByCustomerIdData>): UseDataConnectQueryResult<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
+
+export function useGetOrderById(vars: GetOrderByIdVariables, options?: useDataConnectQueryOptions<GetOrderByIdData>): UseDataConnectQueryResult<GetOrderByIdData, GetOrderByIdVariables>;
+export function useGetOrderById(dc: DataConnect, vars: GetOrderByIdVariables, options?: useDataConnectQueryOptions<GetOrderByIdData>): UseDataConnectQueryResult<GetOrderByIdData, GetOrderByIdVariables>;
