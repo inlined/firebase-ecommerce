@@ -9,9 +9,11 @@ import { dc } from '@/lib/data-connect'
 import { getCollectionsByPage } from '@firebasegen/default-connector'
 import CardOverlay from '@/components/card-overlay'
 
+// This file is loaded with a dynamic query so it should not be part of SSG.
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   const { data: collectionsData } = await getCollectionsByPage(dc, { page: 'home' });
-  console.log("Home page data is", JSON.stringify(collectionsData, null, 2));
   const [mainCollection, secondaryCollection, tertiaryCollection] = [
     ...(collectionsData?.collections || [])
   ].sort((a, b) => {
