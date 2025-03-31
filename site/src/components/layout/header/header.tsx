@@ -97,7 +97,7 @@ export default function Header({ navigation }: Props) {
             className="flex items-center gap-1 max-lg:absolute max-lg:top-1/2 max-lg:left-1/2 max-lg:-translate-x-1/2 max-lg:-translate-y-1/2 z-50"
           >
             <FirebaseIcon className="size-8 shrink-0" />
-            <span className="text-2xl font-bold whitespace-nowrap mt-1">Gem</span>
+            <span className="text-2xl font-bold whitespace-nowrap mt-1">Firebase E-Commerce</span>
           </Link>
 
           <nav
