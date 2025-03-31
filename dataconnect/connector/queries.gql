@@ -157,7 +157,7 @@ query GetCollectionsByPage($page: String) @auth(level: PUBLIC) {
 # Get products by its description using vector search
 query SearchProductDescriptionUsingL2Similarity($query: String!) @auth(level: PUBLIC) {
   products_descriptionEmbedding_similarity(
-    compare_embed: { model: "textembedding-gecko@003", text: $query }
+    compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
     within: 0.75
     limit: 20
@@ -171,7 +171,7 @@ query SearchProductDescriptionUsingL2Similarity($query: String!) @auth(level: PU
 # Get products by its title using vector search
 query SearchProductTitleUsingL2Similarity($query: String!) @auth(level: PUBLIC) {
   products_titleEmbedding_similarity(
-    compare_embed: { model: "textembedding-gecko@003", text: $query }
+    compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
     within: 0.75
     limit: 20
@@ -185,7 +185,7 @@ query SearchProductTitleUsingL2Similarity($query: String!) @auth(level: PUBLIC) 
 # Get products by its reviews using vector search
 query SearchProductReviewContentUsingL2Similarity($query: String!) @auth(level: PUBLIC) {
   productReviews_contentEmbedding_similarity(
-    compare_embed: { model: "textembedding-gecko@003", text: $query }
+    compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
     within: 0.75
     limit: 20

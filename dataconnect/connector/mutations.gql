@@ -29,7 +29,7 @@ mutation CreateProductReview(
       customerId_expr: "auth.uid"
       rating: $rating
       content: $content
-      contentEmbedding_embed: { model: "textembedding-gecko@003", text: $content }
+      contentEmbedding_embed: { model: "text-embedding-005", text: $content }
     }
   )
 }

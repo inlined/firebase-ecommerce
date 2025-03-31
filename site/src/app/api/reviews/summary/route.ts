@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       '\n\n' +
       '***Keep the summary under 350 characters.***'
 
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY ?? '')
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENAI_API_KEY ?? '')
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
     const { response } = await model.generateContent([prompt])
     const summary = response?.text() ?? ''
