@@ -34,8 +34,6 @@ env:
     value: acct_1R6yTUPvaY6ZJMqF
   - variable: STRIPE_WEBHOOK_SECRET
     secret: stripe-webhook-secret
-  - variable: GOOGLE_GENAI_API_KEY
-    secret: google-genai-api-key
 
 # Optional memcache address to enable caching. Can be either Cloud Memorystore
 # or a manual Memcache instance on Google Compute Engine.
