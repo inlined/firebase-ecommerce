@@ -1,12 +1,12 @@
 import OrderHistory from '@/components/sections/order-history'
 import { getOrdersByCustomerId } from '@firebasegen/default-connector'
-import { dc } from '@/lib/data-connect'
-import { cookies } from 'next/headers'
+import { getServerObjects } from '@/lib/firebase/server'
 
 export default async function OrdersPage() {
-  const cookieStore = await cookies()
-  const customerId = cookieStore.get('customerId')?.value ?? ''
-  const { data } = await getOrdersByCustomerId(dc, { customerId })
+  const { auth, fdc } = await getServerObjects();
+  const customerId = auth.currentUser?.uid ?? ''
+  
+  const { data } = await getOrdersByCustomerId(fdc, { customerId })
 
   return (
     <section className="text-foreground bg-background">
