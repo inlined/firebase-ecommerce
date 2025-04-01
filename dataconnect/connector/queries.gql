@@ -259,3 +259,24 @@ query GetOrderById($id: UUID!) @auth(level: USER) {
     }
   }
 }
+
+query GetAllOrders @auth(level: NO_ACCESS) {
+  orders {
+    id
+    customerId
+    processedAt
+    receiptUrl
+    totalPrice
+    financialStatus
+    fulfillmentStatus
+    items: orderItems_on_order {
+      id
+      price
+      product {
+        id
+        title
+        handle
+      }
+    }
+  }
+}

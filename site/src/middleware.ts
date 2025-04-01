@@ -2,7 +2,8 @@ import { composeMiddleware } from "@/lib/auth-middleware";
 import { NextResponse } from "next/server";
 
 export const middleware = composeMiddleware({
-    options: JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG!),
+    // Allow local building without env set
+    options: process.env.NEXT_PUBLIC_FIREBASE_CONFIG ? JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG) : {},
 }, (request, user) => {
     console.log({ user });
     if (request.nextUrl.pathname === '/') return;

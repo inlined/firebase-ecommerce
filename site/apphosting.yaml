@@ -14,6 +14,7 @@ env:
       "fire-next-25.firebaseapp.com", "projectId": "fire-next-25",
       "storageBucket": "fire-next-25.firebasestorage.app", "messagingSenderId":
       "714002880138", "appId": "1:714002880138:web:415dff53b5276976297f73" }'
+
   # The Google API key needs access to the Generative AI APIs. Create your key by visiting
   # https://ai.google.dev/gemini-api/docs and clicking "Get a Gemini API Key"
   # You can then run `firebase apphosting:secrets:set google-api-key and pasting the value.
@@ -27,12 +28,11 @@ env:
   # To get the stripe webhook secret, create a stripe webhook as described in README.md,
   # go to the webhook details page and click "Reveal" under "Signing secret". Copy that value,
   # run `firebase apphosting:secrets:set stripe-webhook-secret` and paste the secret value when
-  # prompted. The value for STRIPE_ACCOUNT_ID can be found in the upper right corner of the
-  # webhook details page.
+  # prompted.
   - variable: NEXT_PUBLIC_STRIPE_PUB_KEY
-    value: pk_test_kDSImiqKEaqK2cjDKx7b1v0J
-  - variable: STRIPE_ACCOUNT_ID
-    value: acct_1R6yTUPvaY6ZJMqF
+    value: pk_test_51R94VgPRzYg5cSSPflPC8aBJfEDfvkJd3dPR5wXFgsGBwsdoXfA5r9wlS3EKKE4OJlcqgbDPwPq90b0jGENMLKXC00YQVv4CHV
+  - variable: STRIPE_SECRET_KEY
+    secret: stripe-secret-key
   - variable: STRIPE_WEBHOOK_SECRET
     secret: stripe-webhook-secret
 
@@ -40,5 +40,3 @@ env:
   # or a manual Memcache instance on Google Compute Engine.
   - variable: MEMCACHE_ADDR
     value: 10.128.0.2:6379
-  - variable: STRIPE_SECRET_KEY
-    secret: stripe-secret-key

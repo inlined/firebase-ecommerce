@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import stripe from '@/lib/stripe'
+import getStripe from '@/lib/stripe'
 import { Product } from '@/lib/stores/cart-store'
 
 export async function POST(request: Request) {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       variant: product.selectedOption.map((opt) => `${opt.name}: ${opt.value}`).join(', ')
     }))
 
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntent = await getStripe().paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
       currency: 'usd',
       automatic_payment_methods: {

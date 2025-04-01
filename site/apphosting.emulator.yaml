@@ -1,5 +1,5 @@
 env:
-  - variable: STRIPE_SECRET_KEY
-    secret: test-stripe-secret-key
   - variable: MEMCACHE_ADDR
     value: 127.0.0.1:11211
+  - variable: STRIPE_WEBHOOK_SECRET
+    secret: test-stripe-webhook-secret

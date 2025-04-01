@@ -1,5 +1,7 @@
 import { connectorConfig } from '@firebasegen/default-connector'
-import { getDataConnect } from 'firebase/data-connect'
-import { firebaseApp } from '@/lib/firebase';
+import { type FirebaseApp } from 'firebase/app'
+import { DataConnect, getDataConnect as get } from 'firebase/data-connect'
 
-export const dc = getDataConnect(firebaseApp, connectorConfig)
+export function getDataConnect(app: FirebaseApp): DataConnect {
+  return get(app, connectorConfig)
+}

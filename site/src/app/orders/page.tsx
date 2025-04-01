@@ -8,6 +8,7 @@ export default async function OrdersPage() {
   
   const { data } = await getOrdersByCustomerId(fdc, { customerId })
 
+  console.log(`getOrdersByCustomerId(${customerId}): ${JSON.stringify(data, null, 2)}`);
   return (
     <section className="text-foreground bg-background">
       <div className="container pt-20 pb-10 lg:pt-48 lg:pb-20 space-y-10">

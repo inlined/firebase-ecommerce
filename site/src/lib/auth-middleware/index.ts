@@ -1,3 +1,4 @@
+// TODO: Replace with published middleware when available.
 import { NextResponse, NextRequest } from 'next/server';
 import { createRemoteJWKSet, jwtVerify, JWTPayload, JWTHeaderParameters } from 'jose';
 import { getDefaultAppConfig } from "@firebase/util";
@@ -22,7 +23,6 @@ async function runMiddleware(options: RunMiddlewareOptions, request: NextRequest
     // Need two different cookie names as Chrome doesn't allow __HOST- on localhost
     const ID_TOKEN_COOKIE_NAME = isDevMode ? `__dev_FIREBASE_[DEFAULT]` : `__HOST-FIREBASE_[DEFAULT]`;
     const REFRESH_TOKEN_COOKIE_NAME = isDevMode ? '__dev_FIREBASEID_[DEFAULT]' : `__HOST-FIREBASEID_[DEFAULT]`;
-    console.log({ isDevMode, isSafari, secureCookies, ID_TOKEN_COOKIE_NAME, REFRESH_TOKEN_COOKIE_NAME });
     // TODO max-age should be ttl
     const ID_TOKEN_COOKIE = { path: "/", secure: secureCookies, sameSite: "strict", partitioned: true, name: ID_TOKEN_COOKIE_NAME, maxAge: 34560000, priority: 'high' } as const;
     const REFRESH_TOKEN_COOKIE = { ...ID_TOKEN_COOKIE, httpOnly: true, name: REFRESH_TOKEN_COOKIE_NAME } as const;
@@ -143,13 +143,13 @@ async function runMiddleware(options: RunMiddlewareOptions, request: NextRequest
         }
 
         if (jwtHeader?.typ !== 'JWT' || jwtPayload?.iss !== `https://securetoken.google.com/${options.projectId}` || jwtPayload.aud !== options.projectId || jwtPayload.firebase?.tenant !== options.tenantId) {
-            console.error("I hates the claims.");
+            console.error("Claims are from the wrong issuer or scope");
             jwtPayload = undefined;
         }
         if (jwtHeader?.alg === 'none') {
             isEmulatedCredential = true;
         } else if (jwtHeader?.alg !== 'RS256') {
-            console.error("I hates the alg.");
+            console.error("Expected JWT to be signed with RS256; was signed with", jwtHeader?.alg);
             jwtPayload = undefined;
         }
 
@@ -165,10 +165,9 @@ async function runMiddleware(options: RunMiddlewareOptions, request: NextRequest
                     try {
                         const jwks = createRemoteJWKSet(new URL('https://www.googleapis.com/robot/v1/metadata/jwk/securetoken@system.gserviceaccount.com'));
                         await jwtVerify(authIdToken, jwks);
-                        console.log("JOSE is happy.");
                         return [undefined, it => it, jwtPayload];
                     } catch(e) {
-                        console.error("JOSE is a hater.");
+                        console.error("JOSE failed with error", e);
                     }
                 }
             } else {
@@ -206,7 +205,6 @@ async function runMiddleware(options: RunMiddlewareOptions, request: NextRequest
     const newRefreshToken = json.refresh_token;
     const newIdToken = json.id_token;
     jwtPayload = JSON.parse(atob(newIdToken.split(".")[1]));
-    console.log(jwtPayload);
     const decorateNextResponse = (response: NextResponse) => {
         if (newIdToken) response.cookies.set({ ...ID_TOKEN_COOKIE, value: newIdToken });
         if (newRefreshToken)  response.cookies.set({ ...REFRESH_TOKEN_COOKIE, value: newRefreshToken });
