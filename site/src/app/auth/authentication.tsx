@@ -5,20 +5,23 @@ import { useRouter } from 'next/navigation'
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  getAuth,
 } from 'firebase/auth'
-import { auth } from '@/lib/firebase'
 import Button from '@/components/ui/button'
 import Input from '@/components/ui/input'
 import { FirebaseError } from 'firebase/app'
 import { upsertCustomer } from '@firebasegen/default-connector'
-import { dc } from '@/lib/data-connect'
+import getDataConnect from '@/lib/firebase/getDataConnect'
+import getApp from '@/lib/firebase/getApp'
 import { setCookie } from 'cookies-next'
 import { getAuthErrorMessage } from '@/lib/firebase/getAuthErrorMessages'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useShallow } from 'zustand/shallow'
 
 export default function Authentication() {
+  const auth = getAuth(getApp())
+  const dc = getDataConnect()
   const router = useRouter()
   const [error, setError] = useState('')
   const [email, setEmail] = useState('')

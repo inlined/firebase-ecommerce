@@ -1,12 +1,12 @@
 import CardOverlay from '@/components/card-overlay'
 import ProductList from '@/components/sections/product-list'
-import { dc } from '@/lib/data-connect'
+import getDataConnect from '@/lib/firebase/getDataConnect'
 import { getCollectionByHandle } from '@firebasegen/default-connector'
 
 export default async function ProductListPage({ params }: { params: Promise<{ handle: string }> }) {
   const handle = (await params).handle
 
-  const { data: collectionData } = await getCollectionByHandle(dc, { handle })
+  const { data: collectionData } = await getCollectionByHandle(getDataConnect(), { handle })
   const collection = collectionData?.collections?.at(0)
   const products = collection?.products_via_ProductCollection
 

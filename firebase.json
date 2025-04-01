@@ -13,7 +13,7 @@
       "dataDir": "dataconnect/.dataconnect/pgliteData"
     },
     "ui": {
-      "enalbed": true
+      "enabled": true
     },
     "singleProjectMode": true
   },

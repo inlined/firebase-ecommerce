@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { User, getAuth } from 'firebase/auth'
-import { getApp } from 'firebase/app'
+import { type User } from 'firebase/auth'
+import getAuth from '@/lib/firebase/getAuth'
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
@@ -8,7 +8,7 @@ export function useAuth() {
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
-    const unsubscribe = getAuth(getApp()).onAuthStateChanged(
+    const unsubscribe = getAuth().onAuthStateChanged(
       (user) => {
         setUser(user)
         setLoading(false)

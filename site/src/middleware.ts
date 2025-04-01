@@ -5,7 +5,6 @@ export const middleware = composeMiddleware({
     // Allow local building without env set
     options: process.env.NEXT_PUBLIC_FIREBASE_CONFIG ? JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG) : {},
 }, (request, user) => {
-    console.log({ user });
     if (request.nextUrl.pathname === '/') return;
     if (user) return;
     if (request.nextUrl.pathname == '/unauthorized') return;

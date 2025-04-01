@@ -5,7 +5,6 @@ import Rating from '@/components/ui/rating'
 import Button from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { handleCreateReview } from '@/app/product/[handle]/actions'
-import { CreateReviewPayload } from '@/app/product/[handle]/actions'
 
 type Props = {
   isOpen: boolean
@@ -33,14 +32,11 @@ export default function ReviewModal({ isOpen, onClose, productDetails }: Props) 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    const payload: CreateReviewPayload = {
+    await handleCreateReview({
       productId: productDetails?.productID ?? '',
-      customerId: customer?.uid ?? '',
       rating,
       content: review
-    }
-
-    await handleCreateReview(payload)
+    })
 
     // Clear form and close modal
     setRating(5)

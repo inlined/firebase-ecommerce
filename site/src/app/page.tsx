@@ -5,7 +5,7 @@ import Hero from '@/components/sections/hero'
 import ProductGrid from '@/components/sections/product-grid'
 import CategoryCard from '@/components/ui/category-card'
 import { notFound } from 'next/navigation'
-import { dc } from '@/lib/data-connect'
+import getDataConnect from '@/lib/firebase/getDataConnect'
 import { getCollectionsByPage } from '@firebasegen/default-connector'
 import CardOverlay from '@/components/card-overlay'
 
@@ -13,7 +13,7 @@ import CardOverlay from '@/components/card-overlay'
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const { data: collectionsData } = await getCollectionsByPage(dc, { page: 'home' });
+  const { data: collectionsData } = await getCollectionsByPage(getDataConnect(), { page: 'home' });
   const [mainCollection, secondaryCollection, tertiaryCollection] = [
     ...(collectionsData?.collections || [])
   ].sort((a, b) => {

@@ -5,7 +5,7 @@ import {
   searchProductTitleUsingL2similarity,
   searchProductReviewContentUsingL2similarity
 } from '@firebasegen/default-connector'
-import { dc } from '@/lib/data-connect'
+import getDataConnect from '@/lib/firebase/getDataConnect'
 
 type Error = {
   message: string
@@ -18,6 +18,7 @@ export type SearchResult = {
 }[]
 
 export const handleSearch = async ({ query }: { query: string }): Promise<SearchResult | Error> => {
+  const dc = getDataConnect();
   try {
     // Return early if no search query is provided
     if (!query) {

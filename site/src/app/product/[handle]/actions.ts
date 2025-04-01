@@ -1,18 +1,11 @@
 'use server'
 
 import { revalidateTag } from 'next/cache'
-import { dc } from '@/lib/data-connect'
-import { createProductReview } from '@firebasegen/default-connector'
+import getDataConnect from '@/lib/firebase/getDataConnect'
+import { createProductReview, CreateProductReviewVariables } from '@firebasegen/default-connector'
 
-export type CreateReviewPayload = {
-  productId: string
-  customerId: string
-  rating: number
-  content: string
-}
-
-export const handleCreateReview = async (payload: CreateReviewPayload) => {
-  await createProductReview(dc, payload)
+export const handleCreateReview = async (variables: CreateProductReviewVariables) => {
+  await createProductReview(getDataConnect(), variables)
   // Reset reviews cache
   revalidateTag('reviews')
 }

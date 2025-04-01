@@ -1,12 +1,15 @@
 import OrderHistory from '@/components/sections/order-history'
 import { getOrdersByCustomerId } from '@firebasegen/default-connector'
-import { getServerObjects } from '@/lib/firebase/server'
+import getServerApp from '@/lib/firebase/getServerApp'
+import { getAuth } from 'firebase/auth';
+import getDataConnect from '@/lib/firebase/getDataConnect';
 
 export default async function OrdersPage() {
-  const { auth, fdc } = await getServerObjects();
+  const app = await getServerApp();
+  const auth = getAuth(app);
   const customerId = auth.currentUser?.uid ?? ''
   
-  const { data } = await getOrdersByCustomerId(fdc, { customerId })
+  const { data } = await getOrdersByCustomerId(getDataConnect(app), { customerId })
 
   console.log(`getOrdersByCustomerId(${customerId}): ${JSON.stringify(data, null, 2)}`);
   return (

@@ -7,7 +7,7 @@ import Star from '@/components/icons/star'
 import Rotate from '@/components/icons/rotate'
 import ProductDetails from '@/components/sections/product-details'
 import Reviews from '@/components/sections/reviews'
-import { dc } from '@/lib/data-connect'
+import getDataConnect from '@/lib/firebase/getDataConnect'
 import { getProductByHandle, getReviewsByHandle } from '@firebasegen/default-connector'
 
 type Props = {
@@ -16,6 +16,7 @@ type Props = {
 }
 
 export default async function ProductPage(props: Props) {
+  const dc = getDataConnect();
   const params = await props.params
 
   const [productData, reviewsData] = await Promise.all([
@@ -173,7 +174,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
   const {
     data: { product }
-  } = await getProductByHandle(dc, { handle: params.handle })
+  } = await getProductByHandle(getDataConnect(), { handle: params.handle })
 
   if (!product?.id) return notFound()
 

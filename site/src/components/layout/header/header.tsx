@@ -20,8 +20,8 @@ import clsx from 'clsx'
 import DropdownMenu from '@/components/ui/dropdown-menu'
 import { handleSearch, SearchResult } from '@/lib/actions/search'
 import { useAuth } from '@/hooks/useAuth'
-import { auth } from '@/lib/firebase'
-import { signOut } from 'firebase/auth'
+import getApp from '@/lib/firebase/getApp'
+import { getAuth, signOut } from 'firebase/auth'
 
 type Props = {
   navigation: { label: string; href: string }[]
@@ -189,8 +189,8 @@ export default function Header({ navigation }: Props) {
                 <MenuItem>
                   <button
                     onClick={() => {
-                      signOut(auth)
-                      push('/auth')
+                      signOut(getAuth(getApp()));
+                      push('/auth');
                     }}
                     className="flex w-full items-center rounded-full px-4 py-2 font-medium hover:bg-gray-200 transition-colors"
                   >
