@@ -10,6 +10,8 @@ export const config = {
   }
 }
 
+console.error("COMPILING STRIPE WEBHOOK");
+
 export async function POST(request: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET
   if (!secret) {
