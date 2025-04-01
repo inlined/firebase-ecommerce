@@ -27,7 +27,7 @@ export default function OrderSummary({ order }: Props) {
     processedAt,
     totalPrice,
     id,
-    orderItems_on_order: orderItems,
+    items,
     financialStatus,
     fulfillmentStatus
   } = order
@@ -97,7 +97,7 @@ export default function OrderSummary({ order }: Props) {
           <div className="w-full space-y-5">
             <div className="w-full space-y-3 p-5 border border-gray-100 rounded-2xl">
               <h2 className="text-xl font-medium mb-10">Order Summary</h2>
-              {orderItems.map((item) => (
+              {items.map((item) => (
                 <ProductListItem
                   key={item.product.title}
                   title={item.product.title}
@@ -106,10 +106,10 @@ export default function OrderSummary({ order }: Props) {
                     title: item.product.title,
                     price: item.price,
                     image: {
-                      url: item.product.productImages_on_product[0].url,
-                      altText: item.product.productImages_on_product[0].altText,
-                      width: item.product.productImages_on_product[0].width,
-                      height: item.product.productImages_on_product[0].height
+                      url: item.product.images[0].url,
+                      altText: item.product.images[0].altText,
+                      width: item.product.images[0].width,
+                      height: item.product.images[0].height
                     }
                   }}
                 />
@@ -121,7 +121,7 @@ export default function OrderSummary({ order }: Props) {
                     value: new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'USD'
-                    }).format(orderItems.reduce((acc, item) => acc + item.price, 0))
+                    }).format(items.reduce((acc, item) => acc + item.price, 0))
                   },
                   {
                     label: 'Tax',

@@ -58,15 +58,15 @@ export default async function Home() {
       <ProductGrid
         title={tertiaryCollection?.name as string}
         variant="character"
-        products={tertiaryCollection?.products_via_ProductCollection.map((product) => ({
+        products={tertiaryCollection?.products.map((product) => ({
           id: product.id,
           title: product.title,
           handle: product.handle,
-          price: product.productVariants_on_product.at(0)?.price?.toString() || '',
-          image: product.productImages_on_product.at(0),
-          variants: product.productVariants_on_product
+          price: product.variants.at(0)?.price?.toString() || '',
+          image: product.images.at(0),
+          variants: product.variants
             .at(0)
-            ?.selectedOptions_on_productVariant.map((option) => (option.value ? option.value : ''))
+            ?.selectedOptions_on_productVariant.map((option) => (option.value || ''))
         }))}
       />
     </>

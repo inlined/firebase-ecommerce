@@ -129,12 +129,12 @@ query GetCollectionsByPage($page: String) @auth(level: PUBLIC) {
       height
       altText
     }
-    products_via_ProductCollection {
+    products: products_via_ProductCollection {
       id
       title
       handle
       description
-      productVariants_on_product {
+      variants: productVariants_on_product {
         id
         price
         selectedOptions_on_productVariant {
@@ -142,7 +142,7 @@ query GetCollectionsByPage($page: String) @auth(level: PUBLIC) {
           value
         }
       }
-      productImages_on_product(orderBy: [{ displayPosition: ASC }]) {
+      images: productImages_on_product(orderBy: [{ displayPosition: ASC }]) {
         id
         url
         altText
@@ -200,32 +200,30 @@ query SearchProductReviewContentUsingL2Similarity($query: String!) @auth(level: 
 
 # Get the orders of a customer by ID
 query GetOrdersByCustomerId($customerId: String!) @auth(level: PUBLIC) {
-  orders: customer(id: $customerId) {
-    orders_on_customer {
+  orders(where: { customerId: { eq: $customerId }}) {
+    id
+    customerId
+    processedAt
+    chargeId
+    paymentIntentId
+    receiptUrl
+    subtotalPrice
+    totalPrice
+    financialStatus
+    fulfillmentStatus
+    items: orderItems_on_order {
       id
-      customerId
-      processedAt
-      chargeId
-      paymentIntentId
-      receiptUrl
-      subtotalPrice
-      totalPrice
-      financialStatus
-      fulfillmentStatus
-      orderItems_on_order {
+      quantity
+      price
+      product {
         id
-        quantity
-        price
-        product {
-          id
-          title
-          handle
-          productImages_on_product(orderBy: [{ displayPosition: ASC }], limit: 1) {
-            url
-            altText
-            width
-            height
-          }
+        title
+        handle
+        images: productImages_on_product(orderBy: [{ displayPosition: ASC }], limit: 1) {
+          url
+          altText
+          width
+          height
         }
       }
     }
@@ -243,7 +241,7 @@ query GetOrderById($id: UUID!) @auth(level: USER) {
     totalPrice
     financialStatus
     fulfillmentStatus
-    orderItems_on_order {
+    items: orderItems_on_order {
       id
       quantity
       price
@@ -251,7 +249,7 @@ query GetOrderById($id: UUID!) @auth(level: USER) {
         id
         title
         handle
-        productImages_on_product(orderBy: [{ displayPosition: ASC }], limit: 1) {
+        images: productImages_on_product(orderBy: [{ displayPosition: ASC }], limit: 1) {
           url
           altText
           width

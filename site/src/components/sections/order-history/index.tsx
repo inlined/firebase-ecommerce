@@ -30,7 +30,7 @@ export default function OrderHistory({ orders }: Props) {
 
   const { user: customer } = useAuth()
 
-  if (!orders?.orders_on_customer?.length) {
+  if (!orders.length) {
     return (
       <h1 className="text-4xl">
         Hello, {customer?.displayName ?? customer?.email}
@@ -45,7 +45,7 @@ export default function OrderHistory({ orders }: Props) {
       <h1 className="text-4xl">
         Hello, {customer?.displayName ?? customer?.email}!
         <br />
-        Total Orders: <span className="text-gray-400">{orders.orders_on_customer.length}</span>
+        Total Orders: <span className="text-gray-400">{orders.length}</span>
       </h1>
       <div className="w-full">
         <div className="max-lg:hidden text-gray-500 flex gap-10">
@@ -55,7 +55,7 @@ export default function OrderHistory({ orders }: Props) {
           <div className="w-full text-right">Total</div>
           <div className="w-32 shrink-0" />
         </div>
-        {orders.orders_on_customer.map((order) => (
+        {orders.map((order) => (
           <OrderListItem key={order.id} order={order} />
         ))}
       </div>

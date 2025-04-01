@@ -10,7 +10,10 @@ runConfig:
 # (e.g. using Stripe Sandbox keys), you can overwrite values in apphosting.emulator.yaml
 env:
   - variable: NEXT_PUBLIC_FIREBASE_CONFIG
-    value: '{ "apiKey": "AIzaSyDDpq3U_5bCofUqPulnMk8bzPUil6hg8MI", "authDomain": "fire-next-25.firebaseapp.com", "projectId": "fire-next-25", "storageBucket": "fire-next-25.firebasestorage.app", "messagingSenderId": "714002880138", "appId": "1:714002880138:web:415dff53b5276976297f73" }'
+    value: '{ "apiKey": "AIzaSyDDpq3U_5bCofUqPulnMk8bzPUil6hg8MI", "authDomain":
+      "fire-next-25.firebaseapp.com", "projectId": "fire-next-25",
+      "storageBucket": "fire-next-25.firebasestorage.app", "messagingSenderId":
+      "714002880138", "appId": "1:714002880138:web:415dff53b5276976297f73" }'
   # The Google API key needs access to the Generative AI APIs. Create your key by visiting
   # https://ai.google.dev/gemini-api/docs and clicking "Get a Gemini API Key"
   # You can then run `firebase apphosting:secrets:set google-api-key and pasting the value.
@@ -28,14 +31,14 @@ env:
   # webhook details page.
   - variable: NEXT_PUBLIC_STRIPE_PUB_KEY
     value: pk_test_kDSImiqKEaqK2cjDKx7b1v0J
-  - variable: STRIPE_SECRET_KEY
-    secret: stripe-secret-key
   - variable: STRIPE_ACCOUNT_ID
     value: acct_1R6yTUPvaY6ZJMqF
   - variable: STRIPE_WEBHOOK_SECRET
     secret: stripe-webhook-secret
 
-# Optional memcache address to enable caching. Can be either Cloud Memorystore
-# or a manual Memcache instance on Google Compute Engine.
+  # Optional memcache address to enable caching. Can be either Cloud Memorystore
+  # or a manual Memcache instance on Google Compute Engine.
   - variable: MEMCACHE_ADDR
     value: 10.128.0.2:6379
+  - variable: STRIPE_SECRET_KEY
+    secret: stripe-secret-key
