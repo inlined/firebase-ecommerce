@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@firebase/auth": "file:firebase-auth-next.tgz",
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "@genkit-ai/firebase": "^1.4.0",
     "@genkit-ai/googleai": "^1.4.0",
