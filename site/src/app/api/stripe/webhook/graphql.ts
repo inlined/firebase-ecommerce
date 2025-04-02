@@ -1,31 +1,7 @@
-import {
-  connectorConfig,
-} from '@firebasegen/default-connector'
-import { initializeApp } from 'firebase-admin/app';
-import { DataConnect, getDataConnect } from 'firebase-admin/data-connect'
+import { executeGQL } from "@/lib/firebase/admin/getDataConnect";
 
 // Because we are in a webhook, we do not have user context and cannot use
 // the client SDK. Let's have fun with the Admin SDK.
-
-// This fun little helper lets us do type inferencing from both sides so that we don't need
-// to spell out long types in the executeGraphql side!
-let fdcCache: DataConnect | null = null;
-async function run<Response, Request>(query: string, req: Request): Promise<Response> {
-    if (!fdcCache) {
-        const app = initializeApp();
-        // N.B. For consistency I'm loading connectorConfig from the generated
-        // codebase, but admin and client use slighly different config IDs.
-        let emulatorHost = process.env.DATA_CONNECT_EMULATOR_HOST;
-        if (emulatorHost?.startsWith("http://")) {
-            console.log("Stripping http prefix to fix FDC admin emulator bug");
-            emulatorHost = emulatorHost.substring("http://".length);
-            (process.env as any).DATA_CONNECT_EMULATOR_HOST = emulatorHost;
-        }
-        fdcCache = getDataConnect({...connectorConfig, serviceId: connectorConfig.service}, app);
-    }
-    const { data } = await fdcCache.executeGraphql<Response, Request>(query, { variables: req });
-  return data
-}
 
 export interface CreateOrderRequest {
     customerId: string
@@ -62,7 +38,7 @@ export function createOrder(req: CreateOrderRequest): Promise<CreateOrderRespons
     ) @auth(level: NO_ACCESS) {
         order_insert(
             data: {
-            customerId_expr: "auth.uid"
+            customerId: $customerId
             chargeId: $chargeId
             paymentIntentId: $paymentIntentId
             receiptUrl: $receiptUrl
@@ -75,7 +51,7 @@ export function createOrder(req: CreateOrderRequest): Promise<CreateOrderRespons
             }
         )
     }`;
-    return run(query, req);
+    return executeGQL(query, req);
 }
 
 export interface UpdateOrderByPaymentIntentIdRequest {
@@ -110,7 +86,7 @@ export async function updateOrderByPaymentIntentId(req: UpdateOrderByPaymentInte
             }
             )
         }`;
-    return run(query, req);
+    return executeGQL(query, req);
 }
 
 export interface CreateOrderItemRequest {
@@ -139,5 +115,5 @@ export function createOrderItem(req: CreateOrderItemRequest): Promise<CreateOrde
             }
         )
     }`;
-    return run(query, req);
+    return executeGQL(query, req);
 }

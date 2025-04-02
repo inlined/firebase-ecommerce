@@ -191,7 +191,7 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
 }
 
 # Get the orders of a customer by ID
-query GetOrdersByCustomerId @auth(level: USER) {
+query GetCurrentUsersOrders @auth(level: USER) {
   orders(where: { customerId: { eq_expr: "auth.uid"  }}) {
     id
     customerId

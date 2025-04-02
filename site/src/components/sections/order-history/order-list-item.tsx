@@ -1,9 +1,9 @@
 import Button from '@/components/ui/button'
 import Link from 'next/link'
-import { GetOrdersByCustomerIdData } from '@firebasegen/default-connector'
+import { GetCurrentUsersOrdersData } from '@firebasegen/default-connector'
 
 type Props = {
-  order: GetOrdersByCustomerIdData['orders'][number]
+  order: GetCurrentUsersOrdersData['orders'][number]
 }
 
 export default function OrderListItem({ order }: Props) {

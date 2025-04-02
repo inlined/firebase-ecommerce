@@ -32,16 +32,10 @@ export async function POST(request: Request) {
 
   try {
     switch (event.type) {
-    // Occurs when a PaymentIntent has successfully completed payment.
-    // The payment has been captured and the funds are available.
-    // This event contains detailed metadata about the transaction.
-    // Use this webhook to:
-    // - Update order status in your database
-    // - Trigger fulfillment processes
-    // - Update inventory systems
-    // - Record customer purchase history
-    case 'payment_intent.succeeded':
-      await processPaymentIntentSucceeded(event);
+    // Occurs when a PaymentIntent has successfully been created.
+    // We create on this event so that the order can show up on the results page.
+    case 'payment_intent.created':
+      await processPaymentIntentCreated(event);
       break
 
     // Occurs when a PaymentIntent fails the payment process.
@@ -58,7 +52,7 @@ export async function POST(request: Request) {
         paymentIntentId: paymentIntent.id,
         financialStatus: 'failed',
         fulfillmentStatus: 'cancelled',
-        processedAt: new Date().toISOString().slice(0, 19),
+        processedAt: new Date().toISOString(),
       });
       break;
 
@@ -84,7 +78,7 @@ export async function POST(request: Request) {
         financialStatus: 'paid',
         fulfillmentStatus: 'processing',
         receiptUrl: success.receipt_url ?? undefined,
-        processedAt: new Date().toISOString().slice(0, 19),
+        processedAt: new Date().toISOString(),
       })
       break;
 
@@ -93,13 +87,12 @@ export async function POST(request: Request) {
     case 'charge.updated':
       const charge = event.data.object as Stripe.Charge
 
-      // processedAt: new Date().toISOString().slice(0, 19),
       await updateOrderByPaymentIntentId({
         paymentIntentId: charge.payment_intent?.toString() ?? '',
         chargeId: charge.id,
         financialStatus: charge.status,
         receiptUrl: charge.receipt_url ?? undefined,
-        processedAt: new Date().toISOString().slice(0, 19),
+        processedAt: new Date().toISOString(),
       });
       break;
 
@@ -115,7 +108,7 @@ export async function POST(request: Request) {
   return NextResponse.json({ received: true })
 }
 
-async function processPaymentIntentSucceeded({data: { object: paymentIntent }}: Stripe.PaymentIntentSucceededEvent): Promise<void> {
+async function processPaymentIntentCreated({data: { object: paymentIntent }}: Stripe.PaymentIntentCreatedEvent): Promise<void> {
   const metadata = paymentIntent.metadata;
   const orderItems = JSON.parse(metadata.order_items || '[]') as {
     productId: string

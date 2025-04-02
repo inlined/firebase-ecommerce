@@ -35,7 +35,6 @@ mutation CreateProductReview(
 }
 
 mutation CreateOrder(
-  $customerId: String!
   $chargeId: String
   $paymentIntentId: String
   $receiptUrl: String
@@ -70,11 +69,6 @@ mutation UpdateOrderByPaymentIntentId(
   $processedAt: Timestamp
   $chargeId: String
 ) @auth(level: NO_ACCESS) {
-  query @redact {
-    order(first: { where: { paymentIntentId: { eq: $paymentIntentId } } }) {
-      customerId @check(expr: "this == auth.uid", message: "You can only update the payment method of your own order.")
-    }
-  }
   order_update(
     first: { where: { paymentIntentId: { eq: $paymentIntentId } } }
     data: {

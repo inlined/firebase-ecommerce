@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import getStripe from '@/lib/stripe'
 import { Product } from '@/lib/stores/cart-store'
 
+// TODO: Use real user credentials!!!
 export async function POST(request: Request) {
   try {
     const { amount, products, customer, shippingInfo } = await request.json()

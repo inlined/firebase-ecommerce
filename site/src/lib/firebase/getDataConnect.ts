@@ -8,9 +8,6 @@ export default function getDataConnect(app?: FirebaseApp): DataConnect {
   // Client-side intialization of the emulators is coming but is not avialable yet.
   if (process.env.NEXT_PUBLIC_FIREBASE_DATACONNECT_EMULATOR_HOST) {
     connectDataConnectEmulator(dc, process.env.NEXT_PUBLIC_FIREBASE_DATACONNECT_EMULATOR_HOST);
-    console.log("CONNECTING TO DATACONNECT CLIENT EMULATOR");
-  } else {
-    console.log("CONNECTING TO PROD CLIENT DATACONNECT");
   }
   return dc;
 }

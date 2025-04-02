@@ -12,7 +12,7 @@
   - [*GetCollectionByHandle*](#getcollectionbyhandle)
   - [*GetCollectionsByPage*](#getcollectionsbypage)
   - [*Search*](#search)
-  - [*GetOrdersByCustomerId*](#getordersbycustomerid)
+  - [*GetCurrentUsersOrders*](#getcurrentusersorders)
   - [*GetOrderById*](#getorderbyid)
   - [*GetAllOrders*](#getallorders)
 - [**Mutations**](#mutations)
@@ -765,27 +765,27 @@ export default function SearchComponent() {
 }
 ```
 
-## GetOrdersByCustomerId
-You can execute the `GetOrdersByCustomerId` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+## GetCurrentUsersOrders
+You can execute the `GetCurrentUsersOrders` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useGetOrdersByCustomerId(dc: DataConnect, options?: useDataConnectQueryOptions<GetOrdersByCustomerIdData>): UseDataConnectQueryResult<GetOrdersByCustomerIdData, undefined>;
+useGetCurrentUsersOrders(dc: DataConnect, options?: useDataConnectQueryOptions<GetCurrentUsersOrdersData>): UseDataConnectQueryResult<GetCurrentUsersOrdersData, undefined>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useGetOrdersByCustomerId(options?: useDataConnectQueryOptions<GetOrdersByCustomerIdData>): UseDataConnectQueryResult<GetOrdersByCustomerIdData, undefined>;
+useGetCurrentUsersOrders(options?: useDataConnectQueryOptions<GetCurrentUsersOrdersData>): UseDataConnectQueryResult<GetCurrentUsersOrdersData, undefined>;
 ```
 
 ### Variables
-The `GetOrdersByCustomerId` Query has no variables.
+The `GetCurrentUsersOrders` Query has no variables.
 ### Return Type
-Recall that calling the `GetOrdersByCustomerId` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+Recall that calling the `GetCurrentUsersOrders` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
 To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
 
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetOrdersByCustomerId` Query is of type `GetOrdersByCustomerIdData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetCurrentUsersOrders` Query is of type `GetCurrentUsersOrdersData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 ```javascript
-export interface GetOrdersByCustomerIdData {
+export interface GetCurrentUsersOrdersData {
   orders: ({
     id: UUIDString;
     customerId: string;
@@ -819,32 +819,32 @@ export interface GetOrdersByCustomerIdData {
 
 To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
 
-### Using `GetOrdersByCustomerId`'s Query hook function
+### Using `GetCurrentUsersOrders`'s Query hook function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig } from '@firebasegen/default-connector';
-import { useGetOrdersByCustomerId } from '@firebasegen/default-connector/react'
+import { useGetCurrentUsersOrders } from '@firebasegen/default-connector/react'
 
-export default function GetOrdersByCustomerIdComponent() {
+export default function GetCurrentUsersOrdersComponent() {
 
 
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetOrdersByCustomerId();
+  const query = useGetCurrentUsersOrders();
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetOrdersByCustomerId(dataConnect);
+  const query = useGetCurrentUsersOrders(dataConnect);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useGetOrdersByCustomerId(options);
+  const query = useGetCurrentUsersOrders(options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useGetOrdersByCustomerId(dataConnect, options);
+  const query = useGetCurrentUsersOrders(dataConnect, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -1298,7 +1298,6 @@ The `CreateOrder` Mutation requires an argument of type `CreateOrderVariables`, 
 
 ```javascript
 export interface CreateOrderVariables {
-  customerId: string;
   chargeId?: string | null;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
@@ -1357,7 +1356,6 @@ export default function CreateOrderComponent() {
   // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
   // The `useCreateOrder` Mutation requires an argument of type `CreateOrderVariables`:
   const createOrderVars: CreateOrderVariables = {
-    customerId: ..., 
     chargeId: ..., // optional
     paymentIntentId: ..., // optional
     receiptUrl: ..., // optional
@@ -1370,7 +1368,7 @@ export default function CreateOrderComponent() {
   };
   mutation.mutate(createOrderVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ customerId: ..., chargeId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
+  mutation.mutate({ chargeId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {

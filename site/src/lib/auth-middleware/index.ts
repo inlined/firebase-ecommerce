@@ -9,6 +9,7 @@ type FirebaseJWTPayload = JWTPayload & { firebase?: { tenant?: string }};
 type RunMiddlewareOptions = { apiKey: string, projectId: string, emulatorHost: string|undefined, tenantId: string|undefined, authDomain: string|undefined };
 type RunMiddlewareResponse = [NextResponse]|[undefined, ((response: NextResponse) => NextResponse), FirebaseJWTPayload|undefined];
 async function runMiddleware(options: RunMiddlewareOptions, request: NextRequest): Promise<RunMiddlewareResponse> {
+    console.log("IN MIDDLEWARE");
     if (request.nextUrl.pathname.startsWith("/__/") && options.authDomain) {
         const newURL = new URL(request.nextUrl);
         newURL.host = options.authDomain;
@@ -30,6 +31,7 @@ async function runMiddleware(options: RunMiddlewareOptions, request: NextRequest
     if (request.nextUrl.pathname === '/__cookies__') {
         const method = request.method;
         if (method === 'DELETE') {
+            console.log("DELETING COOKIES");
             const response = new NextResponse("");
             response.cookies.delete({...ID_TOKEN_COOKIE, maxAge: 0});
             response.cookies.delete({...REFRESH_TOKEN_COOKIE, maxAge: 0});
@@ -116,7 +118,6 @@ async function runMiddleware(options: RunMiddlewareOptions, request: NextRequest
     const refresh_token = request.cookies.get({...REFRESH_TOKEN_COOKIE, value: "" })?.value;
 
     if (authIdToken === undefined && !refresh_token) {
-        console.error("no authIdToken && no refresh token");
         return [undefined, it => it, undefined];
     }
 
@@ -186,6 +187,7 @@ async function runMiddleware(options: RunMiddlewareOptions, request: NextRequest
 
     console.log("attempting a refresh with", { isEmulatedCredential });
 
+    // TODO: This is way too eager. Only refresh if expiring soon.
     const refreshUrl = new URL(isEmulatedCredential ? `http://${options.emulatorHost}` : `https://securetoken.googleapis.com`);
     refreshUrl.pathname = [isEmulatedCredential && 'securetoken.googleapis.com', 'v1/token'].filter(Boolean).join('/');
     refreshUrl.searchParams.set("key", options.apiKey);

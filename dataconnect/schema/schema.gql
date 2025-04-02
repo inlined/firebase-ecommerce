@@ -80,7 +80,7 @@ type Order @table {
   totalShippingPrice: Float! @col(name: "total_shipping_price", dataType: "float")
   totalPrice: Float! @col(name: "total_price", dataType: "float")
   processedAt: Timestamp!
-    @col(name: "processed_at", dataType: "timestamp")
+    @col(name: "processed_at")
     @default(expr: "request.time")
   financialStatus: String! @col(name: "financial_status", dataType: "varchar(50)")
   fulfillmentStatus: String! @col(name: "fulfillment_status", dataType: "varchar(50)")

@@ -29,7 +29,6 @@ export interface CreateOrderItemVariables {
 }
 
 export interface CreateOrderVariables {
-  customerId: string;
   chargeId?: string | null;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
@@ -171,6 +170,37 @@ export interface GetCollectionsByPageVariables {
   page?: string | null;
 }
 
+export interface GetCurrentUsersOrdersData {
+  orders: ({
+    id: UUIDString;
+    customerId: string;
+    processedAt: TimestampString;
+    chargeId?: string | null;
+    paymentIntentId?: string | null;
+    receiptUrl?: string | null;
+    subtotalPrice: number;
+    totalPrice: number;
+    financialStatus: string;
+    fulfillmentStatus: string;
+    items: ({
+      id: UUIDString;
+      quantity: number;
+      price: number;
+      product: {
+        id: UUIDString;
+        title: string;
+        handle: string;
+        images: ({
+          url: string;
+          altText?: string | null;
+          width: number;
+          height: number;
+        })[];
+      } & Product_Key;
+    } & OrderItem_Key)[];
+  } & Order_Key)[];
+}
+
 export interface GetOrderByIdData {
   order?: {
     id: UUIDString;
@@ -201,37 +231,6 @@ export interface GetOrderByIdData {
 
 export interface GetOrderByIdVariables {
   id: UUIDString;
-}
-
-export interface GetOrdersByCustomerIdData {
-  orders: ({
-    id: UUIDString;
-    customerId: string;
-    processedAt: TimestampString;
-    chargeId?: string | null;
-    paymentIntentId?: string | null;
-    receiptUrl?: string | null;
-    subtotalPrice: number;
-    totalPrice: number;
-    financialStatus: string;
-    fulfillmentStatus: string;
-    items: ({
-      id: UUIDString;
-      quantity: number;
-      price: number;
-      product: {
-        id: UUIDString;
-        title: string;
-        handle: string;
-        images: ({
-          url: string;
-          altText?: string | null;
-          width: number;
-          height: number;
-        })[];
-      } & Product_Key;
-    } & OrderItem_Key)[];
-  } & Order_Key)[];
 }
 
 export interface GetProductByHandleData {
@@ -422,6 +421,54 @@ export interface UpsertCustomerVariables {
 }
 
 /* Allow users to create refs without passing in DataConnect */
+export function upsertCustomerRef(vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function upsertCustomerRef(dc: DataConnect, vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
+
+export function upsertCustomer(vars: UpsertCustomerVariables): MutationPromise<UpsertCustomerData, UpsertCustomerVariables>;
+export function upsertCustomer(dc: DataConnect, vars: UpsertCustomerVariables): MutationPromise<UpsertCustomerData, UpsertCustomerVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function createProductReviewRef(vars: CreateProductReviewVariables): MutationRef<CreateProductReviewData, CreateProductReviewVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function createProductReviewRef(dc: DataConnect, vars: CreateProductReviewVariables): MutationRef<CreateProductReviewData, CreateProductReviewVariables>;
+
+export function createProductReview(vars: CreateProductReviewVariables): MutationPromise<CreateProductReviewData, CreateProductReviewVariables>;
+export function createProductReview(dc: DataConnect, vars: CreateProductReviewVariables): MutationPromise<CreateProductReviewData, CreateProductReviewVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function createOrderRef(vars: CreateOrderVariables): MutationRef<CreateOrderData, CreateOrderVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function createOrderRef(dc: DataConnect, vars: CreateOrderVariables): MutationRef<CreateOrderData, CreateOrderVariables>;
+
+export function createOrder(vars: CreateOrderVariables): MutationPromise<CreateOrderData, CreateOrderVariables>;
+export function createOrder(dc: DataConnect, vars: CreateOrderVariables): MutationPromise<CreateOrderData, CreateOrderVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function updateOrderByPaymentIntentIdRef(vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function updateOrderByPaymentIntentIdRef(dc: DataConnect, vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+
+export function updateOrderByPaymentIntentId(vars: UpdateOrderByPaymentIntentIdVariables): MutationPromise<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+export function updateOrderByPaymentIntentId(dc: DataConnect, vars: UpdateOrderByPaymentIntentIdVariables): MutationPromise<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function updateOrderByChargeIdRef(vars?: UpdateOrderByChargeIdVariables): MutationRef<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function updateOrderByChargeIdRef(dc: DataConnect, vars?: UpdateOrderByChargeIdVariables): MutationRef<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+
+export function updateOrderByChargeId(vars?: UpdateOrderByChargeIdVariables): MutationPromise<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+export function updateOrderByChargeId(dc: DataConnect, vars?: UpdateOrderByChargeIdVariables): MutationPromise<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function createOrderItemRef(vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function createOrderItemRef(dc: DataConnect, vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+
+export function createOrderItem(vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
+export function createOrderItem(dc: DataConnect, vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
 export function listCustomersRef(): QueryRef<ListCustomersData, undefined>;
 /* Allow users to pass in custom DataConnect instances */
 export function listCustomersRef(dc: DataConnect): QueryRef<ListCustomersData, undefined>;
@@ -470,12 +517,12 @@ export function search(vars: SearchVariables): QueryPromise<SearchData, SearchVa
 export function search(dc: DataConnect, vars: SearchVariables): QueryPromise<SearchData, SearchVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
-export function getOrdersByCustomerIdRef(): QueryRef<GetOrdersByCustomerIdData, undefined>;
+export function getCurrentUsersOrdersRef(): QueryRef<GetCurrentUsersOrdersData, undefined>;
 /* Allow users to pass in custom DataConnect instances */
-export function getOrdersByCustomerIdRef(dc: DataConnect): QueryRef<GetOrdersByCustomerIdData, undefined>;
+export function getCurrentUsersOrdersRef(dc: DataConnect): QueryRef<GetCurrentUsersOrdersData, undefined>;
 
-export function getOrdersByCustomerId(): QueryPromise<GetOrdersByCustomerIdData, undefined>;
-export function getOrdersByCustomerId(dc: DataConnect): QueryPromise<GetOrdersByCustomerIdData, undefined>;
+export function getCurrentUsersOrders(): QueryPromise<GetCurrentUsersOrdersData, undefined>;
+export function getCurrentUsersOrders(dc: DataConnect): QueryPromise<GetCurrentUsersOrdersData, undefined>;
 
 /* Allow users to create refs without passing in DataConnect */
 export function getOrderByIdRef(vars: GetOrderByIdVariables): QueryRef<GetOrderByIdData, GetOrderByIdVariables>;
@@ -492,52 +539,4 @@ export function getAllOrdersRef(dc: DataConnect): QueryRef<GetAllOrdersData, und
 
 export function getAllOrders(): QueryPromise<GetAllOrdersData, undefined>;
 export function getAllOrders(dc: DataConnect): QueryPromise<GetAllOrdersData, undefined>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function upsertCustomerRef(vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function upsertCustomerRef(dc: DataConnect, vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
-
-export function upsertCustomer(vars: UpsertCustomerVariables): MutationPromise<UpsertCustomerData, UpsertCustomerVariables>;
-export function upsertCustomer(dc: DataConnect, vars: UpsertCustomerVariables): MutationPromise<UpsertCustomerData, UpsertCustomerVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function createProductReviewRef(vars: CreateProductReviewVariables): MutationRef<CreateProductReviewData, CreateProductReviewVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function createProductReviewRef(dc: DataConnect, vars: CreateProductReviewVariables): MutationRef<CreateProductReviewData, CreateProductReviewVariables>;
-
-export function createProductReview(vars: CreateProductReviewVariables): MutationPromise<CreateProductReviewData, CreateProductReviewVariables>;
-export function createProductReview(dc: DataConnect, vars: CreateProductReviewVariables): MutationPromise<CreateProductReviewData, CreateProductReviewVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function createOrderRef(vars: CreateOrderVariables): MutationRef<CreateOrderData, CreateOrderVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function createOrderRef(dc: DataConnect, vars: CreateOrderVariables): MutationRef<CreateOrderData, CreateOrderVariables>;
-
-export function createOrder(vars: CreateOrderVariables): MutationPromise<CreateOrderData, CreateOrderVariables>;
-export function createOrder(dc: DataConnect, vars: CreateOrderVariables): MutationPromise<CreateOrderData, CreateOrderVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function updateOrderByPaymentIntentIdRef(vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function updateOrderByPaymentIntentIdRef(dc: DataConnect, vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
-
-export function updateOrderByPaymentIntentId(vars: UpdateOrderByPaymentIntentIdVariables): MutationPromise<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
-export function updateOrderByPaymentIntentId(dc: DataConnect, vars: UpdateOrderByPaymentIntentIdVariables): MutationPromise<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function updateOrderByChargeIdRef(vars?: UpdateOrderByChargeIdVariables): MutationRef<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function updateOrderByChargeIdRef(dc: DataConnect, vars?: UpdateOrderByChargeIdVariables): MutationRef<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
-
-export function updateOrderByChargeId(vars?: UpdateOrderByChargeIdVariables): MutationPromise<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
-export function updateOrderByChargeId(dc: DataConnect, vars?: UpdateOrderByChargeIdVariables): MutationPromise<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function createOrderItemRef(vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function createOrderItemRef(dc: DataConnect, vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
-
-export function createOrderItem(vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
-export function createOrderItem(dc: DataConnect, vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
 

@@ -9,7 +9,7 @@
   - [*GetCollectionByHandle*](#getcollectionbyhandle)
   - [*GetCollectionsByPage*](#getcollectionsbypage)
   - [*Search*](#search)
-  - [*GetOrdersByCustomerId*](#getordersbycustomerid)
+  - [*GetCurrentUsersOrders*](#getcurrentusersorders)
   - [*GetOrderById*](#getorderbyid)
   - [*GetAllOrders*](#getallorders)
 - [**Mutations**](#mutations)
@@ -780,28 +780,28 @@ executeQuery(ref).then((response) => {
 });
 ```
 
-## GetOrdersByCustomerId
-You can execute the `GetOrdersByCustomerId` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+## GetCurrentUsersOrders
+You can execute the `GetCurrentUsersOrders` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
 ```javascript
-getOrdersByCustomerId(): QueryPromise<GetOrdersByCustomerIdData, undefined>;
+getCurrentUsersOrders(): QueryPromise<GetCurrentUsersOrdersData, undefined>;
 
-getOrdersByCustomerIdRef(): QueryRef<GetOrdersByCustomerIdData, undefined>;
+getCurrentUsersOrdersRef(): QueryRef<GetCurrentUsersOrdersData, undefined>;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```javascript
-getOrdersByCustomerId(dc: DataConnect): QueryPromise<GetOrdersByCustomerIdData, undefined>;
+getCurrentUsersOrders(dc: DataConnect): QueryPromise<GetCurrentUsersOrdersData, undefined>;
 
-getOrdersByCustomerIdRef(dc: DataConnect): QueryRef<GetOrdersByCustomerIdData, undefined>;
+getCurrentUsersOrdersRef(dc: DataConnect): QueryRef<GetCurrentUsersOrdersData, undefined>;
 ```
 
 ### Variables
-The `GetOrdersByCustomerId` query has no variables.
+The `GetCurrentUsersOrders` query has no variables.
 ### Return Type
-Recall that executing the `GetOrdersByCustomerId` query returns a `QueryPromise` that resolves to an object with a `data` property.
+Recall that executing the `GetCurrentUsersOrders` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `GetOrdersByCustomerIdData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `GetCurrentUsersOrdersData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 ```javascript
-export interface GetOrdersByCustomerIdData {
+export interface GetCurrentUsersOrdersData {
   orders: ({
     id: UUIDString;
     customerId: string;
@@ -832,43 +832,43 @@ export interface GetOrdersByCustomerIdData {
   } & Order_Key)[];
 }
 ```
-### Using `GetOrdersByCustomerId`'s action shortcut function
+### Using `GetCurrentUsersOrders`'s action shortcut function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, getOrdersByCustomerId } from '@firebasegen/default-connector';
+import { connectorConfig, getCurrentUsersOrders } from '@firebasegen/default-connector';
 
 
-// Call the `getOrdersByCustomerId()` function to execute the query.
+// Call the `getCurrentUsersOrders()` function to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await getOrdersByCustomerId();
+const { data } = await getCurrentUsersOrders();
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
-const { data } = await getOrdersByCustomerId(dataConnect);
+const { data } = await getCurrentUsersOrders(dataConnect);
 
 console.log(data.orders);
 
 // Or, you can use the `Promise` API.
-getOrdersByCustomerId().then((response) => {
+getCurrentUsersOrders().then((response) => {
   const data = response.data;
   console.log(data.orders);
 });
 ```
 
-### Using `GetOrdersByCustomerId`'s `QueryRef` function
+### Using `GetCurrentUsersOrders`'s `QueryRef` function
 
 ```javascript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, getOrdersByCustomerIdRef } from '@firebasegen/default-connector';
+import { connectorConfig, getCurrentUsersOrdersRef } from '@firebasegen/default-connector';
 
 
-// Call the `getOrdersByCustomerIdRef()` function to get a reference to the query.
-const ref = getOrdersByCustomerIdRef();
+// Call the `getCurrentUsersOrdersRef()` function to get a reference to the query.
+const ref = getCurrentUsersOrdersRef();
 
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
-const ref = getOrdersByCustomerIdRef(dataConnect);
+const ref = getCurrentUsersOrdersRef(dataConnect);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
@@ -1334,7 +1334,6 @@ The `CreateOrder` mutation requires an argument of type `CreateOrderVariables`, 
 
 ```javascript
 export interface CreateOrderVariables {
-  customerId: string;
   chargeId?: string | null;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
@@ -1363,7 +1362,6 @@ import { connectorConfig, createOrder, CreateOrderVariables } from '@firebasegen
 
 // The `CreateOrder` mutation requires an argument of type `CreateOrderVariables`:
 const createOrderVars: CreateOrderVariables = {
-  customerId: ..., 
   chargeId: ..., // optional
   paymentIntentId: ..., // optional
   receiptUrl: ..., // optional
@@ -1379,7 +1377,7 @@ const createOrderVars: CreateOrderVariables = {
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await createOrder(createOrderVars);
 // Variables can be defined inline as well.
-const { data } = await createOrder({ customerId: ..., chargeId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
+const { data } = await createOrder({ chargeId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1402,7 +1400,6 @@ import { connectorConfig, createOrderRef, CreateOrderVariables } from '@firebase
 
 // The `CreateOrder` mutation requires an argument of type `CreateOrderVariables`:
 const createOrderVars: CreateOrderVariables = {
-  customerId: ..., 
   chargeId: ..., // optional
   paymentIntentId: ..., // optional
   receiptUrl: ..., // optional
@@ -1417,7 +1414,7 @@ const createOrderVars: CreateOrderVariables = {
 // Call the `createOrderRef()` function to get a reference to the mutation.
 const ref = createOrderRef(createOrderVars);
 // Variables can be defined inline as well.
-const ref = createOrderRef({ customerId: ..., chargeId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
+const ref = createOrderRef({ chargeId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
