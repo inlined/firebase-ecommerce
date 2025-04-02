@@ -6,6 +6,96 @@ export const connectorConfig = {
   location: 'us-central1'
 };
 
+export function listCustomersRef(dc) {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListCustomers');
+}
+
+export function listCustomers(dc) {
+  return executeQuery(listCustomersRef(dc));
+}
+
+export function getReviewsByHandleRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetReviewsByHandle', inputVars);
+}
+
+export function getReviewsByHandle(dcOrVars, vars) {
+  return executeQuery(getReviewsByHandleRef(dcOrVars, vars));
+}
+
+export function getProductByHandleRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetProductByHandle', inputVars);
+}
+
+export function getProductByHandle(dcOrVars, vars) {
+  return executeQuery(getProductByHandleRef(dcOrVars, vars));
+}
+
+export function getCollectionByHandleRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetCollectionByHandle', inputVars);
+}
+
+export function getCollectionByHandle(dcOrVars, vars) {
+  return executeQuery(getCollectionByHandleRef(dcOrVars, vars));
+}
+
+export function getCollectionsByPageRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetCollectionsByPage', inputVars);
+}
+
+export function getCollectionsByPage(dcOrVars, vars) {
+  return executeQuery(getCollectionsByPageRef(dcOrVars, vars));
+}
+
+export function searchRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'Search', inputVars);
+}
+
+export function search(dcOrVars, vars) {
+  return executeQuery(searchRef(dcOrVars, vars));
+}
+
+export function getOrdersByCustomerIdRef(dc) {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetOrdersByCustomerId');
+}
+
+export function getOrdersByCustomerId(dc) {
+  return executeQuery(getOrdersByCustomerIdRef(dc));
+}
+
+export function getOrderByIdRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetOrderById', inputVars);
+}
+
+export function getOrderById(dcOrVars, vars) {
+  return executeQuery(getOrderByIdRef(dcOrVars, vars));
+}
+
+export function getAllOrdersRef(dc) {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetAllOrders');
+}
+
+export function getAllOrders(dc) {
+  return executeQuery(getAllOrdersRef(dc));
+}
+
 export function upsertCustomerRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -64,115 +154,5 @@ export function createOrderItemRef(dcOrVars, vars) {
 
 export function createOrderItem(dcOrVars, vars) {
   return executeMutation(createOrderItemRef(dcOrVars, vars));
-}
-
-export function listCustomersRef(dc) {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListCustomers');
-}
-
-export function listCustomers(dc) {
-  return executeQuery(listCustomersRef(dc));
-}
-
-export function getReviewsByHandleRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetReviewsByHandle', inputVars);
-}
-
-export function getReviewsByHandle(dcOrVars, vars) {
-  return executeQuery(getReviewsByHandleRef(dcOrVars, vars));
-}
-
-export function getProductByHandleRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetProductByHandle', inputVars);
-}
-
-export function getProductByHandle(dcOrVars, vars) {
-  return executeQuery(getProductByHandleRef(dcOrVars, vars));
-}
-
-export function getCollectionByHandleRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetCollectionByHandle', inputVars);
-}
-
-export function getCollectionByHandle(dcOrVars, vars) {
-  return executeQuery(getCollectionByHandleRef(dcOrVars, vars));
-}
-
-export function getCollectionsByPageRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetCollectionsByPage', inputVars);
-}
-
-export function getCollectionsByPage(dcOrVars, vars) {
-  return executeQuery(getCollectionsByPageRef(dcOrVars, vars));
-}
-
-export function searchProductDescriptionUsingL2similarityRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'SearchProductDescriptionUsingL2Similarity', inputVars);
-}
-
-export function searchProductDescriptionUsingL2similarity(dcOrVars, vars) {
-  return executeQuery(searchProductDescriptionUsingL2similarityRef(dcOrVars, vars));
-}
-
-export function searchProductTitleUsingL2similarityRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'SearchProductTitleUsingL2Similarity', inputVars);
-}
-
-export function searchProductTitleUsingL2similarity(dcOrVars, vars) {
-  return executeQuery(searchProductTitleUsingL2similarityRef(dcOrVars, vars));
-}
-
-export function searchProductReviewContentUsingL2similarityRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'SearchProductReviewContentUsingL2Similarity', inputVars);
-}
-
-export function searchProductReviewContentUsingL2similarity(dcOrVars, vars) {
-  return executeQuery(searchProductReviewContentUsingL2similarityRef(dcOrVars, vars));
-}
-
-export function getOrdersByCustomerIdRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetOrdersByCustomerId', inputVars);
-}
-
-export function getOrdersByCustomerId(dcOrVars, vars) {
-  return executeQuery(getOrdersByCustomerIdRef(dcOrVars, vars));
-}
-
-export function getOrderByIdRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetOrderById', inputVars);
-}
-
-export function getOrderById(dcOrVars, vars) {
-  return executeQuery(getOrderByIdRef(dcOrVars, vars));
-}
-
-export function getAllOrdersRef(dc) {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetAllOrders');
-}
-
-export function getAllOrders(dc) {
-  return executeQuery(getAllOrdersRef(dc));
 }
 

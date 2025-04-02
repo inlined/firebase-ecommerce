@@ -10,8 +10,6 @@ export const config = {
   }
 }
 
-console.error("COMPILING STRIPE WEBHOOK");
-
 export async function POST(request: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET
   if (!secret) {
@@ -134,7 +132,7 @@ async function processPaymentIntentSucceeded({data: { object: paymentIntent }}: 
     totalPrice: paymentIntent.amount,
     financialStatus: 'pending',
     fulfillmentStatus: 'pending'
-  })
+  });
 
   const items = orderItems.map(
     (item: { productId: string; quantity: number; price: number }) => {
@@ -145,7 +143,7 @@ async function processPaymentIntentSucceeded({data: { object: paymentIntent }}: 
         price: item.price
       }
     }
-  )
+  );
 
-  await Promise.all(items.map((item) => createOrderItem(item)))
+  await Promise.all(items.map((item) => createOrderItem(item)));
 }

@@ -9,7 +9,7 @@ query ListCustomers @auth(level: NO_ACCESS) {
 }
 
 # Get all reviews under a product by handle
-query GetReviewsByHandle($handle: String!) @auth(level: PUBLIC) {
+query GetReviewsByHandle($handle: String!) @auth(level: PUBLIC,  insecureReason: "Public data") {
   products(where: { handle: { eq: $handle } }) {
     productReviews_on_product(orderBy: [{ date: DESC }]) {
       id
@@ -26,7 +26,7 @@ query GetReviewsByHandle($handle: String!) @auth(level: PUBLIC) {
 }
 
 # Get a product by handle
-query GetProductByHandle($handle: String!) @auth(level: PUBLIC) {
+query GetProductByHandle($handle: String!) @auth(level: PUBLIC, insecureReason: "Public data") {
   product(first: { where: { handle: { eq: $handle } } }) {
     id
     title
@@ -68,7 +68,7 @@ query GetProductByHandle($handle: String!) @auth(level: PUBLIC) {
 }
 
 # Get a collection by handle
-query GetCollectionByHandle($handle: String!, $page: String) @auth(level: PUBLIC) {
+query GetCollectionByHandle($handle: String!, $page: String) @auth(level: PUBLIC, insecureReason: "public data") {
   collections(where: { handle: { eq: $handle }, page: { eq: $page } }) {
     id
     name
@@ -116,7 +116,7 @@ query GetCollectionByHandle($handle: String!, $page: String) @auth(level: PUBLIC
 }
 
 # Get collections by page
-query GetCollectionsByPage($page: String) @auth(level: PUBLIC) {
+query GetCollectionsByPage($page: String) @auth(level: PUBLIC, insecureReason: "public data") {
   collections(where: { page: { eq: $page } }) {
     id
     name
@@ -155,8 +155,8 @@ query GetCollectionsByPage($page: String) @auth(level: PUBLIC) {
 }
 
 # Get products by its description using vector search
-query SearchProductDescriptionUsingL2Similarity($query: String!) @auth(level: PUBLIC) {
-  products_descriptionEmbedding_similarity(
+query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data") {
+  productsByDescription: products_descriptionEmbedding_similarity(
     compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
     within: 0.75
@@ -166,11 +166,7 @@ query SearchProductDescriptionUsingL2Similarity($query: String!) @auth(level: PU
     handle
     title
   }
-}
-
-# Get products by its title using vector search
-query SearchProductTitleUsingL2Similarity($query: String!) @auth(level: PUBLIC) {
-  products_titleEmbedding_similarity(
+  productsByTitle: products_titleEmbedding_similarity(
     compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
     within: 0.75
@@ -180,11 +176,7 @@ query SearchProductTitleUsingL2Similarity($query: String!) @auth(level: PUBLIC) 
     handle
     title
   }
-}
-
-# Get products by its reviews using vector search
-query SearchProductReviewContentUsingL2Similarity($query: String!) @auth(level: PUBLIC) {
-  productReviews_contentEmbedding_similarity(
+  reviews: productReviews_contentEmbedding_similarity(
     compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
     within: 0.75
@@ -199,8 +191,8 @@ query SearchProductReviewContentUsingL2Similarity($query: String!) @auth(level: 
 }
 
 # Get the orders of a customer by ID
-query GetOrdersByCustomerId($customerId: String!) @auth(level: PUBLIC) {
-  orders(where: { customerId: { eq: $customerId }}) {
+query GetOrdersByCustomerId @auth(level: USER) {
+  orders(where: { customerId: { eq_expr: "auth.uid"  }}) {
     id
     customerId
     processedAt
@@ -231,7 +223,7 @@ query GetOrdersByCustomerId($customerId: String!) @auth(level: PUBLIC) {
 }
 
 # Get a order of the logged in customer by ID
-query GetOrderById($id: UUID!) @auth(level: USER) {
+query GetOrderById($id: UUID!) @auth(level: USER, insecureReason: "Checked manually with @check") {
   order(id: $id) {
     id
     customerId

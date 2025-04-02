@@ -11,9 +11,7 @@
   - [*GetProductByHandle*](#getproductbyhandle)
   - [*GetCollectionByHandle*](#getcollectionbyhandle)
   - [*GetCollectionsByPage*](#getcollectionsbypage)
-  - [*SearchProductDescriptionUsingL2Similarity*](#searchproductdescriptionusingl2similarity)
-  - [*SearchProductTitleUsingL2Similarity*](#searchproducttitleusingl2similarity)
-  - [*SearchProductReviewContentUsingL2Similarity*](#searchproductreviewcontentusingl2similarity)
+  - [*Search*](#search)
   - [*GetOrdersByCustomerId*](#getordersbycustomerid)
   - [*GetOrderById*](#getorderbyid)
   - [*GetAllOrders*](#getallorders)
@@ -232,7 +230,7 @@ export interface GetReviewsByHandleData {
       id: UUIDString;
       rating: number;
       content: string;
-      date: DateString;
+      date: TimestampString;
       customer: {
         id: string;
         firstName: string;
@@ -328,8 +326,8 @@ export interface GetProductByHandleData {
     description?: string | null;
     handle: string;
     availableForSale: boolean;
-    createdAt: DateString;
-    updatedAt: DateString;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
     featuredImage?: {
       url: string;
       width: number;
@@ -465,8 +463,8 @@ export interface GetCollectionByHandleData {
           handle: string;
           description?: string | null;
           availableForSale: boolean;
-          createdAt: DateString;
-          updatedAt: DateString;
+          createdAt: TimestampString;
+          updatedAt: TimestampString;
           productVariants_on_product: ({
             id: UUIDString;
             price: number;
@@ -666,251 +664,87 @@ export default function GetCollectionsByPageComponent() {
 }
 ```
 
-## SearchProductDescriptionUsingL2Similarity
-You can execute the `SearchProductDescriptionUsingL2Similarity` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+## Search
+You can execute the `Search` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useSearchProductDescriptionUsingL2similarity(dc: DataConnect, vars: SearchProductDescriptionUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductDescriptionUsingL2similarityData>): UseDataConnectQueryResult<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
+useSearch(dc: DataConnect, vars: SearchVariables, options?: useDataConnectQueryOptions<SearchData>): UseDataConnectQueryResult<SearchData, SearchVariables>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useSearchProductDescriptionUsingL2similarity(vars: SearchProductDescriptionUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductDescriptionUsingL2similarityData>): UseDataConnectQueryResult<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
+useSearch(vars: SearchVariables, options?: useDataConnectQueryOptions<SearchData>): UseDataConnectQueryResult<SearchData, SearchVariables>;
 ```
 
 ### Variables
-The `SearchProductDescriptionUsingL2Similarity` Query requires an argument of type `SearchProductDescriptionUsingL2similarityVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+The `Search` Query requires an argument of type `SearchVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 
 ```javascript
-export interface SearchProductDescriptionUsingL2similarityVariables {
+export interface SearchVariables {
   query: string;
 }
 ```
 ### Return Type
-Recall that calling the `SearchProductDescriptionUsingL2Similarity` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+Recall that calling the `Search` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
 To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
 
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `SearchProductDescriptionUsingL2Similarity` Query is of type `SearchProductDescriptionUsingL2similarityData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `Search` Query is of type `SearchData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 ```javascript
-export interface SearchProductDescriptionUsingL2similarityData {
-  products_descriptionEmbedding_similarity: ({
+export interface SearchData {
+  productsByDescription: ({
     id: UUIDString;
     handle: string;
     title: string;
   } & Product_Key)[];
-}
-```
-
-To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
-
-### Using `SearchProductDescriptionUsingL2Similarity`'s Query hook function
-
-```javascript
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, SearchProductDescriptionUsingL2similarityVariables } from '@firebasegen/default-connector';
-import { useSearchProductDescriptionUsingL2similarity } from '@firebasegen/default-connector/react'
-
-export default function SearchProductDescriptionUsingL2similarityComponent() {
-
-  // The `useSearchProductDescriptionUsingL2similarity` Query hook requires an argument of type `SearchProductDescriptionUsingL2similarityVariables`:
-  const searchProductDescriptionUsingL2similarityVars: SearchProductDescriptionUsingL2similarityVariables = {
-    query: ..., 
-  };
-
-  // You don't have to do anything to "execute" the Query.
-  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useSearchProductDescriptionUsingL2similarity(searchProductDescriptionUsingL2similarityVars);
-  // Variables can be defined inline as well.
-  const query = useSearchProductDescriptionUsingL2similarity({ query: ..., });
-
-  // You can also pass in a `DataConnect` instance to the Query hook function.
-  const dataConnect = getDataConnect(connectorConfig);
-  const query = useSearchProductDescriptionUsingL2similarity(dataConnect, searchProductDescriptionUsingL2similarityVars);
-
-  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
-  const options = { staleTime: 5 * 1000 };
-  const query = useSearchProductDescriptionUsingL2similarity(searchProductDescriptionUsingL2similarityVars, options);
-
-  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
-  const dataConnect = getDataConnect(connectorConfig);
-  const options = { staleTime: 5 * 1000 };
-  const query = useSearchProductDescriptionUsingL2similarity(dataConnect, searchProductDescriptionUsingL2similarityVars, options);
-
-  // Then, you can render your component dynamically based on the status of the Query.
-  if (query.isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (query.isError) {
-    return <div>Error: {query.error.message}</div>;
-  }
-
-  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
-  if (query.isSuccess) {
-    console.log(query.data.products_descriptionEmbedding_similarity);
-  }
-  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
-}
-```
-
-## SearchProductTitleUsingL2Similarity
-You can execute the `SearchProductTitleUsingL2Similarity` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
-
-```javascript
-useSearchProductTitleUsingL2similarity(dc: DataConnect, vars: SearchProductTitleUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductTitleUsingL2similarityData>): UseDataConnectQueryResult<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-```
-You can also pass in a `DataConnect` instance to the Query hook function.
-```javascript
-useSearchProductTitleUsingL2similarity(vars: SearchProductTitleUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductTitleUsingL2similarityData>): UseDataConnectQueryResult<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-```
-
-### Variables
-The `SearchProductTitleUsingL2Similarity` Query requires an argument of type `SearchProductTitleUsingL2similarityVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-
-```javascript
-export interface SearchProductTitleUsingL2similarityVariables {
-  query: string;
-}
-```
-### Return Type
-Recall that calling the `SearchProductTitleUsingL2Similarity` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
-
-To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
-
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `SearchProductTitleUsingL2Similarity` Query is of type `SearchProductTitleUsingL2similarityData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-```javascript
-export interface SearchProductTitleUsingL2similarityData {
-  products_titleEmbedding_similarity: ({
-    id: UUIDString;
-    handle: string;
-    title: string;
-  } & Product_Key)[];
-}
-```
-
-To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
-
-### Using `SearchProductTitleUsingL2Similarity`'s Query hook function
-
-```javascript
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, SearchProductTitleUsingL2similarityVariables } from '@firebasegen/default-connector';
-import { useSearchProductTitleUsingL2similarity } from '@firebasegen/default-connector/react'
-
-export default function SearchProductTitleUsingL2similarityComponent() {
-
-  // The `useSearchProductTitleUsingL2similarity` Query hook requires an argument of type `SearchProductTitleUsingL2similarityVariables`:
-  const searchProductTitleUsingL2similarityVars: SearchProductTitleUsingL2similarityVariables = {
-    query: ..., 
-  };
-
-  // You don't have to do anything to "execute" the Query.
-  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useSearchProductTitleUsingL2similarity(searchProductTitleUsingL2similarityVars);
-  // Variables can be defined inline as well.
-  const query = useSearchProductTitleUsingL2similarity({ query: ..., });
-
-  // You can also pass in a `DataConnect` instance to the Query hook function.
-  const dataConnect = getDataConnect(connectorConfig);
-  const query = useSearchProductTitleUsingL2similarity(dataConnect, searchProductTitleUsingL2similarityVars);
-
-  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
-  const options = { staleTime: 5 * 1000 };
-  const query = useSearchProductTitleUsingL2similarity(searchProductTitleUsingL2similarityVars, options);
-
-  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
-  const dataConnect = getDataConnect(connectorConfig);
-  const options = { staleTime: 5 * 1000 };
-  const query = useSearchProductTitleUsingL2similarity(dataConnect, searchProductTitleUsingL2similarityVars, options);
-
-  // Then, you can render your component dynamically based on the status of the Query.
-  if (query.isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (query.isError) {
-    return <div>Error: {query.error.message}</div>;
-  }
-
-  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
-  if (query.isSuccess) {
-    console.log(query.data.products_titleEmbedding_similarity);
-  }
-  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
-}
-```
-
-## SearchProductReviewContentUsingL2Similarity
-You can execute the `SearchProductReviewContentUsingL2Similarity` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
-
-```javascript
-useSearchProductReviewContentUsingL2similarity(dc: DataConnect, vars: SearchProductReviewContentUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductReviewContentUsingL2similarityData>): UseDataConnectQueryResult<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-```
-You can also pass in a `DataConnect` instance to the Query hook function.
-```javascript
-useSearchProductReviewContentUsingL2similarity(vars: SearchProductReviewContentUsingL2similarityVariables, options?: useDataConnectQueryOptions<SearchProductReviewContentUsingL2similarityData>): UseDataConnectQueryResult<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-```
-
-### Variables
-The `SearchProductReviewContentUsingL2Similarity` Query requires an argument of type `SearchProductReviewContentUsingL2similarityVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-
-```javascript
-export interface SearchProductReviewContentUsingL2similarityVariables {
-  query: string;
-}
-```
-### Return Type
-Recall that calling the `SearchProductReviewContentUsingL2Similarity` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
-
-To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
-
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `SearchProductReviewContentUsingL2Similarity` Query is of type `SearchProductReviewContentUsingL2similarityData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-```javascript
-export interface SearchProductReviewContentUsingL2similarityData {
-  productReviews_contentEmbedding_similarity: ({
-    product: {
+    productsByTitle: ({
       id: UUIDString;
-      title: string;
       handle: string;
-    } & Product_Key;
-  })[];
+      title: string;
+    } & Product_Key)[];
+      reviews: ({
+        product: {
+          id: UUIDString;
+          title: string;
+          handle: string;
+        } & Product_Key;
+      })[];
 }
 ```
 
 To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
 
-### Using `SearchProductReviewContentUsingL2Similarity`'s Query hook function
+### Using `Search`'s Query hook function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, SearchProductReviewContentUsingL2similarityVariables } from '@firebasegen/default-connector';
-import { useSearchProductReviewContentUsingL2similarity } from '@firebasegen/default-connector/react'
+import { connectorConfig, SearchVariables } from '@firebasegen/default-connector';
+import { useSearch } from '@firebasegen/default-connector/react'
 
-export default function SearchProductReviewContentUsingL2similarityComponent() {
+export default function SearchComponent() {
 
-  // The `useSearchProductReviewContentUsingL2similarity` Query hook requires an argument of type `SearchProductReviewContentUsingL2similarityVariables`:
-  const searchProductReviewContentUsingL2similarityVars: SearchProductReviewContentUsingL2similarityVariables = {
+  // The `useSearch` Query hook requires an argument of type `SearchVariables`:
+  const searchVars: SearchVariables = {
     query: ..., 
   };
 
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useSearchProductReviewContentUsingL2similarity(searchProductReviewContentUsingL2similarityVars);
+  const query = useSearch(searchVars);
   // Variables can be defined inline as well.
-  const query = useSearchProductReviewContentUsingL2similarity({ query: ..., });
+  const query = useSearch({ query: ..., });
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useSearchProductReviewContentUsingL2similarity(dataConnect, searchProductReviewContentUsingL2similarityVars);
+  const query = useSearch(dataConnect, searchVars);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useSearchProductReviewContentUsingL2similarity(searchProductReviewContentUsingL2similarityVars, options);
+  const query = useSearch(searchVars, options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useSearchProductReviewContentUsingL2similarity(dataConnect, searchProductReviewContentUsingL2similarityVars, options);
+  const query = useSearch(dataConnect, searchVars, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -923,7 +757,9 @@ export default function SearchProductReviewContentUsingL2similarityComponent() {
 
   // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
   if (query.isSuccess) {
-    console.log(query.data.productReviews_contentEmbedding_similarity);
+    console.log(query.data.productsByDescription);
+    console.log(query.data.productsByTitle);
+    console.log(query.data.reviews);
   }
   return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
 }
@@ -933,21 +769,15 @@ export default function SearchProductReviewContentUsingL2similarityComponent() {
 You can execute the `GetOrdersByCustomerId` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useGetOrdersByCustomerId(dc: DataConnect, vars: GetOrdersByCustomerIdVariables, options?: useDataConnectQueryOptions<GetOrdersByCustomerIdData>): UseDataConnectQueryResult<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
+useGetOrdersByCustomerId(dc: DataConnect, options?: useDataConnectQueryOptions<GetOrdersByCustomerIdData>): UseDataConnectQueryResult<GetOrdersByCustomerIdData, undefined>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useGetOrdersByCustomerId(vars: GetOrdersByCustomerIdVariables, options?: useDataConnectQueryOptions<GetOrdersByCustomerIdData>): UseDataConnectQueryResult<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
+useGetOrdersByCustomerId(options?: useDataConnectQueryOptions<GetOrdersByCustomerIdData>): UseDataConnectQueryResult<GetOrdersByCustomerIdData, undefined>;
 ```
 
 ### Variables
-The `GetOrdersByCustomerId` Query requires an argument of type `GetOrdersByCustomerIdVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-
-```javascript
-export interface GetOrdersByCustomerIdVariables {
-  customerId: string;
-}
-```
+The `GetOrdersByCustomerId` Query has no variables.
 ### Return Type
 Recall that calling the `GetOrdersByCustomerId` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
@@ -959,7 +789,7 @@ export interface GetOrdersByCustomerIdData {
   orders: ({
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     chargeId?: string | null;
     paymentIntentId?: string | null;
     receiptUrl?: string | null;
@@ -993,34 +823,28 @@ To learn more about the `UseQueryResult` object, see the [TanStack React Query d
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, GetOrdersByCustomerIdVariables } from '@firebasegen/default-connector';
+import { connectorConfig } from '@firebasegen/default-connector';
 import { useGetOrdersByCustomerId } from '@firebasegen/default-connector/react'
 
 export default function GetOrdersByCustomerIdComponent() {
 
-  // The `useGetOrdersByCustomerId` Query hook requires an argument of type `GetOrdersByCustomerIdVariables`:
-  const getOrdersByCustomerIdVars: GetOrdersByCustomerIdVariables = {
-    customerId: ..., 
-  };
 
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetOrdersByCustomerId(getOrdersByCustomerIdVars);
-  // Variables can be defined inline as well.
-  const query = useGetOrdersByCustomerId({ customerId: ..., });
+  const query = useGetOrdersByCustomerId();
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetOrdersByCustomerId(dataConnect, getOrdersByCustomerIdVars);
+  const query = useGetOrdersByCustomerId(dataConnect);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useGetOrdersByCustomerId(getOrdersByCustomerIdVars, options);
+  const query = useGetOrdersByCustomerId(options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useGetOrdersByCustomerId(dataConnect, getOrdersByCustomerIdVars, options);
+  const query = useGetOrdersByCustomerId(dataConnect, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -1069,7 +893,7 @@ export interface GetOrderByIdData {
   order?: {
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;
     financialStatus: string;
@@ -1170,7 +994,7 @@ export interface GetAllOrdersData {
   orders: ({
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;
     financialStatus: string;
@@ -1590,7 +1414,7 @@ export interface UpdateOrderByPaymentIntentIdVariables {
   financialStatus?: string | null;
   fulfillmentStatus?: string | null;
   receiptUrl?: string | null;
-  processedAt?: DateString | null;
+  processedAt?: TimestampString | null;
   chargeId?: string | null;
 }
 ```
@@ -1693,7 +1517,7 @@ export interface UpdateOrderByChargeIdVariables {
   financialStatus?: string | null;
   fulfillmentStatus?: string | null;
   receiptUrl?: string | null;
-  processedAt?: DateString | null;
+  processedAt?: TimestampString | null;
   chargeId?: string | null;
 }
 ```

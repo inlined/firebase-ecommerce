@@ -18,7 +18,7 @@ import {
 import Search from '@/components/icons/search'
 import clsx from 'clsx'
 import DropdownMenu from '@/components/ui/dropdown-menu'
-import { handleSearch, SearchResult } from '@/lib/actions/search'
+import { handleSearch, Product } from '@/lib/actions/search'
 import { useAuth } from '@/hooks/useAuth'
 import getApp from '@/lib/firebase/getApp'
 import { getAuth, signOut } from 'firebase/auth'
@@ -36,7 +36,7 @@ export default function Header({ navigation }: Props) {
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const searchInputRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
-  const [searchResults, setSearchResults] = useState<SearchResult>([])
+  const [searchResults, setSearchResults] = useState<Product[]>([])
 
   const pathname = usePathname()
   useEffect(() => {

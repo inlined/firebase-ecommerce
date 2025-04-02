@@ -8,9 +8,7 @@
   - [*GetProductByHandle*](#getproductbyhandle)
   - [*GetCollectionByHandle*](#getcollectionbyhandle)
   - [*GetCollectionsByPage*](#getcollectionsbypage)
-  - [*SearchProductDescriptionUsingL2Similarity*](#searchproductdescriptionusingl2similarity)
-  - [*SearchProductTitleUsingL2Similarity*](#searchproducttitleusingl2similarity)
-  - [*SearchProductReviewContentUsingL2Similarity*](#searchproductreviewcontentusingl2similarity)
+  - [*Search*](#search)
   - [*GetOrdersByCustomerId*](#getordersbycustomerid)
   - [*GetOrderById*](#getorderbyid)
   - [*GetAllOrders*](#getallorders)
@@ -188,7 +186,7 @@ export interface GetReviewsByHandleData {
       id: UUIDString;
       rating: number;
       content: string;
-      date: DateString;
+      date: TimestampString;
       customer: {
         id: string;
         firstName: string;
@@ -295,8 +293,8 @@ export interface GetProductByHandleData {
     description?: string | null;
     handle: string;
     availableForSale: boolean;
-    createdAt: DateString;
-    updatedAt: DateString;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
     featuredImage?: {
       url: string;
       width: number;
@@ -443,8 +441,8 @@ export interface GetCollectionByHandleData {
           handle: string;
           description?: string | null;
           availableForSale: boolean;
-          createdAt: DateString;
-          updatedAt: DateString;
+          createdAt: TimestampString;
+          updatedAt: TimestampString;
           productVariants_on_product: ({
             id: UUIDString;
             price: number;
@@ -664,324 +662,140 @@ executeQuery(ref).then((response) => {
 });
 ```
 
-## SearchProductDescriptionUsingL2Similarity
-You can execute the `SearchProductDescriptionUsingL2Similarity` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+## Search
+You can execute the `Search` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
 ```javascript
-searchProductDescriptionUsingL2similarity(vars: SearchProductDescriptionUsingL2similarityVariables): QueryPromise<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
+search(vars: SearchVariables): QueryPromise<SearchData, SearchVariables>;
 
-searchProductDescriptionUsingL2similarityRef(vars: SearchProductDescriptionUsingL2similarityVariables): QueryRef<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
+searchRef(vars: SearchVariables): QueryRef<SearchData, SearchVariables>;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```javascript
-searchProductDescriptionUsingL2similarity(dc: DataConnect, vars: SearchProductDescriptionUsingL2similarityVariables): QueryPromise<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
+search(dc: DataConnect, vars: SearchVariables): QueryPromise<SearchData, SearchVariables>;
 
-searchProductDescriptionUsingL2similarityRef(dc: DataConnect, vars: SearchProductDescriptionUsingL2similarityVariables): QueryRef<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
+searchRef(dc: DataConnect, vars: SearchVariables): QueryRef<SearchData, SearchVariables>;
 ```
 
 ### Variables
-The `SearchProductDescriptionUsingL2Similarity` query requires an argument of type `SearchProductDescriptionUsingL2similarityVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `Search` query requires an argument of type `SearchVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
 ```javascript
-export interface SearchProductDescriptionUsingL2similarityVariables {
+export interface SearchVariables {
   query: string;
 }
 ```
 ### Return Type
-Recall that executing the `SearchProductDescriptionUsingL2Similarity` query returns a `QueryPromise` that resolves to an object with a `data` property.
+Recall that executing the `Search` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `SearchProductDescriptionUsingL2similarityData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `SearchData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 ```javascript
-export interface SearchProductDescriptionUsingL2similarityData {
-  products_descriptionEmbedding_similarity: ({
+export interface SearchData {
+  productsByDescription: ({
     id: UUIDString;
     handle: string;
     title: string;
   } & Product_Key)[];
-}
-```
-### Using `SearchProductDescriptionUsingL2Similarity`'s action shortcut function
-
-```javascript
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, searchProductDescriptionUsingL2similarity, SearchProductDescriptionUsingL2similarityVariables } from '@firebasegen/default-connector';
-
-// The `SearchProductDescriptionUsingL2Similarity` query requires an argument of type `SearchProductDescriptionUsingL2similarityVariables`:
-const searchProductDescriptionUsingL2similarityVars: SearchProductDescriptionUsingL2similarityVariables = {
-  query: ..., 
-};
-
-// Call the `searchProductDescriptionUsingL2similarity()` function to execute the query.
-// You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await searchProductDescriptionUsingL2similarity(searchProductDescriptionUsingL2similarityVars);
-// Variables can be defined inline as well.
-const { data } = await searchProductDescriptionUsingL2similarity({ query: ..., });
-
-// You can also pass in a `DataConnect` instance to the action shortcut function.
-const dataConnect = getDataConnect(connectorConfig);
-const { data } = await searchProductDescriptionUsingL2similarity(dataConnect, searchProductDescriptionUsingL2similarityVars);
-
-console.log(data.products_descriptionEmbedding_similarity);
-
-// Or, you can use the `Promise` API.
-searchProductDescriptionUsingL2similarity(searchProductDescriptionUsingL2similarityVars).then((response) => {
-  const data = response.data;
-  console.log(data.products_descriptionEmbedding_similarity);
-});
-```
-
-### Using `SearchProductDescriptionUsingL2Similarity`'s `QueryRef` function
-
-```javascript
-import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, searchProductDescriptionUsingL2similarityRef, SearchProductDescriptionUsingL2similarityVariables } from '@firebasegen/default-connector';
-
-// The `SearchProductDescriptionUsingL2Similarity` query requires an argument of type `SearchProductDescriptionUsingL2similarityVariables`:
-const searchProductDescriptionUsingL2similarityVars: SearchProductDescriptionUsingL2similarityVariables = {
-  query: ..., 
-};
-
-// Call the `searchProductDescriptionUsingL2similarityRef()` function to get a reference to the query.
-const ref = searchProductDescriptionUsingL2similarityRef(searchProductDescriptionUsingL2similarityVars);
-// Variables can be defined inline as well.
-const ref = searchProductDescriptionUsingL2similarityRef({ query: ..., });
-
-// You can also pass in a `DataConnect` instance to the `QueryRef` function.
-const dataConnect = getDataConnect(connectorConfig);
-const ref = searchProductDescriptionUsingL2similarityRef(dataConnect, searchProductDescriptionUsingL2similarityVars);
-
-// Call `executeQuery()` on the reference to execute the query.
-// You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await executeQuery(ref);
-
-console.log(data.products_descriptionEmbedding_similarity);
-
-// Or, you can use the `Promise` API.
-executeQuery(ref).then((response) => {
-  const data = response.data;
-  console.log(data.products_descriptionEmbedding_similarity);
-});
-```
-
-## SearchProductTitleUsingL2Similarity
-You can execute the `SearchProductTitleUsingL2Similarity` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
-searchProductTitleUsingL2similarity(vars: SearchProductTitleUsingL2similarityVariables): QueryPromise<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-
-searchProductTitleUsingL2similarityRef(vars: SearchProductTitleUsingL2similarityVariables): QueryRef<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-```
-You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
-searchProductTitleUsingL2similarity(dc: DataConnect, vars: SearchProductTitleUsingL2similarityVariables): QueryPromise<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-
-searchProductTitleUsingL2similarityRef(dc: DataConnect, vars: SearchProductTitleUsingL2similarityVariables): QueryRef<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-```
-
-### Variables
-The `SearchProductTitleUsingL2Similarity` query requires an argument of type `SearchProductTitleUsingL2similarityVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-
-```javascript
-export interface SearchProductTitleUsingL2similarityVariables {
-  query: string;
-}
-```
-### Return Type
-Recall that executing the `SearchProductTitleUsingL2Similarity` query returns a `QueryPromise` that resolves to an object with a `data` property.
-
-The `data` property is an object of type `SearchProductTitleUsingL2similarityData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
-export interface SearchProductTitleUsingL2similarityData {
-  products_titleEmbedding_similarity: ({
-    id: UUIDString;
-    handle: string;
-    title: string;
-  } & Product_Key)[];
-}
-```
-### Using `SearchProductTitleUsingL2Similarity`'s action shortcut function
-
-```javascript
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, searchProductTitleUsingL2similarity, SearchProductTitleUsingL2similarityVariables } from '@firebasegen/default-connector';
-
-// The `SearchProductTitleUsingL2Similarity` query requires an argument of type `SearchProductTitleUsingL2similarityVariables`:
-const searchProductTitleUsingL2similarityVars: SearchProductTitleUsingL2similarityVariables = {
-  query: ..., 
-};
-
-// Call the `searchProductTitleUsingL2similarity()` function to execute the query.
-// You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await searchProductTitleUsingL2similarity(searchProductTitleUsingL2similarityVars);
-// Variables can be defined inline as well.
-const { data } = await searchProductTitleUsingL2similarity({ query: ..., });
-
-// You can also pass in a `DataConnect` instance to the action shortcut function.
-const dataConnect = getDataConnect(connectorConfig);
-const { data } = await searchProductTitleUsingL2similarity(dataConnect, searchProductTitleUsingL2similarityVars);
-
-console.log(data.products_titleEmbedding_similarity);
-
-// Or, you can use the `Promise` API.
-searchProductTitleUsingL2similarity(searchProductTitleUsingL2similarityVars).then((response) => {
-  const data = response.data;
-  console.log(data.products_titleEmbedding_similarity);
-});
-```
-
-### Using `SearchProductTitleUsingL2Similarity`'s `QueryRef` function
-
-```javascript
-import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, searchProductTitleUsingL2similarityRef, SearchProductTitleUsingL2similarityVariables } from '@firebasegen/default-connector';
-
-// The `SearchProductTitleUsingL2Similarity` query requires an argument of type `SearchProductTitleUsingL2similarityVariables`:
-const searchProductTitleUsingL2similarityVars: SearchProductTitleUsingL2similarityVariables = {
-  query: ..., 
-};
-
-// Call the `searchProductTitleUsingL2similarityRef()` function to get a reference to the query.
-const ref = searchProductTitleUsingL2similarityRef(searchProductTitleUsingL2similarityVars);
-// Variables can be defined inline as well.
-const ref = searchProductTitleUsingL2similarityRef({ query: ..., });
-
-// You can also pass in a `DataConnect` instance to the `QueryRef` function.
-const dataConnect = getDataConnect(connectorConfig);
-const ref = searchProductTitleUsingL2similarityRef(dataConnect, searchProductTitleUsingL2similarityVars);
-
-// Call `executeQuery()` on the reference to execute the query.
-// You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await executeQuery(ref);
-
-console.log(data.products_titleEmbedding_similarity);
-
-// Or, you can use the `Promise` API.
-executeQuery(ref).then((response) => {
-  const data = response.data;
-  console.log(data.products_titleEmbedding_similarity);
-});
-```
-
-## SearchProductReviewContentUsingL2Similarity
-You can execute the `SearchProductReviewContentUsingL2Similarity` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
-searchProductReviewContentUsingL2similarity(vars: SearchProductReviewContentUsingL2similarityVariables): QueryPromise<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-
-searchProductReviewContentUsingL2similarityRef(vars: SearchProductReviewContentUsingL2similarityVariables): QueryRef<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-```
-You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
-searchProductReviewContentUsingL2similarity(dc: DataConnect, vars: SearchProductReviewContentUsingL2similarityVariables): QueryPromise<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-
-searchProductReviewContentUsingL2similarityRef(dc: DataConnect, vars: SearchProductReviewContentUsingL2similarityVariables): QueryRef<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-```
-
-### Variables
-The `SearchProductReviewContentUsingL2Similarity` query requires an argument of type `SearchProductReviewContentUsingL2similarityVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-
-```javascript
-export interface SearchProductReviewContentUsingL2similarityVariables {
-  query: string;
-}
-```
-### Return Type
-Recall that executing the `SearchProductReviewContentUsingL2Similarity` query returns a `QueryPromise` that resolves to an object with a `data` property.
-
-The `data` property is an object of type `SearchProductReviewContentUsingL2similarityData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
-export interface SearchProductReviewContentUsingL2similarityData {
-  productReviews_contentEmbedding_similarity: ({
-    product: {
+    productsByTitle: ({
       id: UUIDString;
-      title: string;
       handle: string;
-    } & Product_Key;
-  })[];
+      title: string;
+    } & Product_Key)[];
+      reviews: ({
+        product: {
+          id: UUIDString;
+          title: string;
+          handle: string;
+        } & Product_Key;
+      })[];
 }
 ```
-### Using `SearchProductReviewContentUsingL2Similarity`'s action shortcut function
+### Using `Search`'s action shortcut function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, searchProductReviewContentUsingL2similarity, SearchProductReviewContentUsingL2similarityVariables } from '@firebasegen/default-connector';
+import { connectorConfig, search, SearchVariables } from '@firebasegen/default-connector';
 
-// The `SearchProductReviewContentUsingL2Similarity` query requires an argument of type `SearchProductReviewContentUsingL2similarityVariables`:
-const searchProductReviewContentUsingL2similarityVars: SearchProductReviewContentUsingL2similarityVariables = {
+// The `Search` query requires an argument of type `SearchVariables`:
+const searchVars: SearchVariables = {
   query: ..., 
 };
 
-// Call the `searchProductReviewContentUsingL2similarity()` function to execute the query.
+// Call the `search()` function to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await searchProductReviewContentUsingL2similarity(searchProductReviewContentUsingL2similarityVars);
+const { data } = await search(searchVars);
 // Variables can be defined inline as well.
-const { data } = await searchProductReviewContentUsingL2similarity({ query: ..., });
+const { data } = await search({ query: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
-const { data } = await searchProductReviewContentUsingL2similarity(dataConnect, searchProductReviewContentUsingL2similarityVars);
+const { data } = await search(dataConnect, searchVars);
 
-console.log(data.productReviews_contentEmbedding_similarity);
+console.log(data.productsByDescription);
+console.log(data.productsByTitle);
+console.log(data.reviews);
 
 // Or, you can use the `Promise` API.
-searchProductReviewContentUsingL2similarity(searchProductReviewContentUsingL2similarityVars).then((response) => {
+search(searchVars).then((response) => {
   const data = response.data;
-  console.log(data.productReviews_contentEmbedding_similarity);
+  console.log(data.productsByDescription);
+  console.log(data.productsByTitle);
+  console.log(data.reviews);
 });
 ```
 
-### Using `SearchProductReviewContentUsingL2Similarity`'s `QueryRef` function
+### Using `Search`'s `QueryRef` function
 
 ```javascript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, searchProductReviewContentUsingL2similarityRef, SearchProductReviewContentUsingL2similarityVariables } from '@firebasegen/default-connector';
+import { connectorConfig, searchRef, SearchVariables } from '@firebasegen/default-connector';
 
-// The `SearchProductReviewContentUsingL2Similarity` query requires an argument of type `SearchProductReviewContentUsingL2similarityVariables`:
-const searchProductReviewContentUsingL2similarityVars: SearchProductReviewContentUsingL2similarityVariables = {
+// The `Search` query requires an argument of type `SearchVariables`:
+const searchVars: SearchVariables = {
   query: ..., 
 };
 
-// Call the `searchProductReviewContentUsingL2similarityRef()` function to get a reference to the query.
-const ref = searchProductReviewContentUsingL2similarityRef(searchProductReviewContentUsingL2similarityVars);
+// Call the `searchRef()` function to get a reference to the query.
+const ref = searchRef(searchVars);
 // Variables can be defined inline as well.
-const ref = searchProductReviewContentUsingL2similarityRef({ query: ..., });
+const ref = searchRef({ query: ..., });
 
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
-const ref = searchProductReviewContentUsingL2similarityRef(dataConnect, searchProductReviewContentUsingL2similarityVars);
+const ref = searchRef(dataConnect, searchVars);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await executeQuery(ref);
 
-console.log(data.productReviews_contentEmbedding_similarity);
+console.log(data.productsByDescription);
+console.log(data.productsByTitle);
+console.log(data.reviews);
 
 // Or, you can use the `Promise` API.
 executeQuery(ref).then((response) => {
   const data = response.data;
-  console.log(data.productReviews_contentEmbedding_similarity);
+  console.log(data.productsByDescription);
+  console.log(data.productsByTitle);
+  console.log(data.reviews);
 });
 ```
 
 ## GetOrdersByCustomerId
 You can execute the `GetOrdersByCustomerId` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
 ```javascript
-getOrdersByCustomerId(vars: GetOrdersByCustomerIdVariables): QueryPromise<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
+getOrdersByCustomerId(): QueryPromise<GetOrdersByCustomerIdData, undefined>;
 
-getOrdersByCustomerIdRef(vars: GetOrdersByCustomerIdVariables): QueryRef<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
+getOrdersByCustomerIdRef(): QueryRef<GetOrdersByCustomerIdData, undefined>;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```javascript
-getOrdersByCustomerId(dc: DataConnect, vars: GetOrdersByCustomerIdVariables): QueryPromise<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
+getOrdersByCustomerId(dc: DataConnect): QueryPromise<GetOrdersByCustomerIdData, undefined>;
 
-getOrdersByCustomerIdRef(dc: DataConnect, vars: GetOrdersByCustomerIdVariables): QueryRef<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
+getOrdersByCustomerIdRef(dc: DataConnect): QueryRef<GetOrdersByCustomerIdData, undefined>;
 ```
 
 ### Variables
-The `GetOrdersByCustomerId` query requires an argument of type `GetOrdersByCustomerIdVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-
-```javascript
-export interface GetOrdersByCustomerIdVariables {
-  customerId: string;
-}
-```
+The `GetOrdersByCustomerId` query has no variables.
 ### Return Type
 Recall that executing the `GetOrdersByCustomerId` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
@@ -991,7 +805,7 @@ export interface GetOrdersByCustomerIdData {
   orders: ({
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     chargeId?: string | null;
     paymentIntentId?: string | null;
     receiptUrl?: string | null;
@@ -1022,27 +836,21 @@ export interface GetOrdersByCustomerIdData {
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, getOrdersByCustomerId, GetOrdersByCustomerIdVariables } from '@firebasegen/default-connector';
+import { connectorConfig, getOrdersByCustomerId } from '@firebasegen/default-connector';
 
-// The `GetOrdersByCustomerId` query requires an argument of type `GetOrdersByCustomerIdVariables`:
-const getOrdersByCustomerIdVars: GetOrdersByCustomerIdVariables = {
-  customerId: ..., 
-};
 
 // Call the `getOrdersByCustomerId()` function to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await getOrdersByCustomerId(getOrdersByCustomerIdVars);
-// Variables can be defined inline as well.
-const { data } = await getOrdersByCustomerId({ customerId: ..., });
+const { data } = await getOrdersByCustomerId();
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
-const { data } = await getOrdersByCustomerId(dataConnect, getOrdersByCustomerIdVars);
+const { data } = await getOrdersByCustomerId(dataConnect);
 
 console.log(data.orders);
 
 // Or, you can use the `Promise` API.
-getOrdersByCustomerId(getOrdersByCustomerIdVars).then((response) => {
+getOrdersByCustomerId().then((response) => {
   const data = response.data;
   console.log(data.orders);
 });
@@ -1052,21 +860,15 @@ getOrdersByCustomerId(getOrdersByCustomerIdVars).then((response) => {
 
 ```javascript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, getOrdersByCustomerIdRef, GetOrdersByCustomerIdVariables } from '@firebasegen/default-connector';
+import { connectorConfig, getOrdersByCustomerIdRef } from '@firebasegen/default-connector';
 
-// The `GetOrdersByCustomerId` query requires an argument of type `GetOrdersByCustomerIdVariables`:
-const getOrdersByCustomerIdVars: GetOrdersByCustomerIdVariables = {
-  customerId: ..., 
-};
 
 // Call the `getOrdersByCustomerIdRef()` function to get a reference to the query.
-const ref = getOrdersByCustomerIdRef(getOrdersByCustomerIdVars);
-// Variables can be defined inline as well.
-const ref = getOrdersByCustomerIdRef({ customerId: ..., });
+const ref = getOrdersByCustomerIdRef();
 
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
-const ref = getOrdersByCustomerIdRef(dataConnect, getOrdersByCustomerIdVars);
+const ref = getOrdersByCustomerIdRef(dataConnect);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
@@ -1112,7 +914,7 @@ export interface GetOrderByIdData {
   order?: {
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;
     financialStatus: string;
@@ -1224,7 +1026,7 @@ export interface GetAllOrdersData {
   orders: ({
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;
     financialStatus: string;
@@ -1657,7 +1459,7 @@ export interface UpdateOrderByPaymentIntentIdVariables {
   financialStatus?: string | null;
   fulfillmentStatus?: string | null;
   receiptUrl?: string | null;
-  processedAt?: DateString | null;
+  processedAt?: TimestampString | null;
   chargeId?: string | null;
 }
 ```
@@ -1765,7 +1567,7 @@ export interface UpdateOrderByChargeIdVariables {
   financialStatus?: string | null;
   fulfillmentStatus?: string | null;
   receiptUrl?: string | null;
-  processedAt?: DateString | null;
+  processedAt?: TimestampString | null;
   chargeId?: string | null;
 }
 ```

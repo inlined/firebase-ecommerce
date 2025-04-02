@@ -1,23 +1,27 @@
 'use server'
 
-import {
-  searchProductDescriptionUsingL2similarity,
-  searchProductTitleUsingL2similarity,
-  searchProductReviewContentUsingL2similarity
-} from '@firebasegen/default-connector'
+import { search, SearchData } from '@firebasegen/default-connector'
 import getDataConnect from '@/lib/firebase/getDataConnect'
 
 type Error = {
   message: string
 }
 
-export type SearchResult = {
+export type Product = {
   title: string
   handle: string
   id: string
-}[]
+}
 
-export const handleSearch = async ({ query }: { query: string }): Promise<SearchResult | Error> => {
+function dedupeProducts(results: Product[]): Product[] {
+  return Object.values(
+    Object.fromEntries(
+      results.map(result => [result.id, result])
+    ) 
+  );
+}
+
+export const handleSearch = async ({ query }: { query: string }): Promise<Product[] | Error> => {
   const dc = getDataConnect();
   try {
     // Return early if no search query is provided
@@ -26,40 +30,13 @@ export const handleSearch = async ({ query }: { query: string }): Promise<Search
     }
 
     // Perform parallel searches across product descriptions, names and reviews
-    const [productDescriptionSearchResults, productNameSearchResults, reviewSearchResults] =
-      await Promise.all([
-        searchProductDescriptionUsingL2similarity(dc, { query }),
-        searchProductTitleUsingL2similarity(dc, { query }),
-        searchProductReviewContentUsingL2similarity(dc, { query })
-      ])
+    const { data: searchResults } = await search(dc, { query });
 
-    // Combine and normalize search results from all sources
-    // Then remove duplicates based on productID
-    const searchResults = [
-      // Map product name search results to standard format
-      ...productNameSearchResults.data.products_titleEmbedding_similarity.map((product) => ({
-        title: product.title,
-        handle: product.handle,
-        id: product.id
-      })),
-      // Map product description search results to standard format
-      ...productDescriptionSearchResults.data.products_descriptionEmbedding_similarity.map(
-        (product) => ({
-          title: product.title,
-          handle: product.handle,
-          id: product.id
-        }),
-        // Map review search results to standard format
-        ...reviewSearchResults.data.productReviews_contentEmbedding_similarity.map((review) => ({
-          title: review.product.title,
-          handle: review.product.handle,
-          id: review.product.id
-        }))
-      )
-      // Filter out duplicate products by keeping only the first occurrence of each productID
-    ].filter((item, index, self) => index === self.findIndex((t) => t.id === item.id))
-
-    return searchResults
+    return dedupeProducts([
+      ...searchResults.productsByDescription,
+      ...searchResults.productsByTitle,
+      ...searchResults.reviews.map(r => r.product),
+    ]);
   } catch (error) {
     return { message: `Error performing search: ${error}` }
   }

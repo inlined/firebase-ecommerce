@@ -1,4 +1,4 @@
-# Pay no attention to the man behind the curtain. At the time of recording hte demo
+# Pay no attention to the man behind the curtain. At the time of recording the demo
 # client-side auth emulator auto-init isn't done. It's coming!
 env:
 - variable: NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST

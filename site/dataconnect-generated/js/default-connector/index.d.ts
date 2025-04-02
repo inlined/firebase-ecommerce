@@ -60,7 +60,7 @@ export interface GetAllOrdersData {
   orders: ({
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;
     financialStatus: string;
@@ -100,8 +100,8 @@ export interface GetCollectionByHandleData {
           handle: string;
           description?: string | null;
           availableForSale: boolean;
-          createdAt: DateString;
-          updatedAt: DateString;
+          createdAt: TimestampString;
+          updatedAt: TimestampString;
           productVariants_on_product: ({
             id: UUIDString;
             price: number;
@@ -175,7 +175,7 @@ export interface GetOrderByIdData {
   order?: {
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;
     financialStatus: string;
@@ -207,7 +207,7 @@ export interface GetOrdersByCustomerIdData {
   orders: ({
     id: UUIDString;
     customerId: string;
-    processedAt: DateString;
+    processedAt: TimestampString;
     chargeId?: string | null;
     paymentIntentId?: string | null;
     receiptUrl?: string | null;
@@ -234,10 +234,6 @@ export interface GetOrdersByCustomerIdData {
   } & Order_Key)[];
 }
 
-export interface GetOrdersByCustomerIdVariables {
-  customerId: string;
-}
-
 export interface GetProductByHandleData {
   product?: {
     id: UUIDString;
@@ -245,8 +241,8 @@ export interface GetProductByHandleData {
     description?: string | null;
     handle: string;
     availableForSale: boolean;
-    createdAt: DateString;
-    updatedAt: DateString;
+    createdAt: TimestampString;
+    updatedAt: TimestampString;
     featuredImage?: {
       url: string;
       width: number;
@@ -289,7 +285,7 @@ export interface GetReviewsByHandleData {
       id: UUIDString;
       rating: number;
       content: string;
-      date: DateString;
+      date: TimestampString;
       customer: {
         id: string;
         firstName: string;
@@ -359,41 +355,27 @@ export interface SEO_Key {
   __typename?: 'SEO_Key';
 }
 
-export interface SearchProductDescriptionUsingL2similarityData {
-  products_descriptionEmbedding_similarity: ({
+export interface SearchData {
+  productsByDescription: ({
     id: UUIDString;
     handle: string;
     title: string;
   } & Product_Key)[];
-}
-
-export interface SearchProductDescriptionUsingL2similarityVariables {
-  query: string;
-}
-
-export interface SearchProductReviewContentUsingL2similarityData {
-  productReviews_contentEmbedding_similarity: ({
-    product: {
+    productsByTitle: ({
       id: UUIDString;
-      title: string;
       handle: string;
-    } & Product_Key;
-  })[];
+      title: string;
+    } & Product_Key)[];
+      reviews: ({
+        product: {
+          id: UUIDString;
+          title: string;
+          handle: string;
+        } & Product_Key;
+      })[];
 }
 
-export interface SearchProductReviewContentUsingL2similarityVariables {
-  query: string;
-}
-
-export interface SearchProductTitleUsingL2similarityData {
-  products_titleEmbedding_similarity: ({
-    id: UUIDString;
-    handle: string;
-    title: string;
-  } & Product_Key)[];
-}
-
-export interface SearchProductTitleUsingL2similarityVariables {
+export interface SearchVariables {
   query: string;
 }
 
@@ -410,7 +392,7 @@ export interface UpdateOrderByChargeIdVariables {
   financialStatus?: string | null;
   fulfillmentStatus?: string | null;
   receiptUrl?: string | null;
-  processedAt?: DateString | null;
+  processedAt?: TimestampString | null;
   chargeId?: string | null;
 }
 
@@ -423,7 +405,7 @@ export interface UpdateOrderByPaymentIntentIdVariables {
   financialStatus?: string | null;
   fulfillmentStatus?: string | null;
   receiptUrl?: string | null;
-  processedAt?: DateString | null;
+  processedAt?: TimestampString | null;
   chargeId?: string | null;
 }
 
@@ -438,6 +420,78 @@ export interface UpsertCustomerVariables {
   phone: string;
   acceptsMarketing: boolean;
 }
+
+/* Allow users to create refs without passing in DataConnect */
+export function listCustomersRef(): QueryRef<ListCustomersData, undefined>;
+/* Allow users to pass in custom DataConnect instances */
+export function listCustomersRef(dc: DataConnect): QueryRef<ListCustomersData, undefined>;
+
+export function listCustomers(): QueryPromise<ListCustomersData, undefined>;
+export function listCustomers(dc: DataConnect): QueryPromise<ListCustomersData, undefined>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function getReviewsByHandleRef(vars: GetReviewsByHandleVariables): QueryRef<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function getReviewsByHandleRef(dc: DataConnect, vars: GetReviewsByHandleVariables): QueryRef<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+
+export function getReviewsByHandle(vars: GetReviewsByHandleVariables): QueryPromise<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+export function getReviewsByHandle(dc: DataConnect, vars: GetReviewsByHandleVariables): QueryPromise<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function getProductByHandleRef(vars: GetProductByHandleVariables): QueryRef<GetProductByHandleData, GetProductByHandleVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function getProductByHandleRef(dc: DataConnect, vars: GetProductByHandleVariables): QueryRef<GetProductByHandleData, GetProductByHandleVariables>;
+
+export function getProductByHandle(vars: GetProductByHandleVariables): QueryPromise<GetProductByHandleData, GetProductByHandleVariables>;
+export function getProductByHandle(dc: DataConnect, vars: GetProductByHandleVariables): QueryPromise<GetProductByHandleData, GetProductByHandleVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function getCollectionByHandleRef(vars: GetCollectionByHandleVariables): QueryRef<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function getCollectionByHandleRef(dc: DataConnect, vars: GetCollectionByHandleVariables): QueryRef<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+
+export function getCollectionByHandle(vars: GetCollectionByHandleVariables): QueryPromise<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+export function getCollectionByHandle(dc: DataConnect, vars: GetCollectionByHandleVariables): QueryPromise<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function getCollectionsByPageRef(vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function getCollectionsByPageRef(dc: DataConnect, vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+
+export function getCollectionsByPage(vars?: GetCollectionsByPageVariables): QueryPromise<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+export function getCollectionsByPage(dc: DataConnect, vars?: GetCollectionsByPageVariables): QueryPromise<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function searchRef(vars: SearchVariables): QueryRef<SearchData, SearchVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function searchRef(dc: DataConnect, vars: SearchVariables): QueryRef<SearchData, SearchVariables>;
+
+export function search(vars: SearchVariables): QueryPromise<SearchData, SearchVariables>;
+export function search(dc: DataConnect, vars: SearchVariables): QueryPromise<SearchData, SearchVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function getOrdersByCustomerIdRef(): QueryRef<GetOrdersByCustomerIdData, undefined>;
+/* Allow users to pass in custom DataConnect instances */
+export function getOrdersByCustomerIdRef(dc: DataConnect): QueryRef<GetOrdersByCustomerIdData, undefined>;
+
+export function getOrdersByCustomerId(): QueryPromise<GetOrdersByCustomerIdData, undefined>;
+export function getOrdersByCustomerId(dc: DataConnect): QueryPromise<GetOrdersByCustomerIdData, undefined>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function getOrderByIdRef(vars: GetOrderByIdVariables): QueryRef<GetOrderByIdData, GetOrderByIdVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function getOrderByIdRef(dc: DataConnect, vars: GetOrderByIdVariables): QueryRef<GetOrderByIdData, GetOrderByIdVariables>;
+
+export function getOrderById(vars: GetOrderByIdVariables): QueryPromise<GetOrderByIdData, GetOrderByIdVariables>;
+export function getOrderById(dc: DataConnect, vars: GetOrderByIdVariables): QueryPromise<GetOrderByIdData, GetOrderByIdVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function getAllOrdersRef(): QueryRef<GetAllOrdersData, undefined>;
+/* Allow users to pass in custom DataConnect instances */
+export function getAllOrdersRef(dc: DataConnect): QueryRef<GetAllOrdersData, undefined>;
+
+export function getAllOrders(): QueryPromise<GetAllOrdersData, undefined>;
+export function getAllOrders(dc: DataConnect): QueryPromise<GetAllOrdersData, undefined>;
 
 /* Allow users to create refs without passing in DataConnect */
 export function upsertCustomerRef(vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
@@ -486,92 +540,4 @@ export function createOrderItemRef(dc: DataConnect, vars: CreateOrderItemVariabl
 
 export function createOrderItem(vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
 export function createOrderItem(dc: DataConnect, vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function listCustomersRef(): QueryRef<ListCustomersData, undefined>;
-/* Allow users to pass in custom DataConnect instances */
-export function listCustomersRef(dc: DataConnect): QueryRef<ListCustomersData, undefined>;
-
-export function listCustomers(): QueryPromise<ListCustomersData, undefined>;
-export function listCustomers(dc: DataConnect): QueryPromise<ListCustomersData, undefined>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getReviewsByHandleRef(vars: GetReviewsByHandleVariables): QueryRef<GetReviewsByHandleData, GetReviewsByHandleVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getReviewsByHandleRef(dc: DataConnect, vars: GetReviewsByHandleVariables): QueryRef<GetReviewsByHandleData, GetReviewsByHandleVariables>;
-
-export function getReviewsByHandle(vars: GetReviewsByHandleVariables): QueryPromise<GetReviewsByHandleData, GetReviewsByHandleVariables>;
-export function getReviewsByHandle(dc: DataConnect, vars: GetReviewsByHandleVariables): QueryPromise<GetReviewsByHandleData, GetReviewsByHandleVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getProductByHandleRef(vars: GetProductByHandleVariables): QueryRef<GetProductByHandleData, GetProductByHandleVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getProductByHandleRef(dc: DataConnect, vars: GetProductByHandleVariables): QueryRef<GetProductByHandleData, GetProductByHandleVariables>;
-
-export function getProductByHandle(vars: GetProductByHandleVariables): QueryPromise<GetProductByHandleData, GetProductByHandleVariables>;
-export function getProductByHandle(dc: DataConnect, vars: GetProductByHandleVariables): QueryPromise<GetProductByHandleData, GetProductByHandleVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getCollectionByHandleRef(vars: GetCollectionByHandleVariables): QueryRef<GetCollectionByHandleData, GetCollectionByHandleVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getCollectionByHandleRef(dc: DataConnect, vars: GetCollectionByHandleVariables): QueryRef<GetCollectionByHandleData, GetCollectionByHandleVariables>;
-
-export function getCollectionByHandle(vars: GetCollectionByHandleVariables): QueryPromise<GetCollectionByHandleData, GetCollectionByHandleVariables>;
-export function getCollectionByHandle(dc: DataConnect, vars: GetCollectionByHandleVariables): QueryPromise<GetCollectionByHandleData, GetCollectionByHandleVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getCollectionsByPageRef(vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getCollectionsByPageRef(dc: DataConnect, vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
-
-export function getCollectionsByPage(vars?: GetCollectionsByPageVariables): QueryPromise<GetCollectionsByPageData, GetCollectionsByPageVariables>;
-export function getCollectionsByPage(dc: DataConnect, vars?: GetCollectionsByPageVariables): QueryPromise<GetCollectionsByPageData, GetCollectionsByPageVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function searchProductDescriptionUsingL2similarityRef(vars: SearchProductDescriptionUsingL2similarityVariables): QueryRef<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function searchProductDescriptionUsingL2similarityRef(dc: DataConnect, vars: SearchProductDescriptionUsingL2similarityVariables): QueryRef<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
-
-export function searchProductDescriptionUsingL2similarity(vars: SearchProductDescriptionUsingL2similarityVariables): QueryPromise<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
-export function searchProductDescriptionUsingL2similarity(dc: DataConnect, vars: SearchProductDescriptionUsingL2similarityVariables): QueryPromise<SearchProductDescriptionUsingL2similarityData, SearchProductDescriptionUsingL2similarityVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function searchProductTitleUsingL2similarityRef(vars: SearchProductTitleUsingL2similarityVariables): QueryRef<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function searchProductTitleUsingL2similarityRef(dc: DataConnect, vars: SearchProductTitleUsingL2similarityVariables): QueryRef<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-
-export function searchProductTitleUsingL2similarity(vars: SearchProductTitleUsingL2similarityVariables): QueryPromise<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-export function searchProductTitleUsingL2similarity(dc: DataConnect, vars: SearchProductTitleUsingL2similarityVariables): QueryPromise<SearchProductTitleUsingL2similarityData, SearchProductTitleUsingL2similarityVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function searchProductReviewContentUsingL2similarityRef(vars: SearchProductReviewContentUsingL2similarityVariables): QueryRef<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function searchProductReviewContentUsingL2similarityRef(dc: DataConnect, vars: SearchProductReviewContentUsingL2similarityVariables): QueryRef<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-
-export function searchProductReviewContentUsingL2similarity(vars: SearchProductReviewContentUsingL2similarityVariables): QueryPromise<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-export function searchProductReviewContentUsingL2similarity(dc: DataConnect, vars: SearchProductReviewContentUsingL2similarityVariables): QueryPromise<SearchProductReviewContentUsingL2similarityData, SearchProductReviewContentUsingL2similarityVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getOrdersByCustomerIdRef(vars: GetOrdersByCustomerIdVariables): QueryRef<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getOrdersByCustomerIdRef(dc: DataConnect, vars: GetOrdersByCustomerIdVariables): QueryRef<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
-
-export function getOrdersByCustomerId(vars: GetOrdersByCustomerIdVariables): QueryPromise<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
-export function getOrdersByCustomerId(dc: DataConnect, vars: GetOrdersByCustomerIdVariables): QueryPromise<GetOrdersByCustomerIdData, GetOrdersByCustomerIdVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getOrderByIdRef(vars: GetOrderByIdVariables): QueryRef<GetOrderByIdData, GetOrderByIdVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getOrderByIdRef(dc: DataConnect, vars: GetOrderByIdVariables): QueryRef<GetOrderByIdData, GetOrderByIdVariables>;
-
-export function getOrderById(vars: GetOrderByIdVariables): QueryPromise<GetOrderByIdData, GetOrderByIdVariables>;
-export function getOrderById(dc: DataConnect, vars: GetOrderByIdVariables): QueryPromise<GetOrderByIdData, GetOrderByIdVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getAllOrdersRef(): QueryRef<GetAllOrdersData, undefined>;
-/* Allow users to pass in custom DataConnect instances */
-export function getAllOrdersRef(dc: DataConnect): QueryRef<GetAllOrdersData, undefined>;
-
-export function getAllOrders(): QueryPromise<GetAllOrdersData, undefined>;
-export function getAllOrders(dc: DataConnect): QueryPromise<GetAllOrdersData, undefined>;
 

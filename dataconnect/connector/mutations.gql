@@ -67,7 +67,7 @@ mutation UpdateOrderByPaymentIntentId(
   $financialStatus: String
   $fulfillmentStatus: String
   $receiptUrl: String
-  $processedAt: Date
+  $processedAt: Timestamp
   $chargeId: String
 ) @auth(level: NO_ACCESS) {
   query @redact {
@@ -91,7 +91,7 @@ mutation UpdateOrderByChargeId(
   $financialStatus: String
   $fulfillmentStatus: String
   $receiptUrl: String
-  $processedAt: Date
+  $processedAt: Timestamp
   $chargeId: String
 ) @auth(level: NO_ACCESS) {
   order_update(

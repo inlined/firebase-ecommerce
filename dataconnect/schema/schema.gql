@@ -48,8 +48,8 @@ type Product @table {
   productType: String @col(name: "product_type", dataType: "varchar(100)")
   featuredImage: ProductImage
   seo: SEO
-  createdAt: Date! @default(expr: "request.time")
-  updatedAt: Date! @default(expr: "request.time")
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time")
 }
 
 type Customer @table {
@@ -79,7 +79,7 @@ type Order @table {
   totalTax: Float! @col(name: "total_tax", dataType: "float")
   totalShippingPrice: Float! @col(name: "total_shipping_price", dataType: "float")
   totalPrice: Float! @col(name: "total_price", dataType: "float")
-  processedAt: Date!
+  processedAt: Timestamp!
     @col(name: "processed_at", dataType: "timestamp")
     @default(expr: "request.time")
   financialStatus: String! @col(name: "financial_status", dataType: "varchar(50)")
@@ -100,7 +100,7 @@ type ProductReview @table(name: "product_reviews", key: ["product", "customer"])
   rating: Int!
   content: String!
   contentEmbedding: Vector! @col(size: 768)
-  date: Date! @default(expr: "request.time")
+  date: Timestamp! @default(expr: "request.time")
 }
 
 type Collection @table {
@@ -111,8 +111,8 @@ type Collection @table {
   featuredImage: ProductImage
   seo: SEO
   page: String @col(name: "page", dataType: "varchar(100)")
-  createdAt: Date! @default(expr: "request.time")
-  updatedAt: Date! @default(expr: "request.time")
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time")
 }
 
 # Junction table for Collection-Product many-to-many relationship
