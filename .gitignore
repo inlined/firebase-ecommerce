@@ -139,3 +139,4 @@ dist
 .dataconnect/
 .firebaserc
 dataconnect-debug.log
+.genkit

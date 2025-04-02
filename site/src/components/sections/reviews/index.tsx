@@ -9,6 +9,8 @@ import Carousel from '@/components/ui/carousel'
 import ReviewCard from './review-card'
 import ReviewModal from './review-modal'
 import { Markdown } from '@/components/ui/markdown'
+import { streamFlow } from "@genkit-ai/next/client"
+import { summarizeReviews } from '@/lib/genkit/summarizeReviews'
 
 type Props = {
   reviews: {
@@ -23,10 +25,10 @@ type Props = {
     }
   }[]
   avgRating: number
-  productDetails?: {
-    productID?: string
-    productSlug?: string
-    productName?: string
+  productDetails: {
+    productID: string
+    productSlug: string
+    productName: string
     variantTitle?: string
     variantPrice?: string
     variantImage?: {
@@ -39,62 +41,25 @@ type Props = {
 }
 
 export default function Reviews({ reviews, avgRating, productDetails }: Props) {
-  const [visibleWords, setVisibleWords] = useState(0)
-  const [displayedSummary, setDisplayedSummary] = useState('')
   const [showReviewModal, setShowReviewModal] = useState(false)
   const summaryRef = useRef<HTMLParagraphElement | null>(null)
   const [summary, setSummary] = useState('')
 
   useEffect(() => {
-    fetch('/api/reviews/summary', {
-      method: 'POST',
-      body: JSON.stringify({ reviews, count: reviews.length }),
-      cache: 'default',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      next: {
-        revalidate: 86400,
-        tags: [`summary-${reviews.length}`]
+    async function fetchSummary() {
+      const { stream, output } = streamFlow<typeof summarizeReviews>({
+          url:"/api/reviews/summary",
+          input: { productId: productDetails.productID }, 
+      });
+      let accum = "";
+      for await (const chunk of stream) {
+        accum += chunk;
+        setSummary(accum);
       }
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setSummary(data.summary)
-      })
-  }, [reviews])
-
-  useEffect(() => {
-    if (!summary.length) {
-      setDisplayedSummary('Not enough data yet to generate a summary review')
-      setVisibleWords(9)
-      return
+      setSummary(await output);
     }
-
-    let interval: NodeJS.Timeout
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        observer.disconnect()
-        interval = setInterval(() => {
-          setVisibleWords((count) => {
-            const words = summary.split(' ')
-            if (count < words.length) {
-              setDisplayedSummary(words.slice(0, count + 1).join(' '))
-              return count + 1
-            }
-            return count
-          })
-        }, 35)
-      }
-    })
-
-    if (summaryRef.current) observer.observe(summaryRef.current)
-
-    return () => {
-      observer.disconnect()
-      if (interval) clearInterval(interval)
-    }
-  }, [summary])
+    fetchSummary();
+  }, [reviews, productDetails])
 
   return (
     <>
@@ -135,10 +100,10 @@ export default function Reviews({ reviews, avgRating, productDetails }: Props) {
                   ref={summaryRef}
                   className={cn(
                     'mt-4 text-xl w-full transition-opacity duration-300',
-                    visibleWords === 0 ? 'opacity-0' : 'opacity-100'
+                    'opacity-100'
                   )}
                 >
-                  <Markdown>{displayedSummary}</Markdown>
+                  <Markdown>{summary}</Markdown>
                 </div>
               </div>
             </div>

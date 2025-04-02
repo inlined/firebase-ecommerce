@@ -9,18 +9,16 @@ query ListCustomers @auth(level: NO_ACCESS) {
 }
 
 # Get all reviews under a product by handle
-query GetReviewsByHandle($handle: String!) @auth(level: PUBLIC,  insecureReason: "Public data") {
-  products(where: { handle: { eq: $handle } }) {
-    productReviews_on_product(orderBy: [{ date: DESC }]) {
+query GetReviewsByProductId($productId: UUID!) @auth(level: PUBLIC,  insecureReason: "Public data") {
+  productReviews(where: { productId: { eq: $productId }}, orderBy: [{ date: DESC }]) {
+    id
+    rating
+    content
+    date
+    customer {
       id
-      rating
-      content
-      date
-      customer {
-        id
-        firstName
-        lastName
-      }
+      firstName
+      lastName
     }
   }
 }

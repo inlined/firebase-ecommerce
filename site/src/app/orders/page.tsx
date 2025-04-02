@@ -3,6 +3,7 @@ import { getCurrentUsersOrders, GetCurrentUsersOrdersData } from '@firebasegen/d
 import getServerApp from '@/lib/firebase/getServerApp'
 import getAuth from '@/lib/firebase/getAuth';
 import getDataConnect from '@/lib/firebase/getDataConnect';
+import { cookies } from 'next/headers';
 
 export default async function OrdersPage() {
   const app = await getServerApp();
@@ -14,6 +15,7 @@ export default async function OrdersPage() {
     ({ data: { orders }} = await getCurrentUsersOrders(getDataConnect(app)));
   } else {
     console.log("Not logged in");
+    console.log("Cookies are", JSON.stringify((await cookies()).getAll(), null, 2));
   }
 
   console.log(`getCurrentUsersOrders(): ${JSON.stringify(orders, null, 2)}`);

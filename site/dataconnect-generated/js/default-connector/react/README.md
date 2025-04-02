@@ -7,7 +7,7 @@
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
   - [*ListCustomers*](#listcustomers)
-  - [*GetReviewsByHandle*](#getreviewsbyhandle)
+  - [*GetReviewsByProductId*](#getreviewsbyproductid)
   - [*GetProductByHandle*](#getproductbyhandle)
   - [*GetCollectionByHandle*](#getcollectionbyhandle)
   - [*GetCollectionsByPage*](#getcollectionsbypage)
@@ -198,83 +198,81 @@ export default function ListCustomersComponent() {
 }
 ```
 
-## GetReviewsByHandle
-You can execute the `GetReviewsByHandle` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+## GetReviewsByProductId
+You can execute the `GetReviewsByProductId` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useGetReviewsByHandle(dc: DataConnect, vars: GetReviewsByHandleVariables, options?: useDataConnectQueryOptions<GetReviewsByHandleData>): UseDataConnectQueryResult<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+useGetReviewsByProductId(dc: DataConnect, vars: GetReviewsByProductIdVariables, options?: useDataConnectQueryOptions<GetReviewsByProductIdData>): UseDataConnectQueryResult<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useGetReviewsByHandle(vars: GetReviewsByHandleVariables, options?: useDataConnectQueryOptions<GetReviewsByHandleData>): UseDataConnectQueryResult<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+useGetReviewsByProductId(vars: GetReviewsByProductIdVariables, options?: useDataConnectQueryOptions<GetReviewsByProductIdData>): UseDataConnectQueryResult<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 ```
 
 ### Variables
-The `GetReviewsByHandle` Query requires an argument of type `GetReviewsByHandleVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+The `GetReviewsByProductId` Query requires an argument of type `GetReviewsByProductIdVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 
 ```javascript
-export interface GetReviewsByHandleVariables {
-  handle: string;
+export interface GetReviewsByProductIdVariables {
+  productId: UUIDString;
 }
 ```
 ### Return Type
-Recall that calling the `GetReviewsByHandle` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+Recall that calling the `GetReviewsByProductId` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
 To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
 
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetReviewsByHandle` Query is of type `GetReviewsByHandleData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetReviewsByProductId` Query is of type `GetReviewsByProductIdData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 ```javascript
-export interface GetReviewsByHandleData {
-  products: ({
-    productReviews_on_product: ({
-      id: UUIDString;
-      rating: number;
-      content: string;
-      date: TimestampString;
-      customer: {
-        id: string;
-        firstName: string;
-        lastName: string;
-      } & Customer_Key;
-    })[];
+export interface GetReviewsByProductIdData {
+  productReviews: ({
+    id: UUIDString;
+    rating: number;
+    content: string;
+    date: TimestampString;
+    customer: {
+      id: string;
+      firstName: string;
+      lastName: string;
+    } & Customer_Key;
   })[];
 }
 ```
 
 To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
 
-### Using `GetReviewsByHandle`'s Query hook function
+### Using `GetReviewsByProductId`'s Query hook function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, GetReviewsByHandleVariables } from '@firebasegen/default-connector';
-import { useGetReviewsByHandle } from '@firebasegen/default-connector/react'
+import { connectorConfig, GetReviewsByProductIdVariables } from '@firebasegen/default-connector';
+import { useGetReviewsByProductId } from '@firebasegen/default-connector/react'
 
-export default function GetReviewsByHandleComponent() {
+export default function GetReviewsByProductIdComponent() {
 
-  // The `useGetReviewsByHandle` Query hook requires an argument of type `GetReviewsByHandleVariables`:
-  const getReviewsByHandleVars: GetReviewsByHandleVariables = {
-    handle: ..., 
+  // The `useGetReviewsByProductId` Query hook requires an argument of type `GetReviewsByProductIdVariables`:
+  const getReviewsByProductIdVars: GetReviewsByProductIdVariables = {
+    productId: ..., 
   };
 
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetReviewsByHandle(getReviewsByHandleVars);
+  const query = useGetReviewsByProductId(getReviewsByProductIdVars);
   // Variables can be defined inline as well.
-  const query = useGetReviewsByHandle({ handle: ..., });
+  const query = useGetReviewsByProductId({ productId: ..., });
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetReviewsByHandle(dataConnect, getReviewsByHandleVars);
+  const query = useGetReviewsByProductId(dataConnect, getReviewsByProductIdVars);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useGetReviewsByHandle(getReviewsByHandleVars, options);
+  const query = useGetReviewsByProductId(getReviewsByProductIdVars, options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useGetReviewsByHandle(dataConnect, getReviewsByHandleVars, options);
+  const query = useGetReviewsByProductId(dataConnect, getReviewsByProductIdVars, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -287,7 +285,7 @@ export default function GetReviewsByHandleComponent() {
 
   // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
   if (query.isSuccess) {
-    console.log(query.data.products);
+    console.log(query.data.productReviews);
   }
   return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
 }

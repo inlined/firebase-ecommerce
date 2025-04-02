@@ -8,7 +8,7 @@ import Rotate from '@/components/icons/rotate'
 import ProductDetails from '@/components/sections/product-details'
 import Reviews from '@/components/sections/reviews'
 import getDataConnect from '@/lib/firebase/getDataConnect'
-import { getProductByHandle, getReviewsByHandle } from '@firebasegen/default-connector'
+import { getProductByHandle, getReviewsByProductId } from '@firebasegen/default-connector'
 
 type Props = {
   params: Promise<{ handle: string }>
@@ -19,13 +19,11 @@ export default async function ProductPage(props: Props) {
   const dc = getDataConnect();
   const params = await props.params
 
-  const [productData, reviewsData] = await Promise.all([
-    getProductByHandle(dc, { handle: params.handle }),
-    getReviewsByHandle(dc, { handle: params.handle })
-  ])
+  // TODO: reconsolidate when I consolidate handle and id.
+  const { data: { product } } = await getProductByHandle(dc, { handle: params.handle })
+  if (!product ) return notFound();
 
-  const product = productData?.data?.product
-  const reviews = reviewsData?.data?.products?.at(0)?.productReviews_on_product ?? []
+  const { data: { productReviews }} = await getReviewsByProductId(dc, { productId: product.id })
 
   const searchParams = await props.searchParams
   const selectedOptions: Array<{ name: string; value: string }> = []
@@ -79,9 +77,7 @@ export default async function ProductPage(props: Props) {
       )
     ) ?? variants?.[0]
 
-  const averageRating = reviews?.length
-    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
-    : '0.0'
+  const averageRating = productReviews.reduce((sum, r) => sum + r.rating, 0) / productReviews.length;
 
   return (
     <>
@@ -92,11 +88,11 @@ export default async function ProductPage(props: Props) {
         description={description ?? ''}
         images={featuredImage ? [featuredImage] : []}
         currentVariant={currentVariant}
-        avgRating={Number(averageRating)}
+        avgRating={Number(averageRating.toFixed(1))}
       />
       <Features
         list={[
-          { name: 'Reviews', description: `(${reviews?.length ?? 0})` },
+          { name: 'Reviews', description: `(${productReviews.length})` },
           { icon: <Truck />, name: 'Shipping & Returns' }
         ]}
         inline
@@ -151,7 +147,7 @@ export default async function ProductPage(props: Props) {
         ]}
       />
       <Reviews
-        reviews={reviews}
+        reviews={productReviews}
         avgRating={Number(averageRating)}
         productDetails={{
           productID: product.id,

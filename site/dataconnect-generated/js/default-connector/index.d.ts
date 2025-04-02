@@ -278,24 +278,22 @@ export interface GetProductByHandleVariables {
   handle: string;
 }
 
-export interface GetReviewsByHandleData {
-  products: ({
-    productReviews_on_product: ({
-      id: UUIDString;
-      rating: number;
-      content: string;
-      date: TimestampString;
-      customer: {
-        id: string;
-        firstName: string;
-        lastName: string;
-      } & Customer_Key;
-    })[];
+export interface GetReviewsByProductIdData {
+  productReviews: ({
+    id: UUIDString;
+    rating: number;
+    content: string;
+    date: TimestampString;
+    customer: {
+      id: string;
+      firstName: string;
+      lastName: string;
+    } & Customer_Key;
   })[];
 }
 
-export interface GetReviewsByHandleVariables {
-  handle: string;
+export interface GetReviewsByProductIdVariables {
+  productId: UUIDString;
 }
 
 export interface ListCustomersData {
@@ -477,12 +475,12 @@ export function listCustomers(): QueryPromise<ListCustomersData, undefined>;
 export function listCustomers(dc: DataConnect): QueryPromise<ListCustomersData, undefined>;
 
 /* Allow users to create refs without passing in DataConnect */
-export function getReviewsByHandleRef(vars: GetReviewsByHandleVariables): QueryRef<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+export function getReviewsByProductIdRef(vars: GetReviewsByProductIdVariables): QueryRef<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 /* Allow users to pass in custom DataConnect instances */
-export function getReviewsByHandleRef(dc: DataConnect, vars: GetReviewsByHandleVariables): QueryRef<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+export function getReviewsByProductIdRef(dc: DataConnect, vars: GetReviewsByProductIdVariables): QueryRef<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 
-export function getReviewsByHandle(vars: GetReviewsByHandleVariables): QueryPromise<GetReviewsByHandleData, GetReviewsByHandleVariables>;
-export function getReviewsByHandle(dc: DataConnect, vars: GetReviewsByHandleVariables): QueryPromise<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+export function getReviewsByProductId(vars: GetReviewsByProductIdVariables): QueryPromise<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
+export function getReviewsByProductId(dc: DataConnect, vars: GetReviewsByProductIdVariables): QueryPromise<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
 export function getProductByHandleRef(vars: GetProductByHandleVariables): QueryRef<GetProductByHandleData, GetProductByHandleVariables>;

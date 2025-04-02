@@ -76,14 +76,14 @@ export function listCustomers(dc) {
   return executeQuery(listCustomersRef(dc));
 }
 
-export function getReviewsByHandleRef(dcOrVars, vars) {
+export function getReviewsByProductIdRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetReviewsByHandle', inputVars);
+  return queryRef(dcInstance, 'GetReviewsByProductId', inputVars);
 }
 
-export function getReviewsByHandle(dcOrVars, vars) {
-  return executeQuery(getReviewsByHandleRef(dcOrVars, vars));
+export function getReviewsByProductId(dcOrVars, vars) {
+  return executeQuery(getReviewsByProductIdRef(dcOrVars, vars));
 }
 
 export function getProductByHandleRef(dcOrVars, vars) {

@@ -4,7 +4,7 @@
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
   - [*ListCustomers*](#listcustomers)
-  - [*GetReviewsByHandle*](#getreviewsbyhandle)
+  - [*GetReviewsByProductId*](#getreviewsbyproductid)
   - [*GetProductByHandle*](#getproductbyhandle)
   - [*GetCollectionByHandle*](#getcollectionbyhandle)
   - [*GetCollectionsByPage*](#getcollectionsbypage)
@@ -153,109 +153,107 @@ executeQuery(ref).then((response) => {
 });
 ```
 
-## GetReviewsByHandle
-You can execute the `GetReviewsByHandle` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+## GetReviewsByProductId
+You can execute the `GetReviewsByProductId` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
 ```javascript
-getReviewsByHandle(vars: GetReviewsByHandleVariables): QueryPromise<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+getReviewsByProductId(vars: GetReviewsByProductIdVariables): QueryPromise<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 
-getReviewsByHandleRef(vars: GetReviewsByHandleVariables): QueryRef<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+getReviewsByProductIdRef(vars: GetReviewsByProductIdVariables): QueryRef<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```javascript
-getReviewsByHandle(dc: DataConnect, vars: GetReviewsByHandleVariables): QueryPromise<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+getReviewsByProductId(dc: DataConnect, vars: GetReviewsByProductIdVariables): QueryPromise<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 
-getReviewsByHandleRef(dc: DataConnect, vars: GetReviewsByHandleVariables): QueryRef<GetReviewsByHandleData, GetReviewsByHandleVariables>;
+getReviewsByProductIdRef(dc: DataConnect, vars: GetReviewsByProductIdVariables): QueryRef<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
 ```
 
 ### Variables
-The `GetReviewsByHandle` query requires an argument of type `GetReviewsByHandleVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `GetReviewsByProductId` query requires an argument of type `GetReviewsByProductIdVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
 ```javascript
-export interface GetReviewsByHandleVariables {
-  handle: string;
+export interface GetReviewsByProductIdVariables {
+  productId: UUIDString;
 }
 ```
 ### Return Type
-Recall that executing the `GetReviewsByHandle` query returns a `QueryPromise` that resolves to an object with a `data` property.
+Recall that executing the `GetReviewsByProductId` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `GetReviewsByHandleData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `GetReviewsByProductIdData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 ```javascript
-export interface GetReviewsByHandleData {
-  products: ({
-    productReviews_on_product: ({
-      id: UUIDString;
-      rating: number;
-      content: string;
-      date: TimestampString;
-      customer: {
-        id: string;
-        firstName: string;
-        lastName: string;
-      } & Customer_Key;
-    })[];
+export interface GetReviewsByProductIdData {
+  productReviews: ({
+    id: UUIDString;
+    rating: number;
+    content: string;
+    date: TimestampString;
+    customer: {
+      id: string;
+      firstName: string;
+      lastName: string;
+    } & Customer_Key;
   })[];
 }
 ```
-### Using `GetReviewsByHandle`'s action shortcut function
+### Using `GetReviewsByProductId`'s action shortcut function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, getReviewsByHandle, GetReviewsByHandleVariables } from '@firebasegen/default-connector';
+import { connectorConfig, getReviewsByProductId, GetReviewsByProductIdVariables } from '@firebasegen/default-connector';
 
-// The `GetReviewsByHandle` query requires an argument of type `GetReviewsByHandleVariables`:
-const getReviewsByHandleVars: GetReviewsByHandleVariables = {
-  handle: ..., 
+// The `GetReviewsByProductId` query requires an argument of type `GetReviewsByProductIdVariables`:
+const getReviewsByProductIdVars: GetReviewsByProductIdVariables = {
+  productId: ..., 
 };
 
-// Call the `getReviewsByHandle()` function to execute the query.
+// Call the `getReviewsByProductId()` function to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await getReviewsByHandle(getReviewsByHandleVars);
+const { data } = await getReviewsByProductId(getReviewsByProductIdVars);
 // Variables can be defined inline as well.
-const { data } = await getReviewsByHandle({ handle: ..., });
+const { data } = await getReviewsByProductId({ productId: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
-const { data } = await getReviewsByHandle(dataConnect, getReviewsByHandleVars);
+const { data } = await getReviewsByProductId(dataConnect, getReviewsByProductIdVars);
 
-console.log(data.products);
+console.log(data.productReviews);
 
 // Or, you can use the `Promise` API.
-getReviewsByHandle(getReviewsByHandleVars).then((response) => {
+getReviewsByProductId(getReviewsByProductIdVars).then((response) => {
   const data = response.data;
-  console.log(data.products);
+  console.log(data.productReviews);
 });
 ```
 
-### Using `GetReviewsByHandle`'s `QueryRef` function
+### Using `GetReviewsByProductId`'s `QueryRef` function
 
 ```javascript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, getReviewsByHandleRef, GetReviewsByHandleVariables } from '@firebasegen/default-connector';
+import { connectorConfig, getReviewsByProductIdRef, GetReviewsByProductIdVariables } from '@firebasegen/default-connector';
 
-// The `GetReviewsByHandle` query requires an argument of type `GetReviewsByHandleVariables`:
-const getReviewsByHandleVars: GetReviewsByHandleVariables = {
-  handle: ..., 
+// The `GetReviewsByProductId` query requires an argument of type `GetReviewsByProductIdVariables`:
+const getReviewsByProductIdVars: GetReviewsByProductIdVariables = {
+  productId: ..., 
 };
 
-// Call the `getReviewsByHandleRef()` function to get a reference to the query.
-const ref = getReviewsByHandleRef(getReviewsByHandleVars);
+// Call the `getReviewsByProductIdRef()` function to get a reference to the query.
+const ref = getReviewsByProductIdRef(getReviewsByProductIdVars);
 // Variables can be defined inline as well.
-const ref = getReviewsByHandleRef({ handle: ..., });
+const ref = getReviewsByProductIdRef({ productId: ..., });
 
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
-const ref = getReviewsByHandleRef(dataConnect, getReviewsByHandleVars);
+const ref = getReviewsByProductIdRef(dataConnect, getReviewsByProductIdVars);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await executeQuery(ref);
 
-console.log(data.products);
+console.log(data.productReviews);
 
 // Or, you can use the `Promise` API.
 executeQuery(ref).then((response) => {
   const data = response.data;
-  console.log(data.products);
+  console.log(data.productReviews);
 });
 ```
 
