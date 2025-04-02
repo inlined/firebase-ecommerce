@@ -21,7 +21,8 @@ import DropdownMenu from '@/components/ui/dropdown-menu'
 import { handleSearch, Product } from '@/lib/actions/search'
 import { useAuth } from '@/hooks/useAuth'
 import getApp from '@/lib/firebase/getApp'
-import { getAuth, signOut } from 'firebase/auth'
+import { signOut } from 'firebase/auth'
+import getAuth from '@/lib/firebase/getAuth';
 
 type Props = {
   navigation: { label: string; href: string }[]

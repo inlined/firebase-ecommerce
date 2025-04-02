@@ -6,8 +6,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
-  getAuth,
 } from 'firebase/auth'
+import getAuth from '@/lib/firebase/getAuth'
 import Button from '@/components/ui/button'
 import Input from '@/components/ui/input'
 import { FirebaseError } from 'firebase/app'
