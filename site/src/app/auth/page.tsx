@@ -1,14 +1,14 @@
-import { cookies } from 'next/headers'
+import { getAuthToken } from '@/lib/firebase/getServerApp'
 import Authentication from './authentication'
 import { redirect } from 'next/navigation'
 
+console.log("In auth page");
 export default async function AuthPage() {
-  const cookieStore = await cookies()
-  const session = cookieStore.get('__session')?.value
-
-  if (session) {
+  if (await getAuthToken()) {
+    console.log("Redirecting to orders");
     return redirect('/orders')
   }
+  console.log("Returning authentication component");
 
   return <Authentication />
 }

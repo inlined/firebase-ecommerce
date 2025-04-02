@@ -6,10 +6,14 @@ import getDataConnect from '@/lib/firebase/getDataConnect';
 
 export default async function OrdersPage() {
   const app = await getServerApp();
+  const auth = getAuth(app);;
+  await auth.authStateReady();
   
   let orders: GetCurrentUsersOrdersData["orders"] = [];
-  if (getAuth(app).currentUser) {
+  if (auth.currentUser) {
     ({ data: { orders }} = await getCurrentUsersOrders(getDataConnect(app)));
+  } else {
+    console.log("Not logged in");
   }
 
   console.log(`getCurrentUsersOrders(): ${JSON.stringify(orders, null, 2)}`);

@@ -4,33 +4,46 @@ import { FirebaseApp, FirebaseServerApp, initializeServerApp } from 'firebase/ap
 import getAuth from './getAuth';
 import { cookies, headers } from 'next/headers';
 
-async function getTokenFromCookie(): Promise<string | undefined> {
+async function getAuthTokenFromCookie(): Promise<string | undefined> {
     const COOKIE_NAME = process.env.NODE_ENV === 'development' ?
     `__dev_FIREBASE_[DEFAULT]` :
     `__HOST-FIREBASE_[DEFAULT]`;
 
     const cookieStore = await cookies();
+    if (cookieStore.has(COOKIE_NAME)) {
+        console.log("Got credentials for serverApp from cookie");
+    }
     return cookieStore.get(COOKIE_NAME)?.value;
 }
 
-async function getTokenFromHeader(): Promise<string | undefined> {
-    return (await headers()).get('Authorization')?.replace('Bearer ', '');
+async function getAuthTokenFromHeader(): Promise<string | undefined> {
+    const header = (await headers()).get('authorization');
+    if (header) {
+        console.log("Got credentials for serverApp from header");
+        return header.replace(/(Bearer\s+)/, '')
+    }
+}
+
+export async function getAuthToken(): Promise<string | undefined> {
+    const [cookie, header] = await Promise.all([
+        getAuthTokenFromCookie(),
+        getAuthTokenFromHeader()
+    ]);
+    const token = cookie || header;
+    if (!token) {
+        console.log("Couldn't find token");
+    }
+    return token;
 }
 
 // Note: we are not caching because initializeServerApp already does this for us.
 export default async function getServerApp(): Promise<FirebaseApp> {
-    const authIdToken = await getTokenFromCookie() || await getTokenFromHeader();
-    let app: FirebaseServerApp;
-    if (!process.env.NEXT_PUBLIC_FIREBASE_CONFIG) {
-        app = initializeServerApp({}, { authIdToken });
-    } else {
-        app = initializeServerApp(JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG), { authIdToken });
-    }
-
-    // Makes behavior deterministic by waiting for auth.currentUser to sync
-    // TODO: consider making clients who want to use auth use auth.
-    const auth = getAuth(app);
-    await auth.authStateReady();
-
-    return app;
+    const authIdToken = await getAuthToken();
+    console.log(`Token is ${authIdToken}`);
+    const config = process.env.FIREBASE_CONFIG
+      ? JSON.parse(process.env.FIREBASE_CONFIG)
+      : process.env.NEXT_PUBLIC_FIREBASE_CONFIG
+      ? JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG)
+      : {};
+    return initializeServerApp(config, { authIdToken });
 }
