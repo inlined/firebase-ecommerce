@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import getStripe from '@/lib/stripe'
 import { Product } from '@/lib/stores/cart-store'
 import getServerApp from '@/lib/firebase/getServerApp'
-import { getAuth } from 'firebase/auth'
+import getAuth from '@/lib/firebase/getAuth'
 
 // TODO: Use real user credentials!!!
 export async function POST(request: Request) {
@@ -14,6 +14,7 @@ export async function POST(request: Request) {
     const app = await getServerApp();
     console.log("About to get auth");
     const auth = getAuth(app);
+    console.log("About to await authStateReady");
     await auth.authStateReady();
 
     const customer = auth.currentUser;

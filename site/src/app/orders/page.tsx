@@ -1,12 +1,12 @@
 import OrderHistory from '@/components/sections/order-history'
 import { getCurrentUsersOrders, GetCurrentUsersOrdersData } from '@firebasegen/default-connector'
 import getServerApp from '@/lib/firebase/getServerApp'
-import { getAuth } from 'firebase/auth';
+import getAuth from '@/lib/firebase/getAuth';
 import getDataConnect from '@/lib/firebase/getDataConnect';
 
 export default async function OrdersPage() {
   const app = await getServerApp();
-  const auth = getAuth(app);;
+  const auth = getAuth(app);
   await auth.authStateReady();
   
   let orders: GetCurrentUsersOrdersData["orders"] = [];

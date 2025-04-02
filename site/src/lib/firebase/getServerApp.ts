@@ -17,7 +17,7 @@ async function getAuthTokenFromCookie(): Promise<string | undefined> {
 }
 
 async function getAuthTokenFromHeader(): Promise<string | undefined> {
-    const header = (await headers()).get('authorization');
+    const header = (await headers()).get('authorization')?.replace(/([Bb]earer\s+)/, '');
     if (header) {
         console.log("Got credentials for serverApp from header");
         return header.replace(/(Bearer\s+)/, '')
