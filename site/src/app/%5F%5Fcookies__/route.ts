@@ -13,6 +13,7 @@
 import getAuth from "@/lib/firebase/getAuth";
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
+import getApp from "@/lib/firebase/getApp";
 
 interface Cookie {
     path: string;
@@ -42,7 +43,7 @@ async function canHandSecure(req: NextRequest): Promise<boolean> {
 }
 
 function authEmulatorConnected(): boolean {
-    return !!getAuth().emulatorConfig
+    return !!getAuth(getApp()).emulatorConfig
 }
 
 async function getCookies(req: NextRequest): Promise<{ identity: Cookie, refresh: Cookie }> {

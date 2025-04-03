@@ -23,6 +23,7 @@ import { useAuth } from '@/hooks/useAuth'
 import getApp from '@/lib/firebase/getApp'
 import { signOut } from '@firebase/auth'
 import getAuth from '@/lib/firebase/getAuth';
+import { deleteCookie } from 'cookies-next/client'
 
 type Props = {
   navigation: { label: string; href: string }[]
@@ -189,8 +190,11 @@ export default function Header({ navigation }: Props) {
                 </MenuItem>
                 <MenuItem>
                   <button
-                    onClick={() => {
-                      signOut(getAuth(getApp()));
+                    onClick={async () => {
+                      const app = getApp();
+                      const auth = getAuth(app);
+                      await signOut(auth);
+                      deleteCookie(auth.emulatorConfig ? "__dev_FIREBASE_[DEFAULT]" : "__HOST-FIREBASE_[DEFAULT]");
                       push('/auth');
                     }}
                     className="flex w-full items-center rounded-full px-4 py-2 font-medium hover:bg-gray-200 transition-colors"

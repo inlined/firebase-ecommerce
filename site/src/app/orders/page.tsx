@@ -8,6 +8,7 @@ export default async function OrdersPage() {
   const app = await getServerApp();
   const auth = getAuth(app);
   await auth.authStateReady();
+  console.log("Fetching orders for user", auth.currentUser?.uid);
   
   let orders: GetCurrentUsersOrdersData["orders"] = [];
   if (auth.currentUser) {

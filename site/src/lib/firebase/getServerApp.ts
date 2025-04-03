@@ -10,7 +10,7 @@ async function getAuthTokenFromCookie(): Promise<string | undefined> {
 
     const cookieStore = await cookies();
     if (cookieStore.has(COOKIE_NAME)) {
-        console.log("Got credentials for serverApp from cookie");
+        console.log("Got credentials for serverApp from cookie:", await cookieStore.get(COOKIE_NAME)?.value);
     }
     return cookieStore.get(COOKIE_NAME)?.value;
 }
@@ -36,13 +36,13 @@ export async function getAuthToken(): Promise<string | undefined> {
 export default async function getServerApp(): Promise<FirebaseApp> {
     const authIdToken = await getAuthToken();
     console.log("server app is", authIdToken ? "authenticated" : "unauthenticated");
-    const config = process.env.FIREBASE_CONFIG
-      ? JSON.parse(process.env.FIREBASE_CONFIG)
-      : process.env.NEXT_PUBLIC_FIREBASE_CONFIG
+    const config = process.env.NEXT_PUBLIC_FIREBASE_CONFIG
       ? JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG)
+      : process.env.FIREBASE_CONFIG
+      ? JSON.parse(process.env.FIREBASE_CONFIG)
       : {};
-    console.error("Creating server app. CONFIG IS", config);
-    console.error("FIREBASE_CONFIG IS", process.env.FIREBASE_CONFIG);
-    console.error("NEXT_PUBLIC_FIREBASE_CONFIG IS", process.env.NEXT_PUBLIC_FIREBASE_CONFIG);
+    console.log("Creating server app. CONFIG IS", config);
+    console.log("FIREBASE_CONFIG IS", process.env.FIREBASE_CONFIG);
+    console.log("NEXT_PUBLIC_FIREBASE_CONFIG IS", process.env.NEXT_PUBLIC_FIREBASE_CONFIG);
     return initializeServerApp(config, { authIdToken });
 }

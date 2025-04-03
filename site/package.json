@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@firebase/app": "^0.11.4",
-    "@firebase/auth": "^1.10.0",
+    "@firebase/auth": "file:firebase-auth-next.tgz",
     "@firebase/data-connect": "^0.3.3",
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "@genkit-ai/firebase": "^1.4.0",
@@ -23,7 +23,7 @@
     "@types/memcached": "^2.2.10",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "cookies-next": "^5.0.2",
+    "cookies-next": "^5.1.0",
     "embla-carousel-react": "^8.3.1",
     "firebase-admin": "^13.2.0",
     "genkit": "^1.4.0",

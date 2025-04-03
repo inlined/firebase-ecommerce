@@ -17,6 +17,7 @@ import getApp from '@/lib/firebase/getApp'
 import { getAuthErrorMessage } from '@/lib/firebase/getAuthErrorMessages'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useShallow } from 'zustand/shallow'
+import { setCookie } from 'cookies-next'
 
 export default function Authentication() {
   const auth = getAuth(getApp())
@@ -72,6 +73,9 @@ export default function Authentication() {
 
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, password)
+      const idToken = await user.getIdToken();
+      console.log("Setting user token on create");
+      await setCookie(auth.emulatorConfig ? "__dev_FIREBASE_[DEFAULT]" : "__HOST-FIREBASE_[DEFAULT]", idToken);
       await updateProfile(user, {
         displayName: `${firstName} ${lastName}`
       })
