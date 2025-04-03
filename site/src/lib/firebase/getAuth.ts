@@ -1,9 +1,9 @@
 import getApp from './getApp';
-import { initializeAuth, connectAuthEmulator, Auth, getAuth as rawGetAuth } from 'firebase/auth';
+import { initializeAuth, connectAuthEmulator, Auth, getAuth as rawGetAuth } from '@firebase/auth';
 // @ts-expect-error browserCookiePersistence does not have public types
-import { browserCookiePersistence } from 'firebase/auth';
+import { browserCookiePersistence } from '@firebase/auth';
 
-import { type FirebaseApp } from 'firebase/app';
+import { type FirebaseApp } from '@firebase/app';
 
 // Workaround for HMR breaking the Firebse cache because initializeAuth is not
 // currently idempotent.

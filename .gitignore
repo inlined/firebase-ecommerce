@@ -1,3 +1,6 @@
+# Mac OS
+.DS_Store
+
 # Logs
 logs
 *.log
@@ -67,7 +70,7 @@ web_modules/
 .node_repl_history
 
 # Output of 'npm pack'
-*.tgz
+#*.tgz
 
 # Yarn Integrity file
 .yarn-integrity
@@ -135,8 +138,15 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Next.js
+.next/
+
 # firebase
 .dataconnect/
 .firebaserc
 dataconnect-debug.log
 .genkit
+.firebase/logs/
+dataconnect-debug.log
+.firebaserc # optional
+

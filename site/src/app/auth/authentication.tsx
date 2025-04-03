@@ -6,11 +6,11 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
-} from 'firebase/auth'
+} from '@firebase/auth'
 import getAuth from '@/lib/firebase/getAuth'
 import Button from '@/components/ui/button'
 import Input from '@/components/ui/input'
-import { FirebaseError } from 'firebase/app'
+import { FirebaseError } from '@firebase/app'
 import { upsertCustomer } from '@firebasegen/default-connector'
 import getDataConnect from '@/lib/firebase/getDataConnect'
 import getApp from '@/lib/firebase/getApp'

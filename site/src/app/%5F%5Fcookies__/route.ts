@@ -1,19 +1,18 @@
-import getServerApp from "@/lib/firebase/getServerApp";
+/**
+ * This file handles the magic route that the Firebase Auth SDK (Client) uses to (re)generate tokens
+ * when using cookie persistence. Cookie persistence has two benefits:
+ * 1. Session state is automatically synchronized between client and server.
+ * 2. Refresh tokens are not accessible to any JavaScript because it is stored in an HTTPOnly cookie,
+ *    protecting users against XSS attacks.
+ * 
+ * Note that %5F is the HTML escape for underscore (_). The magic URL is __cookies__ but Next.js
+ * considers all directories that start with _ to be private and does not serve them. HTML escaping
+ * the path name is considered the fix.
+ */
+
 import getAuth from "@/lib/firebase/getAuth";
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
-
-// TODO: Handle app names other than DEFAULT
-
-interface Cookie {
-    path: string;
-    secure: boolean;
-    sameSite: "strict";
-    partitioned: true;
-    name: string;
-    maxAge: number;
-    priority: "high";
-}
 
 async function canHandSecure(req: NextRequest): Promise<boolean> {
    if (req.nextUrl.protocol === "https") {
@@ -27,7 +26,7 @@ function authEmulatorConnected(): boolean {
     return !!getAuth().emulatorConfig
 }
 
-function cookieNames(appName: string = "DEFAULT"): { identity: string; refresh: string } {
+function cookieNames(appName: string): { identity: string; refresh: string } {
     return authEmulatorConnected() ? {
         identity: `__dev_FIREBASE_[${appName}]`,
         refresh: `__dev_FIREBASEID_[${appName}]']`,
@@ -40,7 +39,10 @@ function cookieNames(appName: string = "DEFAULT"): { identity: string; refresh: 
 export async function DELETE(req: NextRequest) {
     console.log("Logging out");
     const resp = new NextResponse("", { status: 200 });
-    logOutInResponse(resp);
+    const appName = req.nextUrl.searchParams.get('appName');
+    const names = cookieNames(appName || "DEFAULT");
+    resp.cookies.delete(names.identity);
+    resp.cookies.delete(names.refresh);
     return resp;
 }
 
@@ -87,11 +89,11 @@ function redactHeaders(headers: Headers): Record<string, string> {
  * the server expects, but the CSR JS client could not form because the value is in an HTTPOnly
  * cookie.
  */
-async function bodyForTokenRefresh(req: NextRequest): Promise<string> {
+async function bodyForTokenRefresh(req: NextRequest, refreshCookieName: string): Promise<string> {
     let body = await req.text();
     const params = new URLSearchParams(body!.trim());
     if (params.has("refresh_token")) {
-        const refreshToken = req.cookies.get(cookieNames().refresh)?.value;
+        const refreshToken = req.cookies.get(refreshCookieName)?.value;
         if (refreshToken) {
             params.set("refresh_token", refreshToken);
             body = params.toString();
@@ -103,6 +105,8 @@ async function bodyForTokenRefresh(req: NextRequest): Promise<string> {
 /** Handles actions involving minting new ID or refresh tokens. */
 export async function POST(req: NextRequest) {
     const redirectTo = new URL(req.nextUrl.searchParams.get('finalTarget')!);
+    const appName = req.nextUrl.searchParams.get('appName');
+    const names = cookieNames(appName || "DEFAULT");
     const purpose = getPurpose(redirectTo);
     if (purpose === 'invalid') {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
@@ -113,7 +117,7 @@ export async function POST(req: NextRequest) {
     // cookie. The body must be parsed and recreated to include this token.
     // We don't fail when this cookie is missing so that we are guaranteed to recreate the
     // exact error for the client SDK that it would get if it tried to refresh with local storage.
-    const body = purpose === 'refresh' ? await bodyForTokenRefresh(req) : req.body;
+    const body = purpose === 'refresh' ? await bodyForTokenRefresh(req, names.refresh) : req.body;
     const headers = redactHeaders(req.headers);
     
     // Because we are sometimes piping bodies directly from one service to another, we need to
@@ -132,7 +136,6 @@ export async function POST(req: NextRequest) {
     const idToken = json.idToken || json.id_token;
     const maxAge = json.expiresIn || json.expires_in;
 
-    const names = cookieNames();
     const response = NextResponse.json(json, { status: proxied.status, statusText: proxied.statusText });
     const baseCookie = {
         path: "/",
@@ -150,10 +153,4 @@ export async function POST(req: NextRequest) {
     }
 
     return response;
-}
-
-async function logOutInResponse(resp: NextResponse) {
-    const names = cookieNames();
-    resp.cookies.delete(names.identity);
-    resp.cookies.delete(names.refresh);
 }

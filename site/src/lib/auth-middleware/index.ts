@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { createRemoteJWKSet, jwtVerify, JWTPayload, JWTHeaderParameters } from 'jose';
 import { getDefaultAppConfig } from "@firebase/util";
-import { FirebaseOptions } from 'firebase/app';
+import { FirebaseOptions } from '@firebase/app';
 
 type FirebaseJWTPayload = JWTPayload & { firebase?: { tenant?: string }};
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { FirebaseApp, FirebaseServerApp, initializeServerApp } from 'firebase/app';
+import { FirebaseApp, initializeServerApp } from '@firebase/app';
 import { cookies, headers } from 'next/headers';
 
 async function getAuthTokenFromCookie(): Promise<string | undefined> {
