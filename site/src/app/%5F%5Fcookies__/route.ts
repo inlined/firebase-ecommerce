@@ -58,9 +58,9 @@ export async function DELETE(req: NextRequest) {
 
 function getPurpose(url: URL): ('mint' | 'refresh' | 'invalid') {
     if (authEmulatorConnected()) {
-        return url.pathname === 'securetoken.googleapis.com/v1/token'
+        return url.pathname === '/securetoken.googleapis.com/v1/token'
         ? 'refresh'
-        : url.pathname.startsWith('identitytoolkit.googleapis.com/v1/accounts:')
+        : url.pathname.startsWith('/identitytoolkit.googleapis.com/v1/accounts:')
         ? 'mint'
         : 'invalid';
     }
@@ -89,7 +89,9 @@ const TRUSTED_HEADERS = [
 ];
 
 function redactHeaders(headers: Headers): Record<string, string> {
-    return Object.fromEntries(headers.entries().filter(([name]) => TRUSTED_HEADERS.includes(name)));
+    return Object.fromEntries(
+        TRUSTED_HEADERS.filter((name) => headers.has(name)).map((name) => [name, headers.get(name)!])
+    );
 }
 
 /**
@@ -110,15 +112,9 @@ async function refreshBody(req: NextRequest): Promise<string> {
 }
 
 export async function POST(req: NextRequest) {
-    console.log("GOT REQUEST TO __COOKIES__", JSON.stringify({
-        url: req.url,
-        query: req.nextUrl.searchParams,
-        headers: [...req.headers.values()],
-        body: await req.json(),
-    }));
-
     const redirectTo = new URL(req.nextUrl.searchParams.get('finalTarget')!);
     const purpose = getPurpose(redirectTo);
+    console.log("The purpose of", redirectTo.href, "is", purpose);
     if (purpose === 'invalid') {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
@@ -130,7 +126,13 @@ export async function POST(req: NextRequest) {
     // exact error for the client SDK that it would get if it tried to refresh with local storage.
     const body = purpose === 'refresh' ? await refreshBody(req) : req.body;
     const headers = redactHeaders(req.headers);
-    const proxied = await fetch(redirectTo, { method: 'POST', body, headers });
+    
+    // Because we are sometimes piping bodies directly from one service to another, we need to
+    // set duplex: 'half' in Node 18+, but old versions of the type libraries will say that this
+    // field doesn't exist and error out. Using a literal const and then passing it as a parameter
+    // shuts up the type error.
+    const proxyRequest = { method: 'Post', body, headers, duplex: 'half' }; 
+    const proxied = await fetch(redirectTo, proxyRequest);
     if (!proxied.ok) {
         return new NextResponse(proxied.body, { status: proxied.status, statusText: proxied.statusText });
     }
@@ -153,7 +155,7 @@ export async function POST(req: NextRequest) {
         response.cookies.set({...baseCookie, name: names.identity, maxAge, value: idToken});
     }
     if (refreshToken) {
-        response.cookies.set({...baseCookie, name: names.refresh, value: refreshToken});
+        response.cookies.set({...baseCookie, name: names.refresh, httpOnly: true, value: refreshToken});
     }
 
     return response;
