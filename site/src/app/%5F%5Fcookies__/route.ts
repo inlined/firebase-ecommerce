@@ -8,6 +8,10 @@
  * Note that %5F is the HTML escape for underscore (_). The magic URL is __cookies__ but Next.js
  * considers all directories that start with _ to be private and does not serve them. HTML escaping
  * the path name is considered the fix.
+ * 
+ * NOTE: This only works in the emulator if the process sees the environment variable the emulator
+ * uses to automatically connect to the emulator. If you are using your own next .env, you must use
+ * this variable (FIREBASE_AUTH_EMULATOR_HOST) for the __cookies__ route to work in the emualtor.
  */
 
 import getAuth from "@/lib/firebase/getAuth";
@@ -43,7 +47,7 @@ async function canHandSecure(req: NextRequest): Promise<boolean> {
 }
 
 function authEmulatorConnected(): boolean {
-    return !!getAuth(getApp()).emulatorConfig
+    return !!process.env.FIREBASE_AUTH_EMULATOR_HOST;
 }
 
 async function getCookies(req: NextRequest): Promise<{ identity: Cookie, refresh: Cookie }> {
@@ -172,8 +176,6 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json(json, { status: proxied.status, statusText: proxied.statusText });
     if (idToken && idToken !== req.cookies.get({...cookies.identity, value: ''})?.value) {
         response.cookies.set({...cookies.identity, maxAge, value: idToken});
-    } else {
-        console.log("Not modifying ID token because it has not changed. Have",idToken);
     }
     if (refreshToken) {
         response.cookies.set({...cookies.refresh, value: refreshToken});
