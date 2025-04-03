@@ -14,7 +14,6 @@ import { FirebaseError } from '@firebase/app'
 import { upsertCustomer } from '@firebasegen/default-connector'
 import getDataConnect from '@/lib/firebase/getDataConnect'
 import getApp from '@/lib/firebase/getApp'
-import { setCookie } from 'cookies-next'
 import { getAuthErrorMessage } from '@/lib/firebase/getAuthErrorMessages'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useShallow } from 'zustand/shallow'
@@ -47,7 +46,6 @@ export default function Authentication() {
 
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password)
-      setCookie('customerId', user.uid)
       upsertCustomer(dc, {
         firstName: user.displayName?.split(' ')[0] ?? '',
         lastName: user.displayName?.split(' ')[1] ?? '',

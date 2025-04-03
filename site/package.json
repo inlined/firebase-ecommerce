@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@firebase/app": "^0.11.4",
-    "@firebase/auth": "file:firebase-auth-next.tgz",
+    "@firebase/auth": "^1.10.0",
     "@firebase/data-connect": "^0.3.3",
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "@genkit-ai/firebase": "^1.4.0",

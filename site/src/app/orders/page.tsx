@@ -3,7 +3,6 @@ import { getCurrentUsersOrders, GetCurrentUsersOrdersData } from '@firebasegen/d
 import getServerApp from '@/lib/firebase/getServerApp'
 import getAuth from '@/lib/firebase/getAuth';
 import getDataConnect from '@/lib/firebase/getDataConnect';
-import { cookies } from 'next/headers';
 
 export default async function OrdersPage() {
   const app = await getServerApp();

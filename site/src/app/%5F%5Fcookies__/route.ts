@@ -14,6 +14,25 @@ import getAuth from "@/lib/firebase/getAuth";
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 
+interface Cookie {
+    path: string;
+    sameSite: 'strict';
+    partitioned: boolean;
+    maxAge: number;
+    priority: 'high';
+    name: string;
+    secure: boolean;
+    httpOnly: boolean;
+}
+
+const baseCookie: Omit<Cookie, 'name' | 'secure' | 'httpOnly'> = {
+    path: "/",
+    sameSite: "strict",
+    partitioned: true,
+    maxAge: 34560000,
+    priority: 'high'
+};
+
 async function canHandSecure(req: NextRequest): Promise<boolean> {
    if (req.nextUrl.protocol === "https") {
     return true;
@@ -26,23 +45,35 @@ function authEmulatorConnected(): boolean {
     return !!getAuth().emulatorConfig
 }
 
-function cookieNames(appName: string): { identity: string; refresh: string } {
-    return authEmulatorConnected() ? {
-        identity: `__dev_FIREBASE_[${appName}]`,
-        refresh: `__dev_FIREBASEID_[${appName}]`,
-    } : {
-        identity: `__HOST-FIREBASE_[${appName}]`,
-        refresh: `__HOST-FIREBASEID_[${appName}]`,
-    };
+async function getCookies(req: NextRequest): Promise<{ identity: Cookie, refresh: Cookie }> {
+    const appName = req.nextUrl.searchParams.get('appName') || 'DEFAULT';
+    const emulated = authEmulatorConnected();
+    const secure = await canHandSecure(req);
+    return {
+        identity: {
+            ...baseCookie,
+            name: emulated ? `__dev_FIREBASE_[${appName}]` : `__HOST-FIREBASE_[${appName}]`,
+            httpOnly: false,
+            secure,
+        },
+        refresh: {
+            ...baseCookie,
+            name: emulated ? `__dev_FIREBASEID_[${appName}]` : `__HOST-FIREBASEID_[${appName}]`,
+            httpOnly: true,
+            secure,
+        }
+    }
 }
 
 export async function DELETE(req: NextRequest) {
     console.log("Logging out");
     const resp = new NextResponse("", { status: 200 });
     const appName = req.nextUrl.searchParams.get('appName');
-    const names = cookieNames(appName || "DEFAULT");
-    resp.cookies.delete(names.identity);
-    resp.cookies.delete(names.refresh);
+    const cookies = await getCookies(req);
+    console.log("Deleting cookies");
+    const secure = await canHandSecure(req);
+    resp.cookies.delete(cookies.identity);
+    resp.cookies.delete(cookies.refresh);
     return resp;
 }
 
@@ -89,11 +120,11 @@ function redactHeaders(headers: Headers): Record<string, string> {
  * the server expects, but the CSR JS client could not form because the value is in an HTTPOnly
  * cookie.
  */
-async function bodyForTokenRefresh(req: NextRequest, refreshCookieName: string): Promise<string> {
+async function bodyForTokenRefresh(req: NextRequest, refreshCookie: Cookie): Promise<string> {
     let body = await req.text();
     const params = new URLSearchParams(body!.trim());
     if (params.has("refresh_token")) {
-        const refreshToken = req.cookies.get(refreshCookieName)?.value;
+        const refreshToken = req.cookies.get({...refreshCookie, value: ''})?.value;
         if (refreshToken) {
             params.set("refresh_token", refreshToken);
             body = params.toString();
@@ -106,8 +137,7 @@ async function bodyForTokenRefresh(req: NextRequest, refreshCookieName: string):
 export async function POST(req: NextRequest) {
     console.log("Minting tokens");
     const redirectTo = new URL(req.nextUrl.searchParams.get('finalTarget')!);
-    const appName = req.nextUrl.searchParams.get('appName');
-    const names = cookieNames(appName || "DEFAULT");
+    const cookies = await getCookies(req);
     const purpose = getPurpose(redirectTo);
     if (purpose === 'invalid') {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
@@ -118,7 +148,7 @@ export async function POST(req: NextRequest) {
     // cookie. The body must be parsed and recreated to include this token.
     // We don't fail when this cookie is missing so that we are guaranteed to recreate the
     // exact error for the client SDK that it would get if it tried to refresh with local storage.
-    const body = purpose === 'refresh' ? await bodyForTokenRefresh(req, names.refresh) : req.body;
+    const body = purpose === 'refresh' ? await bodyForTokenRefresh(req, cookies.refresh) : req.body;
     const headers = redactHeaders(req.headers);
     
     // Because we are sometimes piping bodies directly from one service to another, we need to
@@ -138,19 +168,13 @@ export async function POST(req: NextRequest) {
     const maxAge = json.expiresIn || json.expires_in;
 
     const response = NextResponse.json(json, { status: proxied.status, statusText: proxied.statusText });
-    const baseCookie = {
-        path: "/",
-        secure: await canHandSecure(req),
-        sameSite: "strict",
-        partitioned: true,
-        maxAge: 34560000,
-        priority: 'high'
-    } as const;
-    if (idToken && idToken !== req.cookies.get(names.identity)?.value) {
-        response.cookies.set({...baseCookie, name: names.identity, maxAge, value: idToken});
+    if (idToken && idToken !== req.cookies.get({...cookies.identity, value: ''})?.value) {
+        response.cookies.set({...cookies.identity, maxAge, value: idToken});
+    } else {
+        console.log("Not modifying ID token because it has not changed. Have",idToken);
     }
     if (refreshToken) {
-        response.cookies.set({...baseCookie, name: names.refresh, httpOnly: true, value: refreshToken});
+        response.cookies.set({...cookies.refresh, value: refreshToken});
     }
 
     return response;
