@@ -85,7 +85,7 @@ function getPurpose(url: URL): ('mint' | 'refresh' | 'invalid') {
         ? 'mint'
         : 'invalid';
     }
-    if (url.protocol != 'https') {
+    if (url.protocol != 'https:') {
         return 'invalid';
     }
     if (url.hostname === 'securetoken.googelapis.com' && url.pathname === '/v1/token') {
@@ -139,6 +139,7 @@ export async function POST(req: NextRequest) {
     const redirectTo = new URL(req.nextUrl.searchParams.get('finalTarget')!);
     const cookies = await getCookies(req);
     const purpose = getPurpose(redirectTo);
+    console.log("Purpose is", purpose);
     if (purpose === 'invalid') {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
