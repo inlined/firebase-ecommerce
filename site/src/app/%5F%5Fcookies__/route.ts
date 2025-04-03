@@ -29,7 +29,7 @@ function authEmulatorConnected(): boolean {
 function cookieNames(appName: string): { identity: string; refresh: string } {
     return authEmulatorConnected() ? {
         identity: `__dev_FIREBASE_[${appName}]`,
-        refresh: `__dev_FIREBASEID_[${appName}]']`,
+        refresh: `__dev_FIREBASEID_[${appName}]`,
     } : {
         identity: `__HOST-FIREBASE_[${appName}]`,
         refresh: `__HOST-FIREBASEID_[${appName}]`,
@@ -104,6 +104,7 @@ async function bodyForTokenRefresh(req: NextRequest, refreshCookieName: string):
 
 /** Handles actions involving minting new ID or refresh tokens. */
 export async function POST(req: NextRequest) {
+    console.log("Minting tokens");
     const redirectTo = new URL(req.nextUrl.searchParams.get('finalTarget')!);
     const appName = req.nextUrl.searchParams.get('appName');
     const names = cookieNames(appName || "DEFAULT");

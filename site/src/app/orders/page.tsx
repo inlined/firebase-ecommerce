@@ -15,7 +15,6 @@ export default async function OrdersPage() {
     ({ data: { orders }} = await getCurrentUsersOrders(getDataConnect(app)));
   } else {
     console.log("Not logged in");
-    console.log("Cookies are", JSON.stringify((await cookies()).getAll(), null, 2));
   }
 
   console.log(`getCurrentUsersOrders(): ${JSON.stringify(orders, null, 2)}`);
