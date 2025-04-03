@@ -157,7 +157,7 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
   productsByDescription: products_descriptionEmbedding_similarity(
     compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
-    within: 0.75
+    within: 0.99
     limit: 20
   ) {
     id
@@ -167,7 +167,7 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
   productsByTitle: products_titleEmbedding_similarity(
     compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
-    within: 0.75
+    within: 0.99
     limit: 20
   ) {
     id
@@ -177,7 +177,7 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
   reviews: productReviews_contentEmbedding_similarity(
     compare_embed: { model: "text-embedding-005", text: $query }
     method: COSINE
-    within: 0.75
+    within: 0.90
     limit: 20
   ) {
     product {

@@ -4,6 +4,7 @@ export interface Cache {
     getString(key: string): Promise<string | undefined>;
     setString(key: string, value: string): Promise<void>;
     invalidate(key: string): Promise<void>;
+    purge(): Promise<void>
 }
 
 /**
@@ -21,6 +22,10 @@ class NoopCache implements Cache {
     }
 
     invalidate() {
+        return Promise.resolve();
+    }
+
+    purge() {
         return Promise.resolve();
     }
 }
@@ -44,6 +49,11 @@ class InMemCache implements Cache {
         delete this.cache[key];
         return Promise.resolve();
     }
+
+    purge(): Promise<void> {
+        this.cache = {};
+        return Promise.resolve();
+    }
 }
 
 /**
@@ -63,8 +73,9 @@ class MemcacheCache implements Cache {
             this.cache.get(key, (err, data) => {
                 if (err) {
                     reject(err);
+                    return;
                 }
-                resolve(String(data));
+                resolve(data === undefined ? undefined : data.toString());
             });
         });
     }
@@ -74,6 +85,7 @@ class MemcacheCache implements Cache {
             this.cache.set(key, value, 3600, (err) => {
                 if (err) {
                     reject(err);
+                    return;
                 }
                 resolve();
             });
@@ -84,11 +96,26 @@ class MemcacheCache implements Cache {
         return new Promise((resolve, reject) => {
             this.cache.del(key, (err) => {
                 if (err) {
+                    console.error("Failed to invalidate", key);
                     reject(err);
+                    return;
                 }
+                console.error("Invalidated key", key);
                 resolve();
             });
         });
+    }
+
+    purge(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.cache.flush((err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        })
     }
 }
 

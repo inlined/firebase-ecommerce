@@ -14,11 +14,11 @@ export type Product = {
 }
 
 function dedupeProducts(results: Product[]): Product[] {
-  return Object.values(
-    Object.fromEntries(
-      results.map(result => [result.id, result])
-    ) 
-  );
+  const deduped: Record<string, Product> = {}
+  for (const result of results) {
+    deduped[result.id] = result;
+  }
+  return Object.values(deduped);
 }
 
 export const handleSearch = async ({ query }: { query: string }): Promise<Product[] | Error> => {

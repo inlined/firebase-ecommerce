@@ -75,10 +75,10 @@ export default function ReviewModal({ isOpen, onClose, productDetails }: Props) 
 
                 <ProductListItem
                   title={productDetails?.productName || 'Product Name'}
-                  quantity={1}
+                  quantity={0}
                   variant={{
                     title: productDetails?.variantTitle || 'Variant Title',
-                    price: Number(productDetails?.variantPrice || 100),
+                    price: productDetails?.variantPrice || '',
                     image: {
                       url:
                         productDetails?.variantImage?.url ||
