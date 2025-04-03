@@ -29,16 +29,13 @@ export async function getAuthToken(): Promise<string | undefined> {
         getAuthTokenFromHeader()
     ]);
     const token = cookie || header;
-    if (!token) {
-        console.log("Couldn't find token");
-    }
     return token;
 }
 
 // Note: we are not caching because initializeServerApp already does this for us.
 export default async function getServerApp(): Promise<FirebaseApp> {
     const authIdToken = await getAuthToken();
-    console.log(`Token is ${authIdToken}`);
+    console.log("server app is", authIdToken ? "authenticated" : "unauthenticated");
     const config = process.env.FIREBASE_CONFIG
       ? JSON.parse(process.env.FIREBASE_CONFIG)
       : process.env.NEXT_PUBLIC_FIREBASE_CONFIG
