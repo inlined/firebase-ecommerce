@@ -3,7 +3,7 @@ type Props = {
   quantity: number
   variant: {
     title: string
-    price: number
+    price: number | string
     image: {
       url: string
       altText?: string | null
@@ -28,11 +28,9 @@ export default function ProductListItem({ title, variant, quantity }: Props) {
         <p className="text-gray-400">{variant.title}</p>
       </div>
       <div className="flex gap-4 lg:gap-10 ml-auto">
-        <div>
-          <span className="text-gray-400">QTY</span> {quantity}
-        </div>
+        { quantity ?  <><span className="text-gray-400">QTY</span> {quantity}</> : <></> }
         <span className="font-medium">
-          {new Intl.NumberFormat('en-US', {
+          {typeof variant.price === "string" ? variant.price : new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
           }).format(variant.price)}

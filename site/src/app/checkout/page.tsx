@@ -32,7 +32,7 @@ export default function CheckoutPage() {
       <section className="text-foreground bg-background pt-10 pb-10 lg:pt-48 lg:pb-20 min-h-[75vh]">
         <div className="relative container flex flex-col items-center gap-10 max-w-[768px] mx-auto">
           <h1 className="text-3xl">Please sign in to checkout</h1>
-          <Button href="/sign-in">Sign in</Button>
+          <Button href="/auth">Sign in</Button>
         </div>
       </section>
     )
