@@ -15,9 +15,13 @@ export const summarizeReviews = ai.defineFlow({
 }, async ({ productId, forceRefresh}, { sendChunk}) => {
     const cache = getCache();
     if (!forceRefresh) {
-        const cached = await ai.run("check cache", () => cache.getString(`reviews-${productId}`));
-        if (cached) {
-            return cached;
+        try {
+            const cached = await ai.run("check cache", () => cache.getString(`reviews-${productId}`));
+            if (cached) {
+                return cached;
+            }
+        } catch (e) {
+            console.error("Cache load failed with error", e);
         }
     }
 
@@ -46,7 +50,13 @@ export const summarizeReviews = ai.defineFlow({
     }
 
     const { text } = await response;
-    await ai.run("write cache", () => cache.setString(`reviews-${productId}`, text));
+    await ai.run("write cache", async () => {
+        try {
+            await cache.setString(`reviews-${productId}`, text)
+        } catch (e) {
+            console.error("Cache write failed with error", e);
+        }
+    });
 
     return text;
 });
