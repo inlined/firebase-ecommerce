@@ -3,5 +3,3 @@ env:
     value: memory #127.0.0.1:11211
   - variable: STRIPE_WEBHOOK_SECRET
     secret: test-stripe-webhook-secret
-  - variable: DEMO_SLOW_AI_STREAMING
-    value: 100

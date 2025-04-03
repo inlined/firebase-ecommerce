@@ -152,7 +152,7 @@ export async function POST(req: NextRequest) {
     return response;
 }
 
-export async function logOutInResponse(resp: NextResponse) {
+async function logOutInResponse(resp: NextResponse) {
     const names = cookieNames();
     resp.cookies.delete(names.identity);
     resp.cookies.delete(names.refresh);
