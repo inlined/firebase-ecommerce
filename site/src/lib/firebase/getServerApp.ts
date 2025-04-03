@@ -41,5 +41,8 @@ export default async function getServerApp(): Promise<FirebaseApp> {
       : process.env.NEXT_PUBLIC_FIREBASE_CONFIG
       ? JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG)
       : {};
+    console.error("Creating server app. CONFIG IS", config);
+    console.error("FIREBASE_CONFIG IS", process.env.FIREBASE_CONFIG);
+    console.error("NEXT_PUBLIC_FIREBASE_CONFIG IS", process.env.NEXT_PUBLIC_FIREBASE_CONFIG);
     return initializeServerApp(config, { authIdToken });
 }
