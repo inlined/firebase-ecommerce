@@ -3,7 +3,6 @@
 runConfig:
   minInstances: 1
   vpcAccess:
-    egress: "INTERNAL_RANGES_ONLY"
     networkInterfaces:
     - network: default
 
