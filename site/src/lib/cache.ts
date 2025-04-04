@@ -70,13 +70,11 @@ class MemcacheCache implements Cache {
 
     getString(key: string): Promise<string | undefined> {
         return new Promise((resolve, reject) => {
-            console.debug("Getting memcache key", key);
             this.cache.get(key, (err, data) => {
                 if (err) {
                     reject(err);
                     return;
                 }
-                console.debug(`Memcache ${key} = ${data}`);
                 resolve(data === undefined ? undefined : data.toString());
             });
         });
@@ -84,7 +82,6 @@ class MemcacheCache implements Cache {
 
     setString(key: string, value: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            console.debug(`Setting memcache ${key} = ${value}`);
             this.cache.set(key, value, 3600, (err) => {
                 if (err) {
                     reject(err);

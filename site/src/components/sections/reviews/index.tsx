@@ -89,7 +89,7 @@ export default function Reviews({ reviews, avgRating, productDetails }: Props) {
 
             <div className="grid lg:grid-cols-3 gap-10 lg:gap-5 items-end px-3">
               <div className="space-y-2">
-                <h3 className="text-7xl">{avgRating}</h3>
+                <h3 className="text-7xl">{avgRating.toFixed(1)}</h3>
                 <Rating rating={avgRating} showRating={false} />
               </div>
               <div className="flex flex-wrap items-center lg:col-span-2 max-w-2xl">

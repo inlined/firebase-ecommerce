@@ -88,7 +88,7 @@ export default async function ProductPage(props: Props) {
         description={description ?? ''}
         images={featuredImage ? [featuredImage] : []}
         currentVariant={currentVariant}
-        avgRating={Number(averageRating.toFixed(1))}
+        avgRating={averageRating}
       />
       <Features
         list={[

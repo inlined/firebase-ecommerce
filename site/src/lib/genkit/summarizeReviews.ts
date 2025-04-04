@@ -25,7 +25,9 @@ export const summarizeReviews = ai.defineFlow({
         }
     }
 
-    const { data: { productReviews: reviews } } = await getReviewsByProductId(getDataConnect(), { productId });
+    const { data: { productReviews: reviews } } = await ai.run("fetch reviews from Data Connect", async () => {
+        return await getReviewsByProductId(getDataConnect(), { productId });
+    });
 
     if (!reviews.length) {
         return 'Nobody has left a review. Be the first!';
