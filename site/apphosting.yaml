@@ -3,6 +3,7 @@
 runConfig:
   minInstances: 1
   vpcAccess:
+    egress: "INTERNAL_RANGES_ONLY"
     networkInterfaces:
     - network: default
 
@@ -17,7 +18,7 @@ env:
   # The magic value "memory" will use on-device caching, which is not appropriate if there
   # may be more than one concurrent instance serving requests.
   - variable: MEMCACHE_ADDR
-    value: 10.128.0.2:6379
+    value: 10.0.0.3:11211
 
   # The Google API key needs access to the Generative AI APIs. Create your key by visiting
   # https://ai.google.dev/gemini-api/docs and clicking "Get a Gemini API Key"
