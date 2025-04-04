@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { type User } from '@firebase/auth'
 import getAuth from '@/lib/firebase/getAuth'
 import getApp from '@/lib/firebase/getApp'
-import { deleteCookie, setCookie } from 'cookies-next/client'
+import { deleteCookie, setCookie } from 'cookies-next'
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)

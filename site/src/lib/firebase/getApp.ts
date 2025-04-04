@@ -6,7 +6,8 @@ import { FirebaseApp, initializeApp, getApp as getExistingApp } from '@firebase/
 // TODO: Fall back to FIREBASE_CONFIG when it is injected
 export default function getApp(): FirebaseApp {
     if (!process.env.NEXT_PUBLIC_FIREBASE_CONFIG) {
-       throw new Error("NEXT_PUBLIC_FIREBASE_CONFIG is missing. Going to auto-init Firebase client SDK");
+       console.error("NEXT_PUBLIC_FIREBASE_CONFIG is missing. Going to auto-init Firebase client SDK");
+       return initializeApp();
     }
     return initializeApp(JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG));
 }
