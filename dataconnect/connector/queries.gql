@@ -23,6 +23,20 @@ query GetReviewsByProductId($productId: UUID!) @auth(level: PUBLIC,  insecureRea
   }
 }
 
+query GetReviewsByProductHandle($handle: String!) @auth(level: PUBLIC,  insecureReason: "Public data") {
+  productReviews(where: { product: { handle: { eq: $handle } } }, orderBy: [{ date: DESC }]) {
+    id
+    rating
+    content
+    date
+    customer {
+      id
+      firstName
+      lastName
+    }
+  }
+}
+
 # Get a product by handle
 query GetProductByHandle($handle: String!) @auth(level: PUBLIC, insecureReason: "Public data") {
   product(first: { where: { handle: { eq: $handle } } }) {

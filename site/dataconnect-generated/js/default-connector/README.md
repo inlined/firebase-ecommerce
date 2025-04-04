@@ -5,6 +5,7 @@
 - [**Queries**](#queries)
   - [*ListCustomers*](#listcustomers)
   - [*GetReviewsByProductId*](#getreviewsbyproductid)
+  - [*GetReviewsByProductHandle*](#getreviewsbyproducthandle)
   - [*GetProductByHandle*](#getproductbyhandle)
   - [*GetCollectionByHandle*](#getcollectionbyhandle)
   - [*GetCollectionsByPage*](#getcollectionsbypage)
@@ -243,6 +244,110 @@ const ref = getReviewsByProductIdRef({ productId: ..., });
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
 const ref = getReviewsByProductIdRef(dataConnect, getReviewsByProductIdVars);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.productReviews);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.productReviews);
+});
+```
+
+## GetReviewsByProductHandle
+You can execute the `GetReviewsByProductHandle` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+```javascript
+getReviewsByProductHandle(vars: GetReviewsByProductHandleVariables): QueryPromise<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
+
+getReviewsByProductHandleRef(vars: GetReviewsByProductHandleVariables): QueryRef<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```javascript
+getReviewsByProductHandle(dc: DataConnect, vars: GetReviewsByProductHandleVariables): QueryPromise<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
+
+getReviewsByProductHandleRef(dc: DataConnect, vars: GetReviewsByProductHandleVariables): QueryRef<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
+```
+
+### Variables
+The `GetReviewsByProductHandle` query requires an argument of type `GetReviewsByProductHandleVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+
+```javascript
+export interface GetReviewsByProductHandleVariables {
+  handle: string;
+}
+```
+### Return Type
+Recall that executing the `GetReviewsByProductHandle` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `GetReviewsByProductHandleData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+```javascript
+export interface GetReviewsByProductHandleData {
+  productReviews: ({
+    id: UUIDString;
+    rating: number;
+    content: string;
+    date: TimestampString;
+    customer: {
+      id: string;
+      firstName: string;
+      lastName: string;
+    } & Customer_Key;
+  })[];
+}
+```
+### Using `GetReviewsByProductHandle`'s action shortcut function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, getReviewsByProductHandle, GetReviewsByProductHandleVariables } from '@firebasegen/default-connector';
+
+// The `GetReviewsByProductHandle` query requires an argument of type `GetReviewsByProductHandleVariables`:
+const getReviewsByProductHandleVars: GetReviewsByProductHandleVariables = {
+  handle: ..., 
+};
+
+// Call the `getReviewsByProductHandle()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await getReviewsByProductHandle(getReviewsByProductHandleVars);
+// Variables can be defined inline as well.
+const { data } = await getReviewsByProductHandle({ handle: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await getReviewsByProductHandle(dataConnect, getReviewsByProductHandleVars);
+
+console.log(data.productReviews);
+
+// Or, you can use the `Promise` API.
+getReviewsByProductHandle(getReviewsByProductHandleVars).then((response) => {
+  const data = response.data;
+  console.log(data.productReviews);
+});
+```
+
+### Using `GetReviewsByProductHandle`'s `QueryRef` function
+
+```javascript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, getReviewsByProductHandleRef, GetReviewsByProductHandleVariables } from '@firebasegen/default-connector';
+
+// The `GetReviewsByProductHandle` query requires an argument of type `GetReviewsByProductHandleVariables`:
+const getReviewsByProductHandleVars: GetReviewsByProductHandleVariables = {
+  handle: ..., 
+};
+
+// Call the `getReviewsByProductHandleRef()` function to get a reference to the query.
+const ref = getReviewsByProductHandleRef(getReviewsByProductHandleVars);
+// Variables can be defined inline as well.
+const ref = getReviewsByProductHandleRef({ handle: ..., });
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = getReviewsByProductHandleRef(dataConnect, getReviewsByProductHandleVars);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.

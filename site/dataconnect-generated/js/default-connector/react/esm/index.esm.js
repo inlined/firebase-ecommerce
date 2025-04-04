@@ -1,4 +1,4 @@
-import { upsertCustomerRef, createProductReviewRef, createOrderRef, updateOrderByPaymentIntentIdRef, updateOrderByChargeIdRef, createOrderItemRef, listCustomersRef, getReviewsByProductIdRef, getProductByHandleRef, getCollectionByHandleRef, getCollectionsByPageRef, searchRef, getCurrentUsersOrdersRef, getOrderByIdRef, getAllOrdersRef, connectorConfig } from '../../esm/index.esm.js';
+import { upsertCustomerRef, createProductReviewRef, createOrderRef, updateOrderByPaymentIntentIdRef, updateOrderByChargeIdRef, createOrderItemRef, listCustomersRef, getReviewsByProductIdRef, getReviewsByProductHandleRef, getProductByHandleRef, getCollectionByHandleRef, getCollectionsByPageRef, searchRef, getCurrentUsersOrdersRef, getOrderByIdRef, getAllOrdersRef, connectorConfig } from '../../esm/index.esm.js';
 import { validateArgs, CallerSdkTypeEnum } from 'firebase/data-connect';
 import { useDataConnectQuery, useDataConnectMutation, validateReactArgs } from '@tanstack-query-firebase/react/data-connect';
 
@@ -60,6 +60,12 @@ export function useListCustomers(dcOrOptions, options) {
 export function useGetReviewsByProductId(dcOrVars, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   const ref = getReviewsByProductIdRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useGetReviewsByProductHandle(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = getReviewsByProductHandleRef(dcInstance, inputVars);
   return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 

@@ -87,6 +87,16 @@ exports.getReviewsByProductId = function getReviewsByProductId(dcOrVars, vars) {
   return executeQuery(getReviewsByProductIdRef(dcOrVars, vars));
 };
 
+exports.getReviewsByProductHandleRef = function getReviewsByProductHandleRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetReviewsByProductHandle', inputVars);
+}
+
+exports.getReviewsByProductHandle = function getReviewsByProductHandle(dcOrVars, vars) {
+  return executeQuery(getReviewsByProductHandleRef(dcOrVars, vars));
+};
+
 exports.getProductByHandleRef = function getProductByHandleRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();

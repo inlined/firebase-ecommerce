@@ -18,7 +18,7 @@ export default async function Home() {
     ...(collectionsData?.collections || [])
   ].sort((a, b) => {
     const order: Record<string, number> = {
-      'o24-collection': 1,
+      'o25-collection': 1,
       'mist-collection': 2,
       'winter-collection': 3
     }

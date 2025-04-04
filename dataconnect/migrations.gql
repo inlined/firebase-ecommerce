@@ -464,9 +464,9 @@ mutation CreateCollectionSEOs {
     data: [
       {
         id: "0f2ae73c8d8d4207936e25125d3794bd"
-        title: "O24 Collection - Premium Fashion Essentials"
-        description: "Discover our O24 Collection featuring premium fashion pieces with exceptional craftsmanship and modern design."
-        keywords: "O24, fashion collection, premium clothing, modern fashion, designer wear"
+        title: "O25 Collection - Premium Fashion Essentials"
+        description: "Discover our O25 Collection featuring premium fashion pieces with exceptional craftsmanship and modern design."
+        keywords: "O25, fashion collection, premium clothing, modern fashion, designer wear"
       }
       {
         id: "7244915a02d2496bb0f54070c24a7a6a"
@@ -501,7 +501,7 @@ mutation CreateCollectionImages {
         id: "0c914f38bbe443b5849c5c316fcfbf3c"
         productId: "c9931067762c4e7e921647d2f9f2c61e"
         url: "https://firebasestorage.googleapis.com/v0/b/fir-ecommerce-13f94.firebasestorage.app/o/collections%2Fo24-featured.webp?alt=media&token=fd2a47ac-5318-4be1-b3fd-6ff228318370"
-        altText: "O24 Collection"
+        altText: "O25 Collection"
         featured: true
         width: 800
         height: 1200
@@ -516,8 +516,8 @@ mutation CreateCollections {
     data: [
       {
         id: "1eca96176a49488990245de50700e6de"
-        handle: "o24-collection"
-        name: "O24 — Collection"
+        handle: "o25-collection"
+        name: "O25 — Collection"
         description: "Knitted from soft chenille, this sweater features chain-stitched Varsity A embroidery..."
         seoId: "0f2ae73c8d8d4207936e25125d3794bd"
         page: "home"
@@ -548,7 +548,7 @@ mutation CreateCollections {
 mutation CreateProductCollections {
   productCollection_upsertMany(
     data: [
-      # O24 Collection
+      # O25 Collection
       {
         collectionId: "1eca96176a49488990245de50700e6de"
         productId: "b4cf88b7ec9f40a791e7e1d412baead0"
