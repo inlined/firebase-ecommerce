@@ -33,7 +33,7 @@ export default function Header({ navigation }: Props) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const { push } = useRouter()
   const [query, setQuery] = useState('')
-  const { user } = useAuth()
+  const { auth, user } = useAuth()
   const isLoggedIn = !!user?.uid
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const searchInputRef = useRef<HTMLInputElement>(null)
@@ -191,8 +191,6 @@ export default function Header({ navigation }: Props) {
                 <MenuItem>
                   <button
                     onClick={async () => {
-                      const app = getApp();
-                      const auth = getAuth(app);
                       await signOut(auth);
                       deleteCookie(auth.emulatorConfig ? "__dev_FIREBASE_[DEFAULT]" : "__HOST-FIREBASE_[DEFAULT]");
                       push('/auth');

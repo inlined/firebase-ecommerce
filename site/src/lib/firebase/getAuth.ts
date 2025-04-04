@@ -12,28 +12,7 @@ export default function getAuth(app: FirebaseApp): Auth {
         if (!auth.emulatorConfig) {
             console.log("Connecting to Auth emulator");
             connectAuthEmulator(auth, process.env.NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST);
-            auth.onIdTokenChanged(async (user) => {
-                if (user) {
-                    const idToken = await user.getIdToken();
-                    await setCookie("__dev_FIREBASE_[DEFAULT]", idToken);
-                    console.log("Setting cookie");
-                } else {
-                    await deleteCookie("__session");
-                    console.log("Deleting cookie");
-                }
-            });
         }
-    } else {
-        auth.onIdTokenChanged(async (user) => {
-            if (user) {
-                const idToken = await user.getIdToken();
-                await setCookie(`__HOST-FIREBASE_[DEFAULT]`, idToken);
-                console.log("Setting cookie");
-            } else {
-                await deleteCookie('__HOST-FIREBASE_[DEFAULT]');
-                console.log("Deleting cookie");
-            }
-        });
     }
     return auth;
 }

@@ -7,20 +7,19 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from '@firebase/auth'
-import getAuth from '@/lib/firebase/getAuth'
 import Button from '@/components/ui/button'
 import Input from '@/components/ui/input'
 import { FirebaseError } from '@firebase/app'
 import { upsertCustomer } from '@firebasegen/default-connector'
 import getDataConnect from '@/lib/firebase/getDataConnect'
-import getApp from '@/lib/firebase/getApp'
 import { getAuthErrorMessage } from '@/lib/firebase/getAuthErrorMessages'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useShallow } from 'zustand/shallow'
 import { setCookie } from 'cookies-next'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function Authentication() {
-  const auth = getAuth(getApp())
+  const { auth } = useAuth();
   const dc = getDataConnect()
   const router = useRouter()
   const [error, setError] = useState('')

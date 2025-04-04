@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react'
 import { type User } from '@firebase/auth'
 import getAuth from '@/lib/firebase/getAuth'
 import getApp from '@/lib/firebase/getApp'
+import { deleteCookie, setCookie } from 'cookies-next/client'
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
+  const auth = getAuth(getApp())
 
   useEffect(() => {
-    const unsubscribe = getAuth(getApp()).onAuthStateChanged(
+    const unsubscribe = auth.onAuthStateChanged(
       (user) => {
         setUser(user)
         setLoading(false)
@@ -20,8 +22,22 @@ export function useAuth() {
       }
     )
 
+    const cookieName = process.env.NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST
+      ? '__dev_FIREBASE_[DEFAULT]'
+      : '__HOST-FIREBASE_[DEFAULT]';
+    auth.onIdTokenChanged(async (user) => {
+        if (user) {
+            const idToken = await user.getIdToken();
+            setCookie(cookieName, idToken);
+            console.log("Setting cookie");
+        } else {
+            deleteCookie(cookieName);
+            console.log("Deleting cookie");
+        }
+    });
+
     return () => unsubscribe()
   }, [])
 
-  return { user, loading, error }
+  return { auth, user, loading, error }
 }
