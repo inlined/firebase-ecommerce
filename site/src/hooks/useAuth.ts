@@ -28,7 +28,7 @@ export function useAuth() {
     auth.onIdTokenChanged(async (user) => {
         if (user) {
             const idToken = await user.getIdToken();
-            setCookie(cookieName, idToken);
+            setCookie(cookieName, idToken, { secure: true, path: '/' });
             console.log("Setting cookie");
         } else {
             deleteCookie(cookieName);
