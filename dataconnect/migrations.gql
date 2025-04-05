@@ -490,7 +490,7 @@ mutation CreateCollectionImages {
       {
         id: "d13a45821c7c4a1b927035b43f8483ab"
         productId: "c9931067762c4e7e921647d2f9f2c61e"
-        url: "https://firebasestorage.googleapis.com/v0/b/fir-ecommerce-13f94.firebasestorage.app/o/collections%2FMist_Featured.webp?alt=media&token=184227ec-30d0-4520-9d42-048cf13bbb78"
+        url: "https://firebasestorage.googleapis.com/v0/b/fir-images-86109.firebasestorage.app/o/pexels-ivan-samkov-8498329.jpg?alt=media&token=9cc6f05d-7027-46de-9324-9d9115586613"
         altText: "Mist Collection"
         featured: true
         width: 800
@@ -500,7 +500,7 @@ mutation CreateCollectionImages {
       {
         id: "0c914f38bbe443b5849c5c316fcfbf3c"
         productId: "c9931067762c4e7e921647d2f9f2c61e"
-        url: "https://firebasestorage.googleapis.com/v0/b/fir-ecommerce-13f94.firebasestorage.app/o/collections%2Fo24-featured.webp?alt=media&token=fd2a47ac-5318-4be1-b3fd-6ff228318370"
+        url: "https://firebasestorage.googleapis.com/v0/b/fir-images-86109.firebasestorage.app/o/pexels-magaritta-acheampong-1477993-2849436.jpg?alt=media&token=2f9504e4-128f-4c35-afae-6b07f3fb6b00"
         altText: "O25 Collection"
         featured: true
         width: 800
