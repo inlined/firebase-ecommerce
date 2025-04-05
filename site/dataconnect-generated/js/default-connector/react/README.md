@@ -6,23 +6,22 @@
 - [**Accessing the connector**](#accessing-the-connector)
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
-  - [*ListCustomers*](#listcustomers)
-  - [*GetReviewsByProductId*](#getreviewsbyproductid)
-  - [*GetReviewsByProductHandle*](#getreviewsbyproducthandle)
-  - [*GetProductByHandle*](#getproductbyhandle)
-  - [*GetCollectionByHandle*](#getcollectionbyhandle)
+  - [*GetProduct*](#getproduct)
+  - [*GetProductReviews*](#getproductreviews)
+  - [*GetCollection*](#getcollection)
   - [*GetCollectionsByPage*](#getcollectionsbypage)
   - [*Search*](#search)
-  - [*GetCurrentUsersOrders*](#getcurrentusersorders)
-  - [*GetOrderById*](#getorderbyid)
+  - [*GetCurrentUserOrders*](#getcurrentuserorders)
+  - [*GetOrder*](#getorder)
   - [*GetAllOrders*](#getallorders)
+  - [*ListAllCustomers*](#listallcustomers)
 - [**Mutations**](#mutations)
   - [*UpsertCustomer*](#upsertcustomer)
   - [*CreateProductReview*](#createproductreview)
   - [*CreateOrder*](#createorder)
+  - [*CreateOrderItem*](#createorderitem)
   - [*UpdateOrderByPaymentIntentId*](#updateorderbypaymentintentid)
   - [*UpdateOrderByChargeId*](#updateorderbychargeid)
-  - [*CreateOrderItem*](#createorderitem)
 
 # Generated React README
 This README will guide you through the process of using the generated React SDK package for the connector `default`. It will also provide examples on how to use your generated SDK to call your Data Connect queries and mutations.
@@ -123,370 +122,99 @@ Here's a general overview of how to use the generated Query hooks in your code:
 
 Below are examples of how to use the `default` connector's generated Query hook functions to execute each Query. You can also follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#use_queries_and_mutations_in_your_react_client).
 
-## ListCustomers
-You can execute the `ListCustomers` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+## GetProduct
+You can execute the `GetProduct` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useListCustomers(dc: DataConnect, options?: useDataConnectQueryOptions<ListCustomersData>): UseDataConnectQueryResult<ListCustomersData, undefined>;
+useGetProduct(dc: DataConnect, vars: GetProductVariables, options?: useDataConnectQueryOptions<GetProductData>): UseDataConnectQueryResult<GetProductData, GetProductVariables>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useListCustomers(options?: useDataConnectQueryOptions<ListCustomersData>): UseDataConnectQueryResult<ListCustomersData, undefined>;
+useGetProduct(vars: GetProductVariables, options?: useDataConnectQueryOptions<GetProductData>): UseDataConnectQueryResult<GetProductData, GetProductVariables>;
 ```
 
 ### Variables
-The `ListCustomers` Query has no variables.
-### Return Type
-Recall that calling the `ListCustomers` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
-
-To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
-
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `ListCustomers` Query is of type `ListCustomersData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-```javascript
-export interface ListCustomersData {
-  customers: ({
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  } & Customer_Key)[];
-}
-```
-
-To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
-
-### Using `ListCustomers`'s Query hook function
+The `GetProduct` Query requires an argument of type `GetProductVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 
 ```javascript
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig } from '@firebasegen/default-connector';
-import { useListCustomers } from '@firebasegen/default-connector/react'
-
-export default function ListCustomersComponent() {
-
-
-  // You don't have to do anything to "execute" the Query.
-  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useListCustomers();
-
-  // You can also pass in a `DataConnect` instance to the Query hook function.
-  const dataConnect = getDataConnect(connectorConfig);
-  const query = useListCustomers(dataConnect);
-
-  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
-  const options = { staleTime: 5 * 1000 };
-  const query = useListCustomers(options);
-
-  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
-  const dataConnect = getDataConnect(connectorConfig);
-  const options = { staleTime: 5 * 1000 };
-  const query = useListCustomers(dataConnect, options);
-
-  // Then, you can render your component dynamically based on the status of the Query.
-  if (query.isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (query.isError) {
-    return <div>Error: {query.error.message}</div>;
-  }
-
-  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
-  if (query.isSuccess) {
-    console.log(query.data.customers);
-  }
-  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
-}
-```
-
-## GetReviewsByProductId
-You can execute the `GetReviewsByProductId` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
-
-```javascript
-useGetReviewsByProductId(dc: DataConnect, vars: GetReviewsByProductIdVariables, options?: useDataConnectQueryOptions<GetReviewsByProductIdData>): UseDataConnectQueryResult<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
-```
-You can also pass in a `DataConnect` instance to the Query hook function.
-```javascript
-useGetReviewsByProductId(vars: GetReviewsByProductIdVariables, options?: useDataConnectQueryOptions<GetReviewsByProductIdData>): UseDataConnectQueryResult<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
-```
-
-### Variables
-The `GetReviewsByProductId` Query requires an argument of type `GetReviewsByProductIdVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-
-```javascript
-export interface GetReviewsByProductIdVariables {
-  productId: UUIDString;
+export interface GetProductVariables {
+  id: string;
 }
 ```
 ### Return Type
-Recall that calling the `GetReviewsByProductId` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+Recall that calling the `GetProduct` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
 To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
 
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetReviewsByProductId` Query is of type `GetReviewsByProductIdData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetProduct` Query is of type `GetProductData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 ```javascript
-export interface GetReviewsByProductIdData {
-  productReviews: ({
-    id: UUIDString;
-    rating: number;
-    content: string;
-    date: TimestampString;
-    customer: {
-      id: string;
-      firstName: string;
-      lastName: string;
-    } & Customer_Key;
-  })[];
-}
-```
-
-To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
-
-### Using `GetReviewsByProductId`'s Query hook function
-
-```javascript
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, GetReviewsByProductIdVariables } from '@firebasegen/default-connector';
-import { useGetReviewsByProductId } from '@firebasegen/default-connector/react'
-
-export default function GetReviewsByProductIdComponent() {
-
-  // The `useGetReviewsByProductId` Query hook requires an argument of type `GetReviewsByProductIdVariables`:
-  const getReviewsByProductIdVars: GetReviewsByProductIdVariables = {
-    productId: ..., 
-  };
-
-  // You don't have to do anything to "execute" the Query.
-  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetReviewsByProductId(getReviewsByProductIdVars);
-  // Variables can be defined inline as well.
-  const query = useGetReviewsByProductId({ productId: ..., });
-
-  // You can also pass in a `DataConnect` instance to the Query hook function.
-  const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetReviewsByProductId(dataConnect, getReviewsByProductIdVars);
-
-  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
-  const options = { staleTime: 5 * 1000 };
-  const query = useGetReviewsByProductId(getReviewsByProductIdVars, options);
-
-  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
-  const dataConnect = getDataConnect(connectorConfig);
-  const options = { staleTime: 5 * 1000 };
-  const query = useGetReviewsByProductId(dataConnect, getReviewsByProductIdVars, options);
-
-  // Then, you can render your component dynamically based on the status of the Query.
-  if (query.isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (query.isError) {
-    return <div>Error: {query.error.message}</div>;
-  }
-
-  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
-  if (query.isSuccess) {
-    console.log(query.data.productReviews);
-  }
-  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
-}
-```
-
-## GetReviewsByProductHandle
-You can execute the `GetReviewsByProductHandle` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
-
-```javascript
-useGetReviewsByProductHandle(dc: DataConnect, vars: GetReviewsByProductHandleVariables, options?: useDataConnectQueryOptions<GetReviewsByProductHandleData>): UseDataConnectQueryResult<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
-```
-You can also pass in a `DataConnect` instance to the Query hook function.
-```javascript
-useGetReviewsByProductHandle(vars: GetReviewsByProductHandleVariables, options?: useDataConnectQueryOptions<GetReviewsByProductHandleData>): UseDataConnectQueryResult<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
-```
-
-### Variables
-The `GetReviewsByProductHandle` Query requires an argument of type `GetReviewsByProductHandleVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-
-```javascript
-export interface GetReviewsByProductHandleVariables {
-  handle: string;
-}
-```
-### Return Type
-Recall that calling the `GetReviewsByProductHandle` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
-
-To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
-
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetReviewsByProductHandle` Query is of type `GetReviewsByProductHandleData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-```javascript
-export interface GetReviewsByProductHandleData {
-  productReviews: ({
-    id: UUIDString;
-    rating: number;
-    content: string;
-    date: TimestampString;
-    customer: {
-      id: string;
-      firstName: string;
-      lastName: string;
-    } & Customer_Key;
-  })[];
-}
-```
-
-To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
-
-### Using `GetReviewsByProductHandle`'s Query hook function
-
-```javascript
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, GetReviewsByProductHandleVariables } from '@firebasegen/default-connector';
-import { useGetReviewsByProductHandle } from '@firebasegen/default-connector/react'
-
-export default function GetReviewsByProductHandleComponent() {
-
-  // The `useGetReviewsByProductHandle` Query hook requires an argument of type `GetReviewsByProductHandleVariables`:
-  const getReviewsByProductHandleVars: GetReviewsByProductHandleVariables = {
-    handle: ..., 
-  };
-
-  // You don't have to do anything to "execute" the Query.
-  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetReviewsByProductHandle(getReviewsByProductHandleVars);
-  // Variables can be defined inline as well.
-  const query = useGetReviewsByProductHandle({ handle: ..., });
-
-  // You can also pass in a `DataConnect` instance to the Query hook function.
-  const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetReviewsByProductHandle(dataConnect, getReviewsByProductHandleVars);
-
-  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
-  const options = { staleTime: 5 * 1000 };
-  const query = useGetReviewsByProductHandle(getReviewsByProductHandleVars, options);
-
-  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
-  const dataConnect = getDataConnect(connectorConfig);
-  const options = { staleTime: 5 * 1000 };
-  const query = useGetReviewsByProductHandle(dataConnect, getReviewsByProductHandleVars, options);
-
-  // Then, you can render your component dynamically based on the status of the Query.
-  if (query.isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (query.isError) {
-    return <div>Error: {query.error.message}</div>;
-  }
-
-  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
-  if (query.isSuccess) {
-    console.log(query.data.productReviews);
-  }
-  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
-}
-```
-
-## GetProductByHandle
-You can execute the `GetProductByHandle` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
-
-```javascript
-useGetProductByHandle(dc: DataConnect, vars: GetProductByHandleVariables, options?: useDataConnectQueryOptions<GetProductByHandleData>): UseDataConnectQueryResult<GetProductByHandleData, GetProductByHandleVariables>;
-```
-You can also pass in a `DataConnect` instance to the Query hook function.
-```javascript
-useGetProductByHandle(vars: GetProductByHandleVariables, options?: useDataConnectQueryOptions<GetProductByHandleData>): UseDataConnectQueryResult<GetProductByHandleData, GetProductByHandleVariables>;
-```
-
-### Variables
-The `GetProductByHandle` Query requires an argument of type `GetProductByHandleVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-
-```javascript
-export interface GetProductByHandleVariables {
-  handle: string;
-}
-```
-### Return Type
-Recall that calling the `GetProductByHandle` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
-
-To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
-
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetProductByHandle` Query is of type `GetProductByHandleData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-```javascript
-export interface GetProductByHandleData {
+export interface GetProductData {
   product?: {
-    id: UUIDString;
+    id: string;
     title: string;
     description?: string | null;
-    handle: string;
     availableForSale: boolean;
     createdAt: TimestampString;
     updatedAt: TimestampString;
-    featuredImage?: {
+    featuredImage: {
       url: string;
       width: number;
       height: number;
-      altText?: string | null;
+      altText: string;
     };
       seo?: {
         title: string;
         description: string;
         keywords: string;
       };
-        productVariants_on_product: ({
-          id: UUIDString;
+        variants: ({
+          sku: string;
           price: number;
           availableForSale: boolean;
           inventoryQuantity: number;
           selectedOptions_on_productVariant: ({
-            name?: string | null;
-            value?: string | null;
+            name: string;
+            value: string;
           })[];
         } & ProductVariant_Key)[];
-          productImages_on_product: ({
-            id: UUIDString;
-            url: string;
-            altText?: string | null;
-            width: number;
-            height: number;
-            displayPosition: number;
-          } & ProductImage_Key)[];
   } & Product_Key;
 }
 ```
 
 To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
 
-### Using `GetProductByHandle`'s Query hook function
+### Using `GetProduct`'s Query hook function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, GetProductByHandleVariables } from '@firebasegen/default-connector';
-import { useGetProductByHandle } from '@firebasegen/default-connector/react'
+import { connectorConfig, GetProductVariables } from '@firebasegen/default-connector';
+import { useGetProduct } from '@firebasegen/default-connector/react'
 
-export default function GetProductByHandleComponent() {
+export default function GetProductComponent() {
 
-  // The `useGetProductByHandle` Query hook requires an argument of type `GetProductByHandleVariables`:
-  const getProductByHandleVars: GetProductByHandleVariables = {
-    handle: ..., 
+  // The `useGetProduct` Query hook requires an argument of type `GetProductVariables`:
+  const getProductVars: GetProductVariables = {
+    id: ..., 
   };
 
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetProductByHandle(getProductByHandleVars);
+  const query = useGetProduct(getProductVars);
   // Variables can be defined inline as well.
-  const query = useGetProductByHandle({ handle: ..., });
+  const query = useGetProduct({ id: ..., });
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetProductByHandle(dataConnect, getProductByHandleVars);
+  const query = useGetProduct(dataConnect, getProductVars);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useGetProductByHandle(getProductByHandleVars, options);
+  const query = useGetProduct(getProductVars, options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useGetProductByHandle(dataConnect, getProductByHandleVars, options);
+  const query = useGetProduct(dataConnect, getProductVars, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -505,116 +233,81 @@ export default function GetProductByHandleComponent() {
 }
 ```
 
-## GetCollectionByHandle
-You can execute the `GetCollectionByHandle` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+## GetProductReviews
+You can execute the `GetProductReviews` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useGetCollectionByHandle(dc: DataConnect, vars: GetCollectionByHandleVariables, options?: useDataConnectQueryOptions<GetCollectionByHandleData>): UseDataConnectQueryResult<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+useGetProductReviews(dc: DataConnect, vars: GetProductReviewsVariables, options?: useDataConnectQueryOptions<GetProductReviewsData>): UseDataConnectQueryResult<GetProductReviewsData, GetProductReviewsVariables>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useGetCollectionByHandle(vars: GetCollectionByHandleVariables, options?: useDataConnectQueryOptions<GetCollectionByHandleData>): UseDataConnectQueryResult<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+useGetProductReviews(vars: GetProductReviewsVariables, options?: useDataConnectQueryOptions<GetProductReviewsData>): UseDataConnectQueryResult<GetProductReviewsData, GetProductReviewsVariables>;
 ```
 
 ### Variables
-The `GetCollectionByHandle` Query requires an argument of type `GetCollectionByHandleVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+The `GetProductReviews` Query requires an argument of type `GetProductReviewsVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 
 ```javascript
-export interface GetCollectionByHandleVariables {
-  handle: string;
-  page?: string | null;
+export interface GetProductReviewsVariables {
+  productId: string;
 }
 ```
 ### Return Type
-Recall that calling the `GetCollectionByHandle` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+Recall that calling the `GetProductReviews` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
 To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
 
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetCollectionByHandle` Query is of type `GetCollectionByHandleData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetProductReviews` Query is of type `GetProductReviewsData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 ```javascript
-export interface GetCollectionByHandleData {
-  collections: ({
+export interface GetProductReviewsData {
+  reviews: ({
     id: UUIDString;
-    name: string;
-    description?: string | null;
-    page?: string | null;
-    featuredImage?: {
-      url: string;
-      width: number;
-      height: number;
-      altText?: string | null;
-    };
-      seo?: {
-        title: string;
-        description: string;
-        keywords: string;
-      };
-        products_via_ProductCollection: ({
-          id: UUIDString;
-          title: string;
-          handle: string;
-          description?: string | null;
-          availableForSale: boolean;
-          createdAt: TimestampString;
-          updatedAt: TimestampString;
-          productVariants_on_product: ({
-            id: UUIDString;
-            price: number;
-            availableForSale: boolean;
-            inventoryQuantity: number;
-            selectedOptions_on_productVariant: ({
-              name?: string | null;
-              value?: string | null;
-            })[];
-          } & ProductVariant_Key)[];
-            productImages_on_product: ({
-              id: UUIDString;
-              url: string;
-              altText?: string | null;
-              width: number;
-              height: number;
-              displayPosition: number;
-            } & ProductImage_Key)[];
-        } & Product_Key)[];
-  } & Collection_Key)[];
+    rating: number;
+    content: string;
+    date: TimestampString;
+    customer: {
+      id: string;
+      firstName: string;
+      lastName: string;
+    } & Customer_Key;
+  })[];
 }
 ```
 
 To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
 
-### Using `GetCollectionByHandle`'s Query hook function
+### Using `GetProductReviews`'s Query hook function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, GetCollectionByHandleVariables } from '@firebasegen/default-connector';
-import { useGetCollectionByHandle } from '@firebasegen/default-connector/react'
+import { connectorConfig, GetProductReviewsVariables } from '@firebasegen/default-connector';
+import { useGetProductReviews } from '@firebasegen/default-connector/react'
 
-export default function GetCollectionByHandleComponent() {
+export default function GetProductReviewsComponent() {
 
-  // The `useGetCollectionByHandle` Query hook requires an argument of type `GetCollectionByHandleVariables`:
-  const getCollectionByHandleVars: GetCollectionByHandleVariables = {
-    handle: ..., 
-    page: ..., // optional
+  // The `useGetProductReviews` Query hook requires an argument of type `GetProductReviewsVariables`:
+  const getProductReviewsVars: GetProductReviewsVariables = {
+    productId: ..., 
   };
 
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetCollectionByHandle(getCollectionByHandleVars);
+  const query = useGetProductReviews(getProductReviewsVars);
   // Variables can be defined inline as well.
-  const query = useGetCollectionByHandle({ handle: ..., page: ..., });
+  const query = useGetProductReviews({ productId: ..., });
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetCollectionByHandle(dataConnect, getCollectionByHandleVars);
+  const query = useGetProductReviews(dataConnect, getProductReviewsVars);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useGetCollectionByHandle(getCollectionByHandleVars, options);
+  const query = useGetProductReviews(getProductReviewsVars, options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useGetCollectionByHandle(dataConnect, getCollectionByHandleVars, options);
+  const query = useGetProductReviews(dataConnect, getProductReviewsVars, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -627,7 +320,130 @@ export default function GetCollectionByHandleComponent() {
 
   // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
   if (query.isSuccess) {
-    console.log(query.data.collections);
+    console.log(query.data.reviews);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## GetCollection
+You can execute the `GetCollection` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+
+```javascript
+useGetCollection(dc: DataConnect, vars: GetCollectionVariables, options?: useDataConnectQueryOptions<GetCollectionData>): UseDataConnectQueryResult<GetCollectionData, GetCollectionVariables>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useGetCollection(vars: GetCollectionVariables, options?: useDataConnectQueryOptions<GetCollectionData>): UseDataConnectQueryResult<GetCollectionData, GetCollectionVariables>;
+```
+
+### Variables
+The `GetCollection` Query requires an argument of type `GetCollectionVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface GetCollectionVariables {
+  id: string;
+}
+```
+### Return Type
+Recall that calling the `GetCollection` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetCollection` Query is of type `GetCollectionData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface GetCollectionData {
+  collection?: {
+    id: string;
+    name: string;
+    description?: string | null;
+    page?: string | null;
+    featuredImage: {
+      url: string;
+      width: number;
+      height: number;
+      altText: string;
+    };
+      seo?: {
+        title: string;
+        description: string;
+        keywords: string;
+      };
+        products: ({
+          id: string;
+          title: string;
+          description?: string | null;
+          availableForSale: boolean;
+          createdAt: TimestampString;
+          updatedAt: TimestampString;
+          featuredImage: {
+            url: string;
+            width: number;
+            height: number;
+            altText: string;
+          };
+            variants: ({
+              sku: string;
+              price: number;
+              availableForSale: boolean;
+              inventoryQuantity: number;
+              selectedOptions: ({
+                name: string;
+                value: string;
+              })[];
+            } & ProductVariant_Key)[];
+        } & Product_Key)[];
+  } & Collection_Key;
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `GetCollection`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, GetCollectionVariables } from '@firebasegen/default-connector';
+import { useGetCollection } from '@firebasegen/default-connector/react'
+
+export default function GetCollectionComponent() {
+
+  // The `useGetCollection` Query hook requires an argument of type `GetCollectionVariables`:
+  const getCollectionVars: GetCollectionVariables = {
+    id: ..., 
+  };
+
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useGetCollection(getCollectionVars);
+  // Variables can be defined inline as well.
+  const query = useGetCollection({ id: ..., });
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useGetCollection(dataConnect, getCollectionVars);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetCollection(getCollectionVars, options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetCollection(dataConnect, getCollectionVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.collection);
   }
   return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
 }
@@ -661,38 +477,35 @@ To access the data returned by a Query, use the `UseQueryResult.data` field. The
 ```javascript
 export interface GetCollectionsByPageData {
   collections: ({
-    id: UUIDString;
+    id: string;
     name: string;
     description?: string | null;
-    handle: string;
     page?: string | null;
-    featuredImage?: {
+    featuredImage: {
       url: string;
       width: number;
       height: number;
-      altText?: string | null;
+      altText: string;
     };
       products: ({
-        id: UUIDString;
+        id: string;
         title: string;
-        handle: string;
         description?: string | null;
-        variants: ({
-          id: UUIDString;
-          price: number;
-          selectedOptions_on_productVariant: ({
-            name?: string | null;
-            value?: string | null;
-          })[];
-        } & ProductVariant_Key)[];
-          images: ({
-            id: UUIDString;
-            url: string;
-            altText?: string | null;
-            width: number;
-            height: number;
-            displayPosition: number;
-          } & ProductImage_Key)[];
+        featuredImage: {
+          url: string;
+          width: number;
+          height: number;
+          altText: string;
+        };
+          variants: ({
+            sku: string;
+            price: number;
+            title: string;
+            selectedOptions: ({
+              name: string;
+              value: string;
+            })[];
+          } & ProductVariant_Key)[];
       } & Product_Key)[];
   } & Collection_Key)[];
 }
@@ -784,20 +597,17 @@ To access the data returned by a Query, use the `UseQueryResult.data` field. The
 ```javascript
 export interface SearchData {
   productsByDescription: ({
-    id: UUIDString;
-    handle: string;
+    id: string;
     title: string;
   } & Product_Key)[];
     productsByTitle: ({
-      id: UUIDString;
-      handle: string;
+      id: string;
       title: string;
     } & Product_Key)[];
       reviews: ({
         product: {
-          id: UUIDString;
+          id: string;
           title: string;
-          handle: string;
         } & Product_Key;
       })[];
 }
@@ -857,27 +667,27 @@ export default function SearchComponent() {
 }
 ```
 
-## GetCurrentUsersOrders
-You can execute the `GetCurrentUsersOrders` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+## GetCurrentUserOrders
+You can execute the `GetCurrentUserOrders` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useGetCurrentUsersOrders(dc: DataConnect, options?: useDataConnectQueryOptions<GetCurrentUsersOrdersData>): UseDataConnectQueryResult<GetCurrentUsersOrdersData, undefined>;
+useGetCurrentUserOrders(dc: DataConnect, options?: useDataConnectQueryOptions<GetCurrentUserOrdersData>): UseDataConnectQueryResult<GetCurrentUserOrdersData, undefined>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useGetCurrentUsersOrders(options?: useDataConnectQueryOptions<GetCurrentUsersOrdersData>): UseDataConnectQueryResult<GetCurrentUsersOrdersData, undefined>;
+useGetCurrentUserOrders(options?: useDataConnectQueryOptions<GetCurrentUserOrdersData>): UseDataConnectQueryResult<GetCurrentUserOrdersData, undefined>;
 ```
 
 ### Variables
-The `GetCurrentUsersOrders` Query has no variables.
+The `GetCurrentUserOrders` Query has no variables.
 ### Return Type
-Recall that calling the `GetCurrentUsersOrders` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+Recall that calling the `GetCurrentUserOrders` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
 To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
 
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetCurrentUsersOrders` Query is of type `GetCurrentUsersOrdersData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetCurrentUserOrders` Query is of type `GetCurrentUserOrdersData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 ```javascript
-export interface GetCurrentUsersOrdersData {
+export interface GetCurrentUserOrdersData {
   orders: ({
     id: UUIDString;
     customerId: string;
@@ -894,15 +704,11 @@ export interface GetCurrentUsersOrdersData {
       quantity: number;
       price: number;
       product: {
-        id: UUIDString;
+        id: string;
         title: string;
-        handle: string;
-        images: ({
+        featuredImage: {
           url: string;
-          altText?: string | null;
-          width: number;
-          height: number;
-        })[];
+        };
       } & Product_Key;
     } & OrderItem_Key)[];
   } & Order_Key)[];
@@ -911,32 +717,32 @@ export interface GetCurrentUsersOrdersData {
 
 To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
 
-### Using `GetCurrentUsersOrders`'s Query hook function
+### Using `GetCurrentUserOrders`'s Query hook function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig } from '@firebasegen/default-connector';
-import { useGetCurrentUsersOrders } from '@firebasegen/default-connector/react'
+import { useGetCurrentUserOrders } from '@firebasegen/default-connector/react'
 
-export default function GetCurrentUsersOrdersComponent() {
+export default function GetCurrentUserOrdersComponent() {
 
 
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetCurrentUsersOrders();
+  const query = useGetCurrentUserOrders();
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetCurrentUsersOrders(dataConnect);
+  const query = useGetCurrentUserOrders(dataConnect);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useGetCurrentUsersOrders(options);
+  const query = useGetCurrentUserOrders(options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useGetCurrentUsersOrders(dataConnect, options);
+  const query = useGetCurrentUserOrders(dataConnect, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -955,33 +761,33 @@ export default function GetCurrentUsersOrdersComponent() {
 }
 ```
 
-## GetOrderById
-You can execute the `GetOrderById` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+## GetOrder
+You can execute the `GetOrder` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useGetOrderById(dc: DataConnect, vars: GetOrderByIdVariables, options?: useDataConnectQueryOptions<GetOrderByIdData>): UseDataConnectQueryResult<GetOrderByIdData, GetOrderByIdVariables>;
+useGetOrder(dc: DataConnect, vars: GetOrderVariables, options?: useDataConnectQueryOptions<GetOrderData>): UseDataConnectQueryResult<GetOrderData, GetOrderVariables>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useGetOrderById(vars: GetOrderByIdVariables, options?: useDataConnectQueryOptions<GetOrderByIdData>): UseDataConnectQueryResult<GetOrderByIdData, GetOrderByIdVariables>;
+useGetOrder(vars: GetOrderVariables, options?: useDataConnectQueryOptions<GetOrderData>): UseDataConnectQueryResult<GetOrderData, GetOrderVariables>;
 ```
 
 ### Variables
-The `GetOrderById` Query requires an argument of type `GetOrderByIdVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+The `GetOrder` Query requires an argument of type `GetOrderVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 
 ```javascript
-export interface GetOrderByIdVariables {
+export interface GetOrderVariables {
   id: UUIDString;
 }
 ```
 ### Return Type
-Recall that calling the `GetOrderById` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+Recall that calling the `GetOrder` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
 To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
 
-To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetOrderById` Query is of type `GetOrderByIdData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetOrder` Query is of type `GetOrderData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
 ```javascript
-export interface GetOrderByIdData {
+export interface GetOrderData {
   order?: {
     id: UUIDString;
     customerId: string;
@@ -995,15 +801,14 @@ export interface GetOrderByIdData {
       quantity: number;
       price: number;
       product: {
-        id: UUIDString;
+        id: string;
         title: string;
-        handle: string;
-        images: ({
+        featuredImage: {
           url: string;
-          altText?: string | null;
           width: number;
           height: number;
-        })[];
+          altText: string;
+        };
       } & Product_Key;
     } & OrderItem_Key)[];
   } & Order_Key;
@@ -1012,38 +817,38 @@ export interface GetOrderByIdData {
 
 To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
 
-### Using `GetOrderById`'s Query hook function
+### Using `GetOrder`'s Query hook function
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, GetOrderByIdVariables } from '@firebasegen/default-connector';
-import { useGetOrderById } from '@firebasegen/default-connector/react'
+import { connectorConfig, GetOrderVariables } from '@firebasegen/default-connector';
+import { useGetOrder } from '@firebasegen/default-connector/react'
 
-export default function GetOrderByIdComponent() {
+export default function GetOrderComponent() {
 
-  // The `useGetOrderById` Query hook requires an argument of type `GetOrderByIdVariables`:
-  const getOrderByIdVars: GetOrderByIdVariables = {
+  // The `useGetOrder` Query hook requires an argument of type `GetOrderVariables`:
+  const getOrderVars: GetOrderVariables = {
     id: ..., 
   };
 
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useGetOrderById(getOrderByIdVars);
+  const query = useGetOrder(getOrderVars);
   // Variables can be defined inline as well.
-  const query = useGetOrderById({ id: ..., });
+  const query = useGetOrder({ id: ..., });
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useGetOrderById(dataConnect, getOrderByIdVars);
+  const query = useGetOrder(dataConnect, getOrderVars);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useGetOrderById(getOrderByIdVars, options);
+  const query = useGetOrder(getOrderVars, options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useGetOrderById(dataConnect, getOrderByIdVars, options);
+  const query = useGetOrder(dataConnect, getOrderVars, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -1091,13 +896,13 @@ export interface GetAllOrdersData {
     totalPrice: number;
     financialStatus: string;
     fulfillmentStatus: string;
+    paymentIntentId?: string | null;
     items: ({
       id: UUIDString;
       price: number;
       product: {
-        id: UUIDString;
+        id: string;
         title: string;
-        handle: string;
       } & Product_Key;
     } & OrderItem_Key)[];
   } & Order_Key)[];
@@ -1145,6 +950,82 @@ export default function GetAllOrdersComponent() {
   // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
   if (query.isSuccess) {
     console.log(query.data.orders);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## ListAllCustomers
+You can execute the `ListAllCustomers` Query using the following Query hook function, which is defined in [default-connector/react/index.d.ts](./index.d.ts):
+
+```javascript
+useListAllCustomers(dc: DataConnect, options?: useDataConnectQueryOptions<ListAllCustomersData>): UseDataConnectQueryResult<ListAllCustomersData, undefined>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useListAllCustomers(options?: useDataConnectQueryOptions<ListAllCustomersData>): UseDataConnectQueryResult<ListAllCustomersData, undefined>;
+```
+
+### Variables
+The `ListAllCustomers` Query has no variables.
+### Return Type
+Recall that calling the `ListAllCustomers` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `ListAllCustomers` Query is of type `ListAllCustomersData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface ListAllCustomersData {
+  customers: ({
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  } & Customer_Key)[];
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `ListAllCustomers`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig } from '@firebasegen/default-connector';
+import { useListAllCustomers } from '@firebasegen/default-connector/react'
+
+export default function ListAllCustomersComponent() {
+
+
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useListAllCustomers();
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useListAllCustomers(dataConnect);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useListAllCustomers(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useListAllCustomers(dataConnect, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.customers);
   }
   return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
 }
@@ -1292,7 +1173,7 @@ The `CreateProductReview` Mutation requires an argument of type `CreateProductRe
 
 ```javascript
 export interface CreateProductReviewVariables {
-  productId: UUIDString;
+  productId: string;
   rating: number;
   content: string;
 }
@@ -1391,6 +1272,7 @@ The `CreateOrder` Mutation requires an argument of type `CreateOrderVariables`, 
 ```javascript
 export interface CreateOrderVariables {
   chargeId?: string | null;
+  customerId?: string | null;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
   subtotalPrice: number;
@@ -1449,6 +1331,7 @@ export default function CreateOrderComponent() {
   // The `useCreateOrder` Mutation requires an argument of type `CreateOrderVariables`:
   const createOrderVars: CreateOrderVariables = {
     chargeId: ..., // optional
+    customerId: ..., // optional
     paymentIntentId: ..., // optional
     receiptUrl: ..., // optional
     subtotalPrice: ..., 
@@ -1460,7 +1343,7 @@ export default function CreateOrderComponent() {
   };
   mutation.mutate(createOrderVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ chargeId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
+  mutation.mutate({ chargeId: ..., customerId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {
@@ -1480,6 +1363,106 @@ export default function CreateOrderComponent() {
   // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
   if (mutation.isSuccess) {
     console.log(mutation.data.order_insert);
+  }
+  return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## CreateOrderItem
+You can execute the `CreateOrderItem` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [default-connector/react/index.d.ts](./index.d.ts)):
+```javascript
+useCreateOrderItem(options?: useDataConnectMutationOptions<CreateOrderItemData, FirebaseError, CreateOrderItemVariables>): UseDataConnectMutationResult<CreateOrderItemData, CreateOrderItemVariables>;
+```
+You can also pass in a `DataConnect` instance to the Mutation hook function.
+```javascript
+useCreateOrderItem(dc: DataConnect, options?: useDataConnectMutationOptions<CreateOrderItemData, FirebaseError, CreateOrderItemVariables>): UseDataConnectMutationResult<CreateOrderItemData, CreateOrderItemVariables>;
+```
+
+### Variables
+The `CreateOrderItem` Mutation requires an argument of type `CreateOrderItemVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface CreateOrderItemVariables {
+  orderId: UUIDString;
+  productId: string;
+  quantity: number;
+  price: number;
+}
+```
+### Return Type
+Recall that calling the `CreateOrderItem` Mutation hook function returns a `UseMutationResult` object. This object holds the state of your Mutation, including whether the Mutation is loading, has completed, or has succeeded/failed, among other things.
+
+To check the status of a Mutation, use the `UseMutationResult.status` field. You can also check for pending / success / error status using the `UseMutationResult.isPending`, `UseMutationResult.isSuccess`, and `UseMutationResult.isError` fields.
+
+To execute the Mutation, call `UseMutationResult.mutate()`. This function executes the Mutation, but does not return the data from the Mutation.
+
+To access the data returned by a Mutation, use the `UseMutationResult.data` field. The data for the `CreateOrderItem` Mutation is of type `CreateOrderItemData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface CreateOrderItemData {
+  orderItem_insert: OrderItem_Key;
+}
+```
+
+To learn more about the `UseMutationResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
+
+### Using `CreateOrderItem`'s Mutation hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, CreateOrderItemVariables } from '@firebasegen/default-connector';
+import { useCreateOrderItem } from '@firebasegen/default-connector/react'
+
+export default function CreateOrderItemComponent() {
+  // Call the Mutation hook function to get a `UseMutationResult` object which holds the state of your Mutation.
+  const mutation = useCreateOrderItem();
+
+  // You can also pass in a `DataConnect` instance to the Mutation hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const mutation = useCreateOrderItem(dataConnect);
+
+  // You can also pass in a `useDataConnectMutationOptions` object to the Mutation hook function.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useCreateOrderItem(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectMutationOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useCreateOrderItem(dataConnect, options);
+
+  // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
+  // The `useCreateOrderItem` Mutation requires an argument of type `CreateOrderItemVariables`:
+  const createOrderItemVars: CreateOrderItemVariables = {
+    orderId: ..., 
+    productId: ..., 
+    quantity: ..., 
+    price: ..., 
+  };
+  mutation.mutate(createOrderItemVars);
+  // Variables can be defined inline as well.
+  mutation.mutate({ orderId: ..., productId: ..., quantity: ..., price: ..., });
+
+  // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  mutation.mutate(createOrderItemVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Mutation.
+  if (mutation.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (mutation.isError) {
+    return <div>Error: {mutation.error.message}</div>;
+  }
+
+  // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
+  if (mutation.isSuccess) {
+    console.log(mutation.data.orderItem_insert);
   }
   return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
 }
@@ -1690,106 +1673,6 @@ export default function UpdateOrderByChargeIdComponent() {
   // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
   if (mutation.isSuccess) {
     console.log(mutation.data.order_update);
-  }
-  return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
-}
-```
-
-## CreateOrderItem
-You can execute the `CreateOrderItem` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [default-connector/react/index.d.ts](./index.d.ts)):
-```javascript
-useCreateOrderItem(options?: useDataConnectMutationOptions<CreateOrderItemData, FirebaseError, CreateOrderItemVariables>): UseDataConnectMutationResult<CreateOrderItemData, CreateOrderItemVariables>;
-```
-You can also pass in a `DataConnect` instance to the Mutation hook function.
-```javascript
-useCreateOrderItem(dc: DataConnect, options?: useDataConnectMutationOptions<CreateOrderItemData, FirebaseError, CreateOrderItemVariables>): UseDataConnectMutationResult<CreateOrderItemData, CreateOrderItemVariables>;
-```
-
-### Variables
-The `CreateOrderItem` Mutation requires an argument of type `CreateOrderItemVariables`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-
-```javascript
-export interface CreateOrderItemVariables {
-  orderId: UUIDString;
-  productId: UUIDString;
-  quantity: number;
-  price: number;
-}
-```
-### Return Type
-Recall that calling the `CreateOrderItem` Mutation hook function returns a `UseMutationResult` object. This object holds the state of your Mutation, including whether the Mutation is loading, has completed, or has succeeded/failed, among other things.
-
-To check the status of a Mutation, use the `UseMutationResult.status` field. You can also check for pending / success / error status using the `UseMutationResult.isPending`, `UseMutationResult.isSuccess`, and `UseMutationResult.isError` fields.
-
-To execute the Mutation, call `UseMutationResult.mutate()`. This function executes the Mutation, but does not return the data from the Mutation.
-
-To access the data returned by a Mutation, use the `UseMutationResult.data` field. The data for the `CreateOrderItem` Mutation is of type `CreateOrderItemData`, which is defined in [default-connector/index.d.ts](../index.d.ts). It has the following fields:
-```javascript
-export interface CreateOrderItemData {
-  orderItem_insert: OrderItem_Key;
-}
-```
-
-To learn more about the `UseMutationResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
-
-### Using `CreateOrderItem`'s Mutation hook function
-
-```javascript
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, CreateOrderItemVariables } from '@firebasegen/default-connector';
-import { useCreateOrderItem } from '@firebasegen/default-connector/react'
-
-export default function CreateOrderItemComponent() {
-  // Call the Mutation hook function to get a `UseMutationResult` object which holds the state of your Mutation.
-  const mutation = useCreateOrderItem();
-
-  // You can also pass in a `DataConnect` instance to the Mutation hook function.
-  const dataConnect = getDataConnect(connectorConfig);
-  const mutation = useCreateOrderItem(dataConnect);
-
-  // You can also pass in a `useDataConnectMutationOptions` object to the Mutation hook function.
-  const options = {
-    onSuccess: () => { console.log('Mutation succeeded!'); }
-  };
-  const mutation = useCreateOrderItem(options);
-
-  // You can also pass both a `DataConnect` instance and a `useDataConnectMutationOptions` object.
-  const dataConnect = getDataConnect(connectorConfig);
-  const options = {
-    onSuccess: () => { console.log('Mutation succeeded!'); }
-  };
-  const mutation = useCreateOrderItem(dataConnect, options);
-
-  // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
-  // The `useCreateOrderItem` Mutation requires an argument of type `CreateOrderItemVariables`:
-  const createOrderItemVars: CreateOrderItemVariables = {
-    orderId: ..., 
-    productId: ..., 
-    quantity: ..., 
-    price: ..., 
-  };
-  mutation.mutate(createOrderItemVars);
-  // Variables can be defined inline as well.
-  mutation.mutate({ orderId: ..., productId: ..., quantity: ..., price: ..., });
-
-  // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
-  const options = {
-    onSuccess: () => { console.log('Mutation succeeded!'); }
-  };
-  mutation.mutate(createOrderItemVars, options);
-
-  // Then, you can render your component dynamically based on the status of the Mutation.
-  if (mutation.isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (mutation.isError) {
-    return <div>Error: {mutation.error.message}</div>;
-  }
-
-  // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
-  if (mutation.isSuccess) {
-    console.log(mutation.data.orderItem_insert);
   }
   return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
 }

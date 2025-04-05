@@ -2,14 +2,14 @@
 
 import { useAuth } from '@/hooks/useAuth'
 import OrderListItem from './order-list-item'
-import { GetCurrentUsersOrdersData } from '@firebasegen/default-connector'
+import { GetCurrentUserOrdersData } from '@firebasegen/default-connector'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { useCartStore } from '@/lib/stores/cart-store'
 import { useShallow } from 'zustand/shallow'
 
 type Props = {
-  orders: GetCurrentUsersOrdersData['orders']
+  orders: GetCurrentUserOrdersData['orders']
 }
 
 export default function OrderHistory({ orders }: Props) {

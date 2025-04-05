@@ -1,9 +1,9 @@
 import Button from '@/components/ui/button'
 import Link from 'next/link'
-import { GetCurrentUsersOrdersData } from '@firebasegen/default-connector'
+import { GetCurrentUserOrdersData } from '@firebasegen/default-connector'
 
 type Props = {
-  order: GetCurrentUsersOrdersData['orders'][number]
+  order: GetCurrentUserOrdersData['orders'][number]
 }
 
 export default function OrderListItem({ order }: Props) {
@@ -12,9 +12,9 @@ export default function OrderListItem({ order }: Props) {
 
   return (
     <article className="flex gap-10 items-center py-5">
-      {items[0].product.images[0].url ? (
+      {items[0].product.featuredImage.url ? (
         <img
-          src={items[0].product.images[0].url as string}
+          src={items[0].product.featuredImage.url as string}
           alt={items[0].product.title}
           width="100"
           height="100"

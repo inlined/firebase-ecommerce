@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 type Props = {
   name: string
-  price: string
+  price: number
   image?: {
     url: string
     altText?: string | null
@@ -39,7 +39,12 @@ export default function ProductCard({ className, name, price, image, slug, title
       <article className="max-md:text-xs flex flex-wrap items-center justify-between gap-x-6 px-3 lg:px-6 w-full mb-auto">
         <h3 className="line-clamp-1">{title}</h3>
         {tags ? <p className="max-lg:hidden text-gray-500 truncate">{tags}</p> : null}
-        {price ? <span className="lg:ml-auto shrink-0">{price}</span> : null}
+        {price ? <span className="lg:ml-auto shrink-0">Starting at {
+                new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                }).format(price)
+        }</span> : null}
       </article>
     </Link>
   )

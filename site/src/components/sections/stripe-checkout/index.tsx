@@ -31,7 +31,6 @@ export default function StripeCheckout({ amount, products, shippingInfo }: Props
     // Wait 500ms after all fields are valid before running the fetch
     const timer = setTimeout(() => {
       customer?.getIdToken().then((token) => {
-        console.log("Fetching. User token is", token)
         return token;
       }).then((token) => {
         return fetch('/api/stripe/payment-intent', {

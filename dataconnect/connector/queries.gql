@@ -1,49 +1,13 @@
-# List all users, only admins should be able to list all users, so we use NO_ACCESS
-query ListCustomers @auth(level: NO_ACCESS) {
-  customers {
-    id
-    firstName
-    lastName
-    email
-  }
-}
-
-# Get all reviews under a product by handle
-query GetReviewsByProductId($productId: UUID!) @auth(level: PUBLIC,  insecureReason: "Public data") {
-  productReviews(where: { productId: { eq: $productId }}, orderBy: [{ date: DESC }]) {
-    id
-    rating
-    content
-    date
-    customer {
-      id
-      firstName
-      lastName
-    }
-  }
-}
-
-query GetReviewsByProductHandle($handle: String!) @auth(level: PUBLIC,  insecureReason: "Public data") {
-  productReviews(where: { product: { handle: { eq: $handle } } }, orderBy: [{ date: DESC }]) {
-    id
-    rating
-    content
-    date
-    customer {
-      id
-      firstName
-      lastName
-    }
-  }
-}
+#########################
+### Queries for public data
+##########################
 
 # Get a product by handle
-query GetProductByHandle($handle: String!) @auth(level: PUBLIC, insecureReason: "Public data") {
-  product(first: { where: { handle: { eq: $handle } } }) {
+query GetProduct($id: String!) @auth(level: PUBLIC, insecureReason: "Public data") {
+  product(id: $id) {
     id
     title
     description
-    handle
     availableForSale
     createdAt
     updatedAt
@@ -58,8 +22,8 @@ query GetProductByHandle($handle: String!) @auth(level: PUBLIC, insecureReason: 
       description
       keywords
     }
-    productVariants_on_product {
-      id
+    variants: productVariants_on_product {
+      sku
       price
       availableForSale
       inventoryQuantity
@@ -68,20 +32,27 @@ query GetProductByHandle($handle: String!) @auth(level: PUBLIC, insecureReason: 
         value
       }
     }
-    productImages_on_product(orderBy: [{ displayPosition: ASC }]) {
+  }
+}
+
+query GetProductReviews($productId: String!) @auth(level: PUBLIC,  insecureReason: "Public data") {
+  reviews: productReviews(where: { productId: { eq: $productId }}, orderBy: [{ date: DESC }]) {
+    id
+    rating
+    content
+    date
+    customer {
       id
-      url
-      altText
-      width
-      height
-      displayPosition
+      firstName
+      lastName
     }
   }
 }
 
+
 # Get a collection by handle
-query GetCollectionByHandle($handle: String!, $page: String) @auth(level: PUBLIC, insecureReason: "public data") {
-  collections(where: { handle: { eq: $handle }, page: { eq: $page } }) {
+query GetCollection($id: String!) @auth(level: PUBLIC, insecureReason: "public data") {
+  collection(id: $id) {
     id
     name
     description
@@ -97,31 +68,28 @@ query GetCollectionByHandle($handle: String!, $page: String) @auth(level: PUBLIC
       description
       keywords
     }
-    products_via_ProductCollection {
+    products: products_via_ProductCollection {
       id
       title
-      handle
       description
       availableForSale
       createdAt
       updatedAt
-      productVariants_on_product {
-        id
+      featuredImage {
+        url
+        width
+        height
+        altText
+      }
+      variants: productVariants_on_product {
+        sku
         price
         availableForSale
         inventoryQuantity
-        selectedOptions_on_productVariant {
+        selectedOptions: selectedOptions_on_productVariant {
           name
           value
         }
-      }
-      productImages_on_product(orderBy: [{ displayPosition: ASC }]) {
-        id
-        url
-        altText
-        width
-        height
-        displayPosition
       }
     }
   }
@@ -133,7 +101,6 @@ query GetCollectionsByPage($page: String) @auth(level: PUBLIC, insecureReason: "
     id
     name
     description
-    handle
     page
     featuredImage {
       url
@@ -144,23 +111,21 @@ query GetCollectionsByPage($page: String) @auth(level: PUBLIC, insecureReason: "
     products: products_via_ProductCollection {
       id
       title
-      handle
       description
+      featuredImage {
+        url
+        width
+        height
+        altText
+      }
       variants: productVariants_on_product {
-        id
+        sku
         price
-        selectedOptions_on_productVariant {
+        title
+        selectedOptions: selectedOptions_on_productVariant {
           name
           value
         }
-      }
-      images: productImages_on_product(orderBy: [{ displayPosition: ASC }]) {
-        id
-        url
-        altText
-        width
-        height
-        displayPosition
       }
     }
   }
@@ -175,7 +140,6 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
     limit: 20
   ) {
     id
-    handle
     title
   }
   productsByTitle: products_titleEmbedding_similarity(
@@ -185,7 +149,6 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
     limit: 20
   ) {
     id
-    handle
     title
   }
   reviews: productReviews_contentEmbedding_similarity(
@@ -197,13 +160,16 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
     product {
       id
       title
-      handle
     }
   }
 }
 
+#########################
+### Queries for authenticated users
+##########################
+
 # Get the orders of a customer by ID
-query GetCurrentUsersOrders @auth(level: USER) {
+query GetCurrentUserOrders @auth(level: USER) {
   orders(where: { customerId: { eq_expr: "auth.uid"  }}) {
     id
     customerId
@@ -222,12 +188,8 @@ query GetCurrentUsersOrders @auth(level: USER) {
       product {
         id
         title
-        handle
-        images: productImages_on_product(orderBy: [{ displayPosition: ASC }], limit: 1) {
+        featuredImage {
           url
-          altText
-          width
-          height
         }
       }
     }
@@ -235,7 +197,7 @@ query GetCurrentUsersOrders @auth(level: USER) {
 }
 
 # Get a order of the logged in customer by ID
-query GetOrderById($id: UUID!) @auth(level: USER, insecureReason: "Checked manually with @check") {
+query GetOrder($id: UUID!) @auth(level: USER, insecureReason: "Checked manually with @check") {
   order(id: $id) {
     id
     customerId
@@ -252,17 +214,20 @@ query GetOrderById($id: UUID!) @auth(level: USER, insecureReason: "Checked manua
       product {
         id
         title
-        handle
-        images: productImages_on_product(orderBy: [{ displayPosition: ASC }], limit: 1) {
+        featuredImage {
           url
-          altText
           width
           height
+          altText
         }
       }
     }
   }
 }
+
+#######################
+### Administrative utilities, mostly for demo purposes
+#######################
 
 query GetAllOrders @auth(level: NO_ACCESS) {
   orders {
@@ -273,14 +238,24 @@ query GetAllOrders @auth(level: NO_ACCESS) {
     totalPrice
     financialStatus
     fulfillmentStatus
+    paymentIntentId
     items: orderItems_on_order {
       id
       price
       product {
         id
         title
-        handle
       }
     }
+  }
+}
+
+# List all users, only admins should be able to list all users, so we use NO_ACCESS
+query ListAllCustomers @auth(level: NO_ACCESS) {
+  customers {
+    id
+    firstName
+    lastName
+    email
   }
 }

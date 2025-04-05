@@ -9,7 +9,6 @@ type Error = {
 
 export type Product = {
   title: string
-  handle: string
   id: string
 }
 

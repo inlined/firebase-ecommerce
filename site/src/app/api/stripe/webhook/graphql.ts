@@ -25,8 +25,8 @@ export interface CreateOrderResponse {
 export function createOrder(req: CreateOrderRequest): Promise<CreateOrderResponse> {
     const query = `
     mutation CreateOrder(
-        $customerId: String!
         $chargeId: String
+        $customerId: String
         $paymentIntentId: String
         $receiptUrl: String
         $subtotalPrice: Float!
@@ -36,8 +36,7 @@ export function createOrder(req: CreateOrderRequest): Promise<CreateOrderRespons
         $financialStatus: String!
         $fulfillmentStatus: String!
     ) @auth(level: NO_ACCESS) {
-        order_insert(
-            data: {
+        order_insert(data: {
             customerId: $customerId
             chargeId: $chargeId
             paymentIntentId: $paymentIntentId
@@ -48,8 +47,7 @@ export function createOrder(req: CreateOrderRequest): Promise<CreateOrderRespons
             totalPrice: $totalPrice
             financialStatus: $financialStatus
             fulfillmentStatus: $fulfillmentStatus
-            }
-        )
+        })
     }`;
     return executeGQL(query, req);
 }
@@ -67,25 +65,25 @@ export interface UpdateOrderByPaymentIntentIdResponse {};
 
 export async function updateOrderByPaymentIntentId(req: UpdateOrderByPaymentIntentIdRequest): Promise<UpdateOrderByPaymentIntentIdResponse> {
     const query = `
-        mutation UpdateOrderByPaymentIntentId(
-            $paymentIntentId: String!
-            $financialStatus: String
-            $fulfillmentStatus: String
-            $receiptUrl: String
-            $processedAt: Timestamp
-            $chargeId: String
-        ) @auth(level: NO_ACCESS) {
-            order_update(
+    mutation UpdateOrderByPaymentIntentId(
+        $paymentIntentId: String!
+        $financialStatus: String
+        $fulfillmentStatus: String
+        $receiptUrl: String
+        $processedAt: Timestamp
+        $chargeId: String
+    ) @auth(level: NO_ACCESS) {
+        order_update(
             first: { where: { paymentIntentId: { eq: $paymentIntentId } } }
             data: {
-                financialStatus: $financialStatus
-                fulfillmentStatus: $fulfillmentStatus
-                receiptUrl: $receiptUrl
-                processedAt: $processedAt
-                chargeId: $chargeId
+            financialStatus: $financialStatus
+            fulfillmentStatus: $fulfillmentStatus
+            receiptUrl: $receiptUrl
+            processedAt: $processedAt
+            chargeId: $chargeId
             }
-            )
-        }`;
+        )
+    }`;
     return executeGQL(query, req);
 }
 
@@ -102,18 +100,18 @@ export function createOrderItem(req: CreateOrderItemRequest): Promise<CreateOrde
     const query = `
         mutation CreateOrderItem(
             $orderId: UUID!,
-            $productId: UUID!,
+            $productId: String!,
             $quantity: Int!,
             $price: Float!
         ) @auth(level: NO_ACCESS) {
-        orderItem_insert(
-            data: {
-            order: { id: $orderId }
-            product: { id: $productId }
-            quantity: $quantity
-            price: $price
-            }
-        )
-    }`;
+            orderItem_insert(
+                data: {
+                order: { id: $orderId }
+                product: { id: $productId }
+                quantity: $quantity
+                price: $price
+                }
+            )
+        }`;
     return executeGQL(query, req);
 }

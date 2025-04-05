@@ -115,8 +115,8 @@ export default function Header({ navigation }: Props) {
                 value={query}
                 onChange={(value) => {
                   const result = searchResults.find((r) => r.title === value)
-                  if (result?.handle) {
-                    push(`/product/${result.handle}`)
+                  if (result?.id) {
+                    push(`/product/${result.id}`)
                     setQuery('')
                     setSearchResults([])
                     setMobileNavOpen(false)

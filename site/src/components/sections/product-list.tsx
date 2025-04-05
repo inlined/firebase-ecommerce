@@ -7,36 +7,16 @@ import Filter from '../ui/filter'
 import ProductCard from '../ui/product-card'
 import { cn, extractVariantOptions } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
+import { GetCollectionData } from '@firebasegen/default-connector'
 
-type Props = {
-  title: string
-  products?: {
-    id: string
-    title: string
-    handle: string
-    featuredImage: {
-      url: string
-      altText?: string | null
-      width: number
-      height: number
-    }
-    variants: {
-      id: string
-      price: number
-      availableForSale: boolean
-      inventoryQuantity: number
-      selectedOptions_on_productVariant: {
-        name?: string | null
-        value?: string | null
-      }[]
-    }[]
-  }[]
-}
+type Props = Pick<Required<GetCollectionData>['collection'], 'name' | 'products'>
 
-export default function ProductList({ title, products }: Props) {
+export default function ProductList({ name, products }: Props) {
   const [openFilters, setOpenFilters] = useState(false)
   const searchParams = useSearchParams()
 
+  /* DEAD CODE. The smaple was handed of with filters, but that doesn't seem to
+     have ever worked.
   // Get all filter values from search params, ignoring sort parameter
   const activeFilters = Array.from(searchParams.entries()).reduce(
     (acc, [key, value]) => {
@@ -51,12 +31,11 @@ export default function ProductList({ title, products }: Props) {
   )
 
   // Filter products based on search params
-  const filteredProducts = products?.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     if (Object.keys(activeFilters).length === 0) return true
 
     return Object.entries(activeFilters).every(([filterKey, filterValues]) => {
-      const productVariants = product.variants
-      return productVariants.some((variant) =>
+      return product.variants.some((variant) =>
         variant.selectedOptions_on_productVariant.some(
           (option) =>
             option.name?.toLowerCase() === filterKey.toLowerCase() &&
@@ -66,6 +45,8 @@ export default function ProductList({ title, products }: Props) {
       )
     })
   })
+  */
+  const filteredProducts = products;
 
   if (!products?.length) return null
 
@@ -83,7 +64,7 @@ export default function ProductList({ title, products }: Props) {
   return (
     <section className="text-foreground bg-background py-16 lg:py-24 space-y-8 lg:space-y-20">
       <div className="container flex flex-wrap justify-between items-end gap-8">
-        {title && <h1 className="text-4xl lg:text-8xl max-w-3xl">{title}</h1>}
+        {name && <h1 className="text-4xl lg:text-8xl max-w-3xl">{name}</h1>}
 
         <div className="flex flex-wrap gap-2">
           <Filter filters={filterOptions} open={openFilters} setOpen={setOpenFilters} />
@@ -104,11 +85,11 @@ export default function ProductList({ title, products }: Props) {
           const mobileIndex = products?.indexOf(product) ?? 0
           return (
             <ProductCard
-              key={product.handle}
+              key={product.id}
               image={product.featuredImage}
               name={product.title}
-              price={product.variants[0].price.toString()}
-              slug={product.handle}
+              price={product.variants[0].price}
+              slug={product.id}
               title={product.title}
               className={cn(
                 {

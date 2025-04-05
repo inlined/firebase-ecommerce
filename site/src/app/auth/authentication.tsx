@@ -73,7 +73,6 @@ export default function Authentication() {
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, password)
       const idToken = await user.getIdToken();
-      console.log("Setting user token on create");
       await setCookie(auth.emulatorConfig ? "__dev_FIREBASE_[DEFAULT]" : "__HOST-FIREBASE_[DEFAULT]", idToken);
       await updateProfile(user, {
         displayName: `${firstName} ${lastName}`

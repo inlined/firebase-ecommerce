@@ -23,7 +23,7 @@ type Props = {
     width?: number | null
   }[]
   currentVariant?: {
-    id: string
+    sku: string
     price: number
     availableForSale: boolean
     inventoryQuantity: number

@@ -69,11 +69,9 @@ async function getCookies(req: NextRequest): Promise<{ identity: Cookie, refresh
 }
 
 export async function DELETE(req: NextRequest) {
-    console.log("Logging out");
     const resp = new NextResponse("", { status: 200 });
     const appName = req.nextUrl.searchParams.get('appName');
     const cookies = await getCookies(req);
-    console.log("Deleting cookies");
     const secure = await canHandSecure(req);
     resp.cookies.delete(cookies.identity);
     resp.cookies.delete(cookies.refresh);

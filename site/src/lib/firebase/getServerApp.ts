@@ -10,7 +10,7 @@ async function getAuthTokenFromCookie(): Promise<string | undefined> {
 
     const cookieStore = await cookies();
     if (cookieStore.has(COOKIE_NAME)) {
-        console.log("Got credentials for serverApp from cookie:", await cookieStore.get(COOKIE_NAME)?.value);
+        console.log("Got credentials for serverApp from cookie");
     }
     return cookieStore.get(COOKIE_NAME)?.value;
 }
@@ -41,8 +41,5 @@ export default async function getServerApp(): Promise<FirebaseApp> {
       : process.env.FIREBASE_CONFIG
       ? JSON.parse(process.env.FIREBASE_CONFIG)
       : {};
-    console.log("Creating server app. CONFIG IS", config);
-    console.log("FIREBASE_CONFIG IS", process.env.FIREBASE_CONFIG);
-    console.log("NEXT_PUBLIC_FIREBASE_CONFIG IS", process.env.NEXT_PUBLIC_FIREBASE_CONFIG);
     return initializeServerApp(config, { authIdToken });
 }

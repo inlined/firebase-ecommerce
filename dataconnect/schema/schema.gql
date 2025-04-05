@@ -1,36 +1,40 @@
-type ProductOption @table {
-  id: UUID! @default(expr: "uuidV4()")
-  product: Product!
-  name: String! @col(name: "name", dataType: "varchar(50)")
-  values: [String] @col(name: "values", dataType: "text[]")
-}
+# One could consider using UUIDV4() IDs and having readable handles.
+# This can trade off uniform distribution, which is important to avoid
+# hot spotting high scale databases, for more complex queries and less
+# readability. We have chosen in this sapmle to use the more readable
+# option. This is partially due to the fact that we are seeding test
+# data and it is much easier to read that text data when foreign keys
+# are readable. In a high scale world, a UUID may be more optimal
+# because prefix words may cluster. For example, many clothing items
+# may start with the same color, product line, or type of clothing.
+
+# NOTE: Without th ekey option on a table, an id of type UUID! and default
+# expressoin of uuidV4() will be created automatically.
 
 # This will be a proper table to store selected options
+# NOTE: id is created automatically as UUIDV4() without a key annotation.
 type SelectedOption @table {
-  id: UUID! @default(expr: "uuidV4()")
   productVariant: ProductVariant!
-  name: String @col(name: "name", dataType: "varchar(50)")
-  value: String @col(name: "value", dataType: "varchar(50)")
+  name: String! @col(name: "name", dataType: "varchar(50)")
+  value: String! @col(name: "value", dataType: "varchar(50)")
 }
 
-type ProductVariant @table {
-  id: UUID! @default(expr: "uuidV4()")
+type ProductVariant @table (key: ["sku"]) {
+  sku: String! @col(name: "sku", dataType: "varchar(50)")
   product: Product!
   title: String! @col(name: "title", dataType: "varchar(100)")
   price: Float! @col(name: "price", dataType: "decimal(10,2)")
   availableForSale: Boolean! @col(name: "available_for_sale", dataType: "boolean")
-  sku: String @col(name: "sku", dataType: "varchar(50)")
   inventoryQuantity: Int! @col(name: "inventory_quantity", dataType: "int")
   # The selected options will be available as a reverse relation
   # selectedOptions: [SelectedOption!]!  <- this will be generated automatically
 }
 
-type ProductImage @table {
-  id: UUID! @default(expr: "uuidV4()")
-  product: Product!
+type Image @table {
+  id: String! @col(name: "id", dataType: "varchar(100)")
   featured: Boolean! @col(name: "featured", dataType: "boolean")
   url: String! @col(name: "url", dataType: "text")
-  altText: String @col(name: "alt_text", dataType: "text")
+  altText: String! @col(name: "alt_text", dataType: "text")
   width: Int! @col(name: "width", dataType: "int")
   height: Int! @col(name: "height", dataType: "int")
   displayPosition: Int! @col(name: "display_position", dataType: "int")
@@ -38,16 +42,15 @@ type ProductImage @table {
 
 # Product
 type Product @table {
-  id: UUID! @default(expr: "uuidV4()")
-  handle: String! @col(name: "handle", dataType: "varchar(100)") @unique
+  id: String! @col(name: "id", dataType: "varchar(100)")
   title: String! @col(name: "title", dataType: "varchar(100)")
   titleEmbedding: Vector! @col(size: 768)
   description: String @col(name: "description", dataType: "text")
   descriptionEmbedding: Vector! @col(size: 768)
   availableForSale: Boolean! @col(name: "available_for_sale", dataType: "boolean")
   productType: String @col(name: "product_type", dataType: "varchar(100)")
-  featuredImage: ProductImage
-  seo: SEO
+  featuredImage: Image!
+  seo: Seo
   createdAt: Timestamp! @default(expr: "request.time")
   updatedAt: Timestamp! @default(expr: "request.time")
 }
@@ -86,8 +89,8 @@ type Order @table {
   fulfillmentStatus: String! @col(name: "fulfillment_status", dataType: "varchar(50)")
 }
 
-type SEO @table {
-  id: UUID! @default(expr: "uuidV4()")
+type Seo @table {
+  id: String! @col(name: "id", dataType: "varchar(100)")
   title: String!
   description: String!
   keywords: String!
@@ -104,12 +107,12 @@ type ProductReview @table(name: "product_reviews", key: ["product", "customer"])
 }
 
 type Collection @table {
-  id: UUID! @default(expr: "uuidV4()")
-  handle: String! @col(name: "handle", dataType: "varchar(100)") @unique
+  id: String! @col(name: "id", dataType: "varchar(100)")
+  # TODO rename to title to be consistent with Product
   name: String! @col(name: "name", dataType: "varchar(100)")
   description: String @col(name: "description", dataType: "text")
-  featuredImage: ProductImage
-  seo: SEO
+  featuredImage: Image!
+  seo: Seo
   page: String @col(name: "page", dataType: "varchar(100)")
   createdAt: Timestamp! @default(expr: "request.time")
   updatedAt: Timestamp! @default(expr: "request.time")

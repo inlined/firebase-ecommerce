@@ -9,12 +9,8 @@ export async function POST(request: Request) {
   try {
     const { amount, products, shippingInfo } = await request.json()
     
-    // N.B. this could be done faster by just 
-    console.log("About to get server app");
     const app = await getServerApp();
-    console.log("About to get auth");
     const auth = getAuth(app);
-    console.log("About to await authStateReady");
     await auth.authStateReady();
 
     const customer = auth.currentUser;
@@ -32,7 +28,7 @@ export async function POST(request: Request) {
       price: product.price,
       variant: product.selectedOption.map((opt) => `${opt.name}: ${opt.value}`).join(', ')
     }))
-
+    
     const paymentIntent = await getStripe().paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
       currency: 'usd',
@@ -46,7 +42,7 @@ export async function POST(request: Request) {
         customer_name: String(claims.name),
         total_items: products.length,
         products: products.map((p: Product) => p.name).join(', '),
-        // N.B. This is currently empt because we do not store phone numbers anywhere in the app
+        // N.B. This is currently empty because we do not store phone numbers anywhere in the app
         customer_phone: typeof claims.phone === "string" ? claims.phone : 'N/A',
         shipping_info: JSON.stringify(shippingInfo)
       }
@@ -54,7 +50,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret })
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Error creating payment intent:', error)
     return NextResponse.json({ error: 'Error creating payment intent' }, { status: 500 })
   }
 }

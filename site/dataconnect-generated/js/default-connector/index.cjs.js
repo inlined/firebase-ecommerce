@@ -37,6 +37,16 @@ exports.createOrder = function createOrder(dcOrVars, vars) {
   return executeMutation(createOrderRef(dcOrVars, vars));
 };
 
+exports.createOrderItemRef = function createOrderItemRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'CreateOrderItem', inputVars);
+}
+
+exports.createOrderItem = function createOrderItem(dcOrVars, vars) {
+  return executeMutation(createOrderItemRef(dcOrVars, vars));
+};
+
 exports.updateOrderByPaymentIntentIdRef = function updateOrderByPaymentIntentIdRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -57,64 +67,34 @@ exports.updateOrderByChargeId = function updateOrderByChargeId(dcOrVars, vars) {
   return executeMutation(updateOrderByChargeIdRef(dcOrVars, vars));
 };
 
-exports.createOrderItemRef = function createOrderItemRef(dcOrVars, vars) {
+exports.getProductRef = function getProductRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'CreateOrderItem', inputVars);
+  return queryRef(dcInstance, 'GetProduct', inputVars);
 }
 
-exports.createOrderItem = function createOrderItem(dcOrVars, vars) {
-  return executeMutation(createOrderItemRef(dcOrVars, vars));
+exports.getProduct = function getProduct(dcOrVars, vars) {
+  return executeQuery(getProductRef(dcOrVars, vars));
 };
 
-exports.listCustomersRef = function listCustomersRef(dc) {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListCustomers');
-}
-
-exports.listCustomers = function listCustomers(dc) {
-  return executeQuery(listCustomersRef(dc));
-};
-
-exports.getReviewsByProductIdRef = function getReviewsByProductIdRef(dcOrVars, vars) {
+exports.getProductReviewsRef = function getProductReviewsRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetReviewsByProductId', inputVars);
+  return queryRef(dcInstance, 'GetProductReviews', inputVars);
 }
 
-exports.getReviewsByProductId = function getReviewsByProductId(dcOrVars, vars) {
-  return executeQuery(getReviewsByProductIdRef(dcOrVars, vars));
+exports.getProductReviews = function getProductReviews(dcOrVars, vars) {
+  return executeQuery(getProductReviewsRef(dcOrVars, vars));
 };
 
-exports.getReviewsByProductHandleRef = function getReviewsByProductHandleRef(dcOrVars, vars) {
+exports.getCollectionRef = function getCollectionRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetReviewsByProductHandle', inputVars);
+  return queryRef(dcInstance, 'GetCollection', inputVars);
 }
 
-exports.getReviewsByProductHandle = function getReviewsByProductHandle(dcOrVars, vars) {
-  return executeQuery(getReviewsByProductHandleRef(dcOrVars, vars));
-};
-
-exports.getProductByHandleRef = function getProductByHandleRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetProductByHandle', inputVars);
-}
-
-exports.getProductByHandle = function getProductByHandle(dcOrVars, vars) {
-  return executeQuery(getProductByHandleRef(dcOrVars, vars));
-};
-
-exports.getCollectionByHandleRef = function getCollectionByHandleRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetCollectionByHandle', inputVars);
-}
-
-exports.getCollectionByHandle = function getCollectionByHandle(dcOrVars, vars) {
-  return executeQuery(getCollectionByHandleRef(dcOrVars, vars));
+exports.getCollection = function getCollection(dcOrVars, vars) {
+  return executeQuery(getCollectionRef(dcOrVars, vars));
 };
 
 exports.getCollectionsByPageRef = function getCollectionsByPageRef(dcOrVars, vars) {
@@ -137,24 +117,24 @@ exports.search = function search(dcOrVars, vars) {
   return executeQuery(searchRef(dcOrVars, vars));
 };
 
-exports.getCurrentUsersOrdersRef = function getCurrentUsersOrdersRef(dc) {
+exports.getCurrentUserOrdersRef = function getCurrentUserOrdersRef(dc) {
   const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetCurrentUsersOrders');
+  return queryRef(dcInstance, 'GetCurrentUserOrders');
 }
 
-exports.getCurrentUsersOrders = function getCurrentUsersOrders(dc) {
-  return executeQuery(getCurrentUsersOrdersRef(dc));
+exports.getCurrentUserOrders = function getCurrentUserOrders(dc) {
+  return executeQuery(getCurrentUserOrdersRef(dc));
 };
 
-exports.getOrderByIdRef = function getOrderByIdRef(dcOrVars, vars) {
+exports.getOrderRef = function getOrderRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetOrderById', inputVars);
+  return queryRef(dcInstance, 'GetOrder', inputVars);
 }
 
-exports.getOrderById = function getOrderById(dcOrVars, vars) {
-  return executeQuery(getOrderByIdRef(dcOrVars, vars));
+exports.getOrder = function getOrder(dcOrVars, vars) {
+  return executeQuery(getOrderRef(dcOrVars, vars));
 };
 
 exports.getAllOrdersRef = function getAllOrdersRef(dc) {
@@ -165,4 +145,14 @@ exports.getAllOrdersRef = function getAllOrdersRef(dc) {
 
 exports.getAllOrders = function getAllOrders(dc) {
   return executeQuery(getAllOrdersRef(dc));
+};
+
+exports.listAllCustomersRef = function listAllCustomersRef(dc) {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListAllCustomers');
+}
+
+exports.listAllCustomers = function listAllCustomers(dc) {
+  return executeQuery(listAllCustomersRef(dc));
 };

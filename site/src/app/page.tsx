@@ -13,19 +13,20 @@ import CardOverlay from '@/components/card-overlay'
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const { data: collectionsData } = await getCollectionsByPage(getDataConnect(), { page: 'home' });
-  const [mainCollection, secondaryCollection, tertiaryCollection] = [
-    ...(collectionsData?.collections || [])
-  ].sort((a, b) => {
+  const { data: { collections } } = await getCollectionsByPage(getDataConnect(), { page: 'home' });
+
+  if (!collections?.length) return notFound()
+  const [mainCollection, secondaryCollection, tertiaryCollection] = collections
+  .sort((a, b) => {
+    // TODO: Do not hardcode this
     const order: Record<string, number> = {
       'o25-collection': 1,
       'mist-collection': 2,
       'winter-collection': 3
     }
-    return (order[a.handle] || 99) - (order[b.handle] || 99)
+    return (order[a.id] || 99) - (order[b.id] || 99)
   })
 
-  if (!collectionsData?.collections?.length) return notFound()
 
   return (
     <>
@@ -33,41 +34,32 @@ export default async function Home() {
         title={mainCollection?.name as string}
         description={mainCollection?.description as string}
         image={mainCollection?.featuredImage?.url as string}
-        primaryCta={{ label: 'Shop Now', href: `/category/${mainCollection?.handle}` }}
-        secondaryCta={{ label: 'Learn More', href: `/category/${mainCollection?.handle}#about` }}
+        primaryCta={{ label: 'Shop Now', href: `/category/${mainCollection?.id}` }}
+        secondaryCta={{ label: 'Learn More', href: `/category/${mainCollection?.id}#about` }}
       />
       <Details title="About" body={mainCollection?.description as string} />
       <CardCarousel title="Explore" cta={{ label: 'Shop All', href: '/products' }}>
-        {collectionsData?.collections
-          .filter((collection) => Boolean(collection?.featuredImage?.url))
+        {collections
+          .filter((collection) => Boolean(collection.featuredImage.url))
           .map((collection) => (
             <CategoryCard
               key={collection.id}
-              handle={collection.handle}
+              id={collection.id}
               name={collection.name}
               image={collection.featuredImage?.url || ''}
             />
           ))}
       </CardCarousel>
       <CardOverlay
-        title={secondaryCollection?.name as string}
-        description={secondaryCollection?.description as string}
-        cta={{ label: 'Shop Now', href: `/category/${secondaryCollection?.handle}` }}
-        image={secondaryCollection?.featuredImage?.url as string}
+        title={secondaryCollection?.name}
+        description={secondaryCollection?.description || ''}
+        cta={{ label: 'Shop Now', href: `/category/${secondaryCollection?.id}` }}
+        image={secondaryCollection?.featuredImage}
       />
       <ProductGrid
         title={tertiaryCollection?.name as string}
         variant="character"
-        products={tertiaryCollection?.products.map((product) => ({
-          id: product.id,
-          title: product.title,
-          handle: product.handle,
-          price: product.variants.at(0)?.price?.toString() || '',
-          image: product.images.at(0),
-          variants: product.variants
-            .at(0)
-            ?.selectedOptions_on_productVariant.map((option) => (option.value || ''))
-        }))}
+        products={tertiaryCollection?.products}
       />
     </>
   )

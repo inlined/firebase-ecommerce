@@ -100,7 +100,6 @@ class MemcacheCache implements Cache {
                     reject(err);
                     return;
                 }
-                console.error("Invalidated key", key);
                 resolve();
             });
         });

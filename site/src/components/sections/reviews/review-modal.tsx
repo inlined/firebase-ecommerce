@@ -4,27 +4,23 @@ import ProductListItem from '../order-summary/product-list-item'
 import Rating from '@/components/ui/rating'
 import Button from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
-import { handleCreateReview } from '@/app/product/[handle]/actions'
+import { handleCreateReview } from '@/app/product/[id]/actions'
 
 type Props = {
   isOpen: boolean
   onClose: () => void
-  productDetails?: {
-    productID?: string
-    productSlug?: string
-    productName?: string
-    variantTitle?: string
-    variantPrice?: string
-    variantImage?: {
+  product: {
+    id: string
+    title: string
+    price: number
+    featuredImage: {
       url: string
-      altText?: string | null
-      width: number
-      height: number
+      altText: string
     }
   }
 }
 
-export default function ReviewModal({ isOpen, onClose, productDetails }: Props) {
+export default function ReviewModal({ isOpen, onClose, product }: Props) {
   const [rating, setRating] = useState(5)
   const [review, setReview] = useState('')
   const { user: customer } = useAuth()
@@ -33,7 +29,7 @@ export default function ReviewModal({ isOpen, onClose, productDetails }: Props) 
     e.preventDefault()
 
     await handleCreateReview({
-      productId: productDetails?.productID ?? '',
+      productId: product.id,
       rating,
       content: review
     })
@@ -74,20 +70,13 @@ export default function ReviewModal({ isOpen, onClose, productDetails }: Props) 
                 <h2 className="text-4xl">Write a review</h2>
 
                 <ProductListItem
-                  title={productDetails?.productName || 'Product Name'}
+                  title={product.title}
                   quantity={0}
-                  variant={{
-                    title: productDetails?.variantTitle || 'Variant Title',
-                    price: productDetails?.variantPrice || '',
-                    image: {
-                      url:
-                        productDetails?.variantImage?.url ||
-                        'https://rstr.in/google/dynamic-template/r-DgXIxPzlR',
-                      altText: productDetails?.variantImage?.altText || 'Product Image',
-                      width: productDetails?.variantImage?.width || 150,
-                      height: productDetails?.variantImage?.height || 150
-                    }
-                  }}
+                  featuredImage={product.featuredImage}
+                  variant={({
+                    title: product.title,
+                    price: product.price, 
+                  })}
                 />
 
                 <div className="space-y-2">

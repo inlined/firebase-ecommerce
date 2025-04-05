@@ -12,7 +12,12 @@ type Props = {
     label: string
     href: string
   }
-  image: string
+  image: {
+    url: string
+    altText?: string | null
+    width: number
+    height: number
+  }
   align?: 'center' | 'right'
 }
 
@@ -33,8 +38,8 @@ export function CardOverlayCenter({ title, description, cta, image }: Props) {
           <div className="lg:absolute lg:inset-0 lg:z-0 overflow-hidden w-full">
             <div className="relative h-full w-full hidden lg:block">
               <img
-                src={image}
-                alt={title}
+                src={image.url}
+                alt={image.altText ?? ''}
                 className="object-cover bg-gray-200 absolute w-full h-full inset-0"
               />
               <div className="blurred-edges [--blur:20px]" />
@@ -66,8 +71,8 @@ export function CardOverlayCenter({ title, description, cta, image }: Props) {
           {image ? (
             <div className="relative h-full w-full max-lg:rounded-xl">
               <img
-                src={image}
-                alt={title}
+                src={image.url}
+                alt={image.altText ?? ''}
                 className="object-cover bg-gray-200 absolute w-full h-full inset-0"
               />
               <div className="blurred-edges [--blur:20px]" />

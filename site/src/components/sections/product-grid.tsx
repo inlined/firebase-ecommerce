@@ -4,22 +4,34 @@ import ProductGridItem from '../ui/product-grid-item'
 type Props = {
   title: string
   variant?: 'character' | 'simple' | 'minimal'
-  products: {
+  products: Array<{
     id: string
     title: string
-    handle: string
-    price: string
-    image?: {
+    featuredImage?: {
       url: string
       altText?: string | null
       width: number
       height: number
     }
-    variants?: string[]
-  }[]
+    variants: Array<{
+      sku: string;
+      price: number;
+      title: string;
+      selectedOptions: Array<{
+        name: string
+        value: string
+      }>
+    }>
+  }>
 }
 
 export default function ProductGrid({ title, products, variant = 'character' }: Props) {
+  function minPrice(product: Props['products'][number]) {
+    return Math.min(
+      ...product.variants.map(variant => variant.price)
+    )
+  }
+
   return (
     <section className="text-foreground bg-background py-16 md:py-24">
       <div className="container">
@@ -35,23 +47,23 @@ export default function ProductGrid({ title, products, variant = 'character' }: 
               variant === 'minimal' ? (
                 <ProductCard
                   key={product.id}
-                  image={product.image}
+                  image={product.featuredImage}
                   name={product.title}
-                  price={product.price}
-                  slug={product.handle}
+                  price={minPrice(product)}
+                  slug={product.id}
                   title={product.title}
-                  tags={product.variants?.join('/') || ''}
+                  tags={product.variants?.map(v => v.title)?.join(' | ') || ''}
                 />
               ) : (
                 <ProductGridItem
                   key={product.id}
                   index={index}
                   variant={variant}
-                  image={product.image}
+                  image={product.featuredImage}
                   name={product.title}
-                  price={product.price}
-                  slug={product.handle}
-                  tags={product.variants?.join('/') || ''}
+                  price={minPrice(product)}
+                  slug={product.id}
+                  tags={product.variants?.map(v => v.title).join(' | ') || ''}
                 />
               )
             )}

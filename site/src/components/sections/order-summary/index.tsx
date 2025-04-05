@@ -5,10 +5,10 @@ import Arrow from '../../icons/arrow'
 import Button from '../../ui/button'
 import ProductListItem from './product-list-item'
 import { useAuth } from '@/hooks/useAuth'
-import { GetOrderByIdData } from '../../../../dataconnect-generated/js/default-connector'
+import { GetOrderData } from '../../../../dataconnect-generated/js/default-connector'
 
 type Props = {
-  order?: GetOrderByIdData['order']
+  order?: Required<GetOrderData>['order']
 }
 
 export default function OrderSummary({ order }: Props) {
@@ -102,15 +102,10 @@ export default function OrderSummary({ order }: Props) {
                   key={item.product.title}
                   title={item.product.title}
                   quantity={item.quantity}
+                  featuredImage={item.product.featuredImage}
                   variant={{
                     title: item.product.title,
                     price: item.price,
-                    image: {
-                      url: item.product.images[0].url,
-                      altText: item.product.images[0].altText,
-                      width: item.product.images[0].width,
-                      height: item.product.images[0].height
-                    }
                   }}
                 />
               ))}

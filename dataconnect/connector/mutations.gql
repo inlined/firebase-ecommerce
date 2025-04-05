@@ -1,3 +1,8 @@
+##################
+## Users editing their own data
+#################
+
+# Create a customer account after succesfully logging in.
 mutation UpsertCustomer(
   $firstName: String!
   $lastName: String!
@@ -19,7 +24,7 @@ mutation UpsertCustomer(
 
 # Create a new review
 mutation CreateProductReview(
-  $productId: UUID!
+  $productId: String!
   $rating: Int!
   $content: String!
 ) @auth(level: USER) {
@@ -34,8 +39,13 @@ mutation CreateProductReview(
   )
 }
 
+###############
+## Update customer data with an admin contextin Stripe webhooks
+#############
+
 mutation CreateOrder(
   $chargeId: String
+  $customerId: String
   $paymentIntentId: String
   $receiptUrl: String
   $subtotalPrice: Float!
@@ -44,10 +54,10 @@ mutation CreateOrder(
   $totalPrice: Float!
   $financialStatus: String!
   $fulfillmentStatus: String!
-) @auth(level: USER) {
+) @auth(level: NO_ACCESS) {
   order_insert(
     data: {
-      customerId_expr: "auth.uid"
+      customerId: $customerId
       chargeId: $chargeId
       paymentIntentId: $paymentIntentId
       receiptUrl: $receiptUrl
@@ -57,6 +67,18 @@ mutation CreateOrder(
       totalPrice: $totalPrice
       financialStatus: $financialStatus
       fulfillmentStatus: $fulfillmentStatus
+    }
+  )
+}
+
+mutation CreateOrderItem($orderId: UUID!, $productId: String!, $quantity: Int!, $price: Float!)
+@auth(level: NO_ACCESS) {
+  orderItem_insert(
+    data: {
+      order: { id: $orderId }
+      product: { id: $productId }
+      quantity: $quantity
+      price: $price
     }
   )
 }
@@ -95,18 +117,6 @@ mutation UpdateOrderByChargeId(
       fulfillmentStatus: $fulfillmentStatus
       receiptUrl: $receiptUrl
       processedAt: $processedAt
-    }
-  )
-}
-
-mutation CreateOrderItem($orderId: UUID!, $productId: UUID!, $quantity: Int!, $price: Float!)
-@auth(level: NO_ACCESS) {
-  orderItem_insert(
-    data: {
-      order: { id: $orderId }
-      product: { id: $productId }
-      quantity: $quantity
-      price: $price
     }
   )
 }

@@ -2,7 +2,7 @@ import { ai } from '.';
 import { z } from 'genkit'
 import getDataConnect from '@/lib/firebase/getDataConnect';
 import { getCache } from '../cache';
-import { getReviewsByProductId } from '@firebasegen/default-connector';
+import { getProductReviews } from '@firebasegen/default-connector';
 
 export const summarizeReviews = ai.defineFlow({
     name: 'summarizeReviews',
@@ -25,8 +25,8 @@ export const summarizeReviews = ai.defineFlow({
         }
     }
 
-    const { data: { productReviews: reviews } } = await ai.run("fetch reviews from Data Connect", async () => {
-        return await getReviewsByProductId(getDataConnect(), { productId });
+    const { data: { reviews } } = await ai.run("fetch reviews from Data Connect", async () => {
+        return await getProductReviews(getDataConnect(), { productId });
     });
 
     if (!reviews.length) {

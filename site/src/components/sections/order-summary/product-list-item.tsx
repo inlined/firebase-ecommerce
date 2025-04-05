@@ -1,24 +1,24 @@
+import { GetProductData } from "@firebasegen/default-connector"
+
 type Props = {
-  title: string
-  quantity: number
+  title: string;
+  quantity: number;
+  featuredImage: {
+    url: string;
+    altText: string; 
+  };
   variant: {
-    title: string
-    price: number | string
-    image: {
-      url: string
-      altText?: string | null
-      width?: number
-      height?: number
-    }
+    title: string;
+    price: number;
   }
 }
 
-export default function ProductListItem({ title, variant, quantity }: Props) {
+export default function ProductListItem({ title, featuredImage, variant, quantity }: Props) {
   return (
     <article className="w-full flex gap-4 lg:gap-10 items-center text-sm">
       <img
-        src={variant.image.url}
-        alt={title}
+        src={featuredImage.url}
+        alt={featuredImage.altText || title}
         height="100"
         width="100"
         className="w-16 h-16 object-cover shrink-0 rounded-lg"
@@ -30,7 +30,7 @@ export default function ProductListItem({ title, variant, quantity }: Props) {
       <div className="flex gap-4 lg:gap-10 ml-auto">
         { quantity ?  <><span className="text-gray-400">QTY</span> {quantity}</> : <></> }
         <span className="font-medium">
-          {typeof variant.price === "string" ? variant.price : new Intl.NumberFormat('en-US', {
+          {new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
           }).format(variant.price)}

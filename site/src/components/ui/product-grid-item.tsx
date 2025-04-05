@@ -6,7 +6,7 @@ import Arrow from '../icons/arrow'
 
 type Props = {
   name: string
-  price: string
+  price: number
   image?: {
     url: string
     width: number
@@ -53,7 +53,12 @@ export default function ProductGridItem({
       <article className="flex flex-wrap items-center justify-between gap-x-6 px-6 py-3 bg-background rounded-full min-h-12 lg:w-full max-w-md z-10">
         {name ? <h3 className="line-clamp-1">{name}</h3> : null}
         {tags ? <p className="max-lg:hidden text-gray-500">{tags}</p> : null}
-        {price ? <span className="max-lg:hidden">{price}</span> : null}
+        {price ? <span className="max-lg:hidden">Starting at {
+                new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                }).format(price)
+        }</span> : null}
       </article>
       <Button aria-label="View product" className="h-12 z-10">
         <Arrow className="size-3.5" />

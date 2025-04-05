@@ -9,7 +9,7 @@ export type DateString = string;
 
 
 export interface Collection_Key {
-  id: UUIDString;
+  id: string;
   __typename?: 'Collection_Key';
 }
 
@@ -23,13 +23,14 @@ export interface CreateOrderItemData {
 
 export interface CreateOrderItemVariables {
   orderId: UUIDString;
-  productId: UUIDString;
+  productId: string;
   quantity: number;
   price: number;
 }
 
 export interface CreateOrderVariables {
   chargeId?: string | null;
+  customerId?: string | null;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
   subtotalPrice: number;
@@ -45,7 +46,7 @@ export interface CreateProductReviewData {
 }
 
 export interface CreateProductReviewVariables {
-  productId: UUIDString;
+  productId: string;
   rating: number;
   content: string;
 }
@@ -64,104 +65,97 @@ export interface GetAllOrdersData {
     totalPrice: number;
     financialStatus: string;
     fulfillmentStatus: string;
+    paymentIntentId?: string | null;
     items: ({
       id: UUIDString;
       price: number;
       product: {
-        id: UUIDString;
+        id: string;
         title: string;
-        handle: string;
       } & Product_Key;
     } & OrderItem_Key)[];
   } & Order_Key)[];
 }
 
-export interface GetCollectionByHandleData {
-  collections: ({
-    id: UUIDString;
+export interface GetCollectionData {
+  collection?: {
+    id: string;
     name: string;
     description?: string | null;
     page?: string | null;
-    featuredImage?: {
+    featuredImage: {
       url: string;
       width: number;
       height: number;
-      altText?: string | null;
+      altText: string;
     };
       seo?: {
         title: string;
         description: string;
         keywords: string;
       };
-        products_via_ProductCollection: ({
-          id: UUIDString;
+        products: ({
+          id: string;
           title: string;
-          handle: string;
           description?: string | null;
           availableForSale: boolean;
           createdAt: TimestampString;
           updatedAt: TimestampString;
-          productVariants_on_product: ({
-            id: UUIDString;
-            price: number;
-            availableForSale: boolean;
-            inventoryQuantity: number;
-            selectedOptions_on_productVariant: ({
-              name?: string | null;
-              value?: string | null;
-            })[];
-          } & ProductVariant_Key)[];
-            productImages_on_product: ({
-              id: UUIDString;
-              url: string;
-              altText?: string | null;
-              width: number;
-              height: number;
-              displayPosition: number;
-            } & ProductImage_Key)[];
+          featuredImage: {
+            url: string;
+            width: number;
+            height: number;
+            altText: string;
+          };
+            variants: ({
+              sku: string;
+              price: number;
+              availableForSale: boolean;
+              inventoryQuantity: number;
+              selectedOptions: ({
+                name: string;
+                value: string;
+              })[];
+            } & ProductVariant_Key)[];
         } & Product_Key)[];
-  } & Collection_Key)[];
+  } & Collection_Key;
 }
 
-export interface GetCollectionByHandleVariables {
-  handle: string;
-  page?: string | null;
+export interface GetCollectionVariables {
+  id: string;
 }
 
 export interface GetCollectionsByPageData {
   collections: ({
-    id: UUIDString;
+    id: string;
     name: string;
     description?: string | null;
-    handle: string;
     page?: string | null;
-    featuredImage?: {
+    featuredImage: {
       url: string;
       width: number;
       height: number;
-      altText?: string | null;
+      altText: string;
     };
       products: ({
-        id: UUIDString;
+        id: string;
         title: string;
-        handle: string;
         description?: string | null;
-        variants: ({
-          id: UUIDString;
-          price: number;
-          selectedOptions_on_productVariant: ({
-            name?: string | null;
-            value?: string | null;
-          })[];
-        } & ProductVariant_Key)[];
-          images: ({
-            id: UUIDString;
-            url: string;
-            altText?: string | null;
-            width: number;
-            height: number;
-            displayPosition: number;
-          } & ProductImage_Key)[];
+        featuredImage: {
+          url: string;
+          width: number;
+          height: number;
+          altText: string;
+        };
+          variants: ({
+            sku: string;
+            price: number;
+            title: string;
+            selectedOptions: ({
+              name: string;
+              value: string;
+            })[];
+          } & ProductVariant_Key)[];
       } & Product_Key)[];
   } & Collection_Key)[];
 }
@@ -170,7 +164,7 @@ export interface GetCollectionsByPageVariables {
   page?: string | null;
 }
 
-export interface GetCurrentUsersOrdersData {
+export interface GetCurrentUserOrdersData {
   orders: ({
     id: UUIDString;
     customerId: string;
@@ -187,21 +181,17 @@ export interface GetCurrentUsersOrdersData {
       quantity: number;
       price: number;
       product: {
-        id: UUIDString;
+        id: string;
         title: string;
-        handle: string;
-        images: ({
+        featuredImage: {
           url: string;
-          altText?: string | null;
-          width: number;
-          height: number;
-        })[];
+        };
       } & Product_Key;
     } & OrderItem_Key)[];
   } & Order_Key)[];
 }
 
-export interface GetOrderByIdData {
+export interface GetOrderData {
   order?: {
     id: UUIDString;
     customerId: string;
@@ -215,71 +205,57 @@ export interface GetOrderByIdData {
       quantity: number;
       price: number;
       product: {
-        id: UUIDString;
+        id: string;
         title: string;
-        handle: string;
-        images: ({
+        featuredImage: {
           url: string;
-          altText?: string | null;
           width: number;
           height: number;
-        })[];
+          altText: string;
+        };
       } & Product_Key;
     } & OrderItem_Key)[];
   } & Order_Key;
 }
 
-export interface GetOrderByIdVariables {
+export interface GetOrderVariables {
   id: UUIDString;
 }
 
-export interface GetProductByHandleData {
+export interface GetProductData {
   product?: {
-    id: UUIDString;
+    id: string;
     title: string;
     description?: string | null;
-    handle: string;
     availableForSale: boolean;
     createdAt: TimestampString;
     updatedAt: TimestampString;
-    featuredImage?: {
+    featuredImage: {
       url: string;
       width: number;
       height: number;
-      altText?: string | null;
+      altText: string;
     };
       seo?: {
         title: string;
         description: string;
         keywords: string;
       };
-        productVariants_on_product: ({
-          id: UUIDString;
+        variants: ({
+          sku: string;
           price: number;
           availableForSale: boolean;
           inventoryQuantity: number;
           selectedOptions_on_productVariant: ({
-            name?: string | null;
-            value?: string | null;
+            name: string;
+            value: string;
           })[];
         } & ProductVariant_Key)[];
-          productImages_on_product: ({
-            id: UUIDString;
-            url: string;
-            altText?: string | null;
-            width: number;
-            height: number;
-            displayPosition: number;
-          } & ProductImage_Key)[];
   } & Product_Key;
 }
 
-export interface GetProductByHandleVariables {
-  handle: string;
-}
-
-export interface GetReviewsByProductHandleData {
-  productReviews: ({
+export interface GetProductReviewsData {
+  reviews: ({
     id: UUIDString;
     rating: number;
     content: string;
@@ -292,29 +268,20 @@ export interface GetReviewsByProductHandleData {
   })[];
 }
 
-export interface GetReviewsByProductHandleVariables {
-  handle: string;
+export interface GetProductReviewsVariables {
+  productId: string;
 }
 
-export interface GetReviewsByProductIdData {
-  productReviews: ({
-    id: UUIDString;
-    rating: number;
-    content: string;
-    date: TimestampString;
-    customer: {
-      id: string;
-      firstName: string;
-      lastName: string;
-    } & Customer_Key;
-  })[];
+export interface GetProductVariables {
+  id: string;
 }
 
-export interface GetReviewsByProductIdVariables {
-  productId: UUIDString;
+export interface Image_Key {
+  id: string;
+  __typename?: 'Image_Key';
 }
 
-export interface ListCustomersData {
+export interface ListAllCustomersData {
   customers: ({
     id: string;
     firstName: string;
@@ -334,58 +301,40 @@ export interface Order_Key {
 }
 
 export interface ProductCollection_Key {
-  collectionId: UUIDString;
-  productId: UUIDString;
+  collectionId: string;
+  productId: string;
   __typename?: 'ProductCollection_Key';
 }
 
-export interface ProductImage_Key {
-  id: UUIDString;
-  __typename?: 'ProductImage_Key';
-}
-
-export interface ProductOption_Key {
-  id: UUIDString;
-  __typename?: 'ProductOption_Key';
-}
-
 export interface ProductReview_Key {
-  productId: UUIDString;
+  productId: string;
   customerId: string;
   __typename?: 'ProductReview_Key';
 }
 
 export interface ProductVariant_Key {
-  id: UUIDString;
+  sku: string;
   __typename?: 'ProductVariant_Key';
 }
 
 export interface Product_Key {
-  id: UUIDString;
+  id: string;
   __typename?: 'Product_Key';
-}
-
-export interface SEO_Key {
-  id: UUIDString;
-  __typename?: 'SEO_Key';
 }
 
 export interface SearchData {
   productsByDescription: ({
-    id: UUIDString;
-    handle: string;
+    id: string;
     title: string;
   } & Product_Key)[];
     productsByTitle: ({
-      id: UUIDString;
-      handle: string;
+      id: string;
       title: string;
     } & Product_Key)[];
       reviews: ({
         product: {
-          id: UUIDString;
+          id: string;
           title: string;
-          handle: string;
         } & Product_Key;
       })[];
 }
@@ -397,6 +346,11 @@ export interface SearchVariables {
 export interface SelectedOption_Key {
   id: UUIDString;
   __typename?: 'SelectedOption_Key';
+}
+
+export interface Seo_Key {
+  id: string;
+  __typename?: 'Seo_Key';
 }
 
 export interface UpdateOrderByChargeIdData {
@@ -461,6 +415,14 @@ export function createOrder(vars: CreateOrderVariables): MutationPromise<CreateO
 export function createOrder(dc: DataConnect, vars: CreateOrderVariables): MutationPromise<CreateOrderData, CreateOrderVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
+export function createOrderItemRef(vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function createOrderItemRef(dc: DataConnect, vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+
+export function createOrderItem(vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
+export function createOrderItem(dc: DataConnect, vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
+
+/* Allow users to create refs without passing in DataConnect */
 export function updateOrderByPaymentIntentIdRef(vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
 /* Allow users to pass in custom DataConnect instances */
 export function updateOrderByPaymentIntentIdRef(dc: DataConnect, vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
@@ -477,52 +439,28 @@ export function updateOrderByChargeId(vars?: UpdateOrderByChargeIdVariables): Mu
 export function updateOrderByChargeId(dc: DataConnect, vars?: UpdateOrderByChargeIdVariables): MutationPromise<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
-export function createOrderItemRef(vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+export function getProductRef(vars: GetProductVariables): QueryRef<GetProductData, GetProductVariables>;
 /* Allow users to pass in custom DataConnect instances */
-export function createOrderItemRef(dc: DataConnect, vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+export function getProductRef(dc: DataConnect, vars: GetProductVariables): QueryRef<GetProductData, GetProductVariables>;
 
-export function createOrderItem(vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
-export function createOrderItem(dc: DataConnect, vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
+export function getProduct(vars: GetProductVariables): QueryPromise<GetProductData, GetProductVariables>;
+export function getProduct(dc: DataConnect, vars: GetProductVariables): QueryPromise<GetProductData, GetProductVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
-export function listCustomersRef(): QueryRef<ListCustomersData, undefined>;
+export function getProductReviewsRef(vars: GetProductReviewsVariables): QueryRef<GetProductReviewsData, GetProductReviewsVariables>;
 /* Allow users to pass in custom DataConnect instances */
-export function listCustomersRef(dc: DataConnect): QueryRef<ListCustomersData, undefined>;
+export function getProductReviewsRef(dc: DataConnect, vars: GetProductReviewsVariables): QueryRef<GetProductReviewsData, GetProductReviewsVariables>;
 
-export function listCustomers(): QueryPromise<ListCustomersData, undefined>;
-export function listCustomers(dc: DataConnect): QueryPromise<ListCustomersData, undefined>;
+export function getProductReviews(vars: GetProductReviewsVariables): QueryPromise<GetProductReviewsData, GetProductReviewsVariables>;
+export function getProductReviews(dc: DataConnect, vars: GetProductReviewsVariables): QueryPromise<GetProductReviewsData, GetProductReviewsVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
-export function getReviewsByProductIdRef(vars: GetReviewsByProductIdVariables): QueryRef<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
+export function getCollectionRef(vars: GetCollectionVariables): QueryRef<GetCollectionData, GetCollectionVariables>;
 /* Allow users to pass in custom DataConnect instances */
-export function getReviewsByProductIdRef(dc: DataConnect, vars: GetReviewsByProductIdVariables): QueryRef<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
+export function getCollectionRef(dc: DataConnect, vars: GetCollectionVariables): QueryRef<GetCollectionData, GetCollectionVariables>;
 
-export function getReviewsByProductId(vars: GetReviewsByProductIdVariables): QueryPromise<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
-export function getReviewsByProductId(dc: DataConnect, vars: GetReviewsByProductIdVariables): QueryPromise<GetReviewsByProductIdData, GetReviewsByProductIdVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getReviewsByProductHandleRef(vars: GetReviewsByProductHandleVariables): QueryRef<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getReviewsByProductHandleRef(dc: DataConnect, vars: GetReviewsByProductHandleVariables): QueryRef<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
-
-export function getReviewsByProductHandle(vars: GetReviewsByProductHandleVariables): QueryPromise<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
-export function getReviewsByProductHandle(dc: DataConnect, vars: GetReviewsByProductHandleVariables): QueryPromise<GetReviewsByProductHandleData, GetReviewsByProductHandleVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getProductByHandleRef(vars: GetProductByHandleVariables): QueryRef<GetProductByHandleData, GetProductByHandleVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getProductByHandleRef(dc: DataConnect, vars: GetProductByHandleVariables): QueryRef<GetProductByHandleData, GetProductByHandleVariables>;
-
-export function getProductByHandle(vars: GetProductByHandleVariables): QueryPromise<GetProductByHandleData, GetProductByHandleVariables>;
-export function getProductByHandle(dc: DataConnect, vars: GetProductByHandleVariables): QueryPromise<GetProductByHandleData, GetProductByHandleVariables>;
-
-/* Allow users to create refs without passing in DataConnect */
-export function getCollectionByHandleRef(vars: GetCollectionByHandleVariables): QueryRef<GetCollectionByHandleData, GetCollectionByHandleVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getCollectionByHandleRef(dc: DataConnect, vars: GetCollectionByHandleVariables): QueryRef<GetCollectionByHandleData, GetCollectionByHandleVariables>;
-
-export function getCollectionByHandle(vars: GetCollectionByHandleVariables): QueryPromise<GetCollectionByHandleData, GetCollectionByHandleVariables>;
-export function getCollectionByHandle(dc: DataConnect, vars: GetCollectionByHandleVariables): QueryPromise<GetCollectionByHandleData, GetCollectionByHandleVariables>;
+export function getCollection(vars: GetCollectionVariables): QueryPromise<GetCollectionData, GetCollectionVariables>;
+export function getCollection(dc: DataConnect, vars: GetCollectionVariables): QueryPromise<GetCollectionData, GetCollectionVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
 export function getCollectionsByPageRef(vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
@@ -541,20 +479,20 @@ export function search(vars: SearchVariables): QueryPromise<SearchData, SearchVa
 export function search(dc: DataConnect, vars: SearchVariables): QueryPromise<SearchData, SearchVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
-export function getCurrentUsersOrdersRef(): QueryRef<GetCurrentUsersOrdersData, undefined>;
+export function getCurrentUserOrdersRef(): QueryRef<GetCurrentUserOrdersData, undefined>;
 /* Allow users to pass in custom DataConnect instances */
-export function getCurrentUsersOrdersRef(dc: DataConnect): QueryRef<GetCurrentUsersOrdersData, undefined>;
+export function getCurrentUserOrdersRef(dc: DataConnect): QueryRef<GetCurrentUserOrdersData, undefined>;
 
-export function getCurrentUsersOrders(): QueryPromise<GetCurrentUsersOrdersData, undefined>;
-export function getCurrentUsersOrders(dc: DataConnect): QueryPromise<GetCurrentUsersOrdersData, undefined>;
+export function getCurrentUserOrders(): QueryPromise<GetCurrentUserOrdersData, undefined>;
+export function getCurrentUserOrders(dc: DataConnect): QueryPromise<GetCurrentUserOrdersData, undefined>;
 
 /* Allow users to create refs without passing in DataConnect */
-export function getOrderByIdRef(vars: GetOrderByIdVariables): QueryRef<GetOrderByIdData, GetOrderByIdVariables>;
+export function getOrderRef(vars: GetOrderVariables): QueryRef<GetOrderData, GetOrderVariables>;
 /* Allow users to pass in custom DataConnect instances */
-export function getOrderByIdRef(dc: DataConnect, vars: GetOrderByIdVariables): QueryRef<GetOrderByIdData, GetOrderByIdVariables>;
+export function getOrderRef(dc: DataConnect, vars: GetOrderVariables): QueryRef<GetOrderData, GetOrderVariables>;
 
-export function getOrderById(vars: GetOrderByIdVariables): QueryPromise<GetOrderByIdData, GetOrderByIdVariables>;
-export function getOrderById(dc: DataConnect, vars: GetOrderByIdVariables): QueryPromise<GetOrderByIdData, GetOrderByIdVariables>;
+export function getOrder(vars: GetOrderVariables): QueryPromise<GetOrderData, GetOrderVariables>;
+export function getOrder(dc: DataConnect, vars: GetOrderVariables): QueryPromise<GetOrderData, GetOrderVariables>;
 
 /* Allow users to create refs without passing in DataConnect */
 export function getAllOrdersRef(): QueryRef<GetAllOrdersData, undefined>;
@@ -563,4 +501,12 @@ export function getAllOrdersRef(dc: DataConnect): QueryRef<GetAllOrdersData, und
 
 export function getAllOrders(): QueryPromise<GetAllOrdersData, undefined>;
 export function getAllOrders(dc: DataConnect): QueryPromise<GetAllOrdersData, undefined>;
+
+/* Allow users to create refs without passing in DataConnect */
+export function listAllCustomersRef(): QueryRef<ListAllCustomersData, undefined>;
+/* Allow users to pass in custom DataConnect instances */
+export function listAllCustomersRef(dc: DataConnect): QueryRef<ListAllCustomersData, undefined>;
+
+export function listAllCustomers(): QueryPromise<ListAllCustomersData, undefined>;
+export function listAllCustomers(dc: DataConnect): QueryPromise<ListAllCustomersData, undefined>;
 

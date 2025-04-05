@@ -8,10 +8,10 @@ import Rotate from '@/components/icons/rotate'
 import ProductDetails from '@/components/sections/product-details'
 import Reviews from '@/components/sections/reviews'
 import getDataConnect from '@/lib/firebase/getDataConnect'
-import { getProductByHandle, getReviewsByProductId } from '@firebasegen/default-connector'
+import { getProduct, getProductReviews } from '@firebasegen/default-connector'
 
 type Props = {
-  params: Promise<{ handle: string }>
+  params: Promise<{ id: string }>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
@@ -19,11 +19,10 @@ export default async function ProductPage(props: Props) {
   const dc = getDataConnect();
   const params = await props.params
 
-  // TODO: reconsolidate when I consolidate handle and id.
-  const { data: { product } } = await getProductByHandle(dc, { handle: params.handle })
+  const { data: { product } } = await getProduct(dc, { id: params.id })
   if (!product ) return notFound();
 
-  const { data: { productReviews }} = await getReviewsByProductId(dc, { productId: product.id })
+  const { data: { reviews }} = await getProductReviews(dc, { productId: product.id })
 
   const searchParams = await props.searchParams
   const selectedOptions: Array<{ name: string; value: string }> = []
@@ -43,7 +42,7 @@ export default async function ProductPage(props: Props) {
 
   if (!product) return notFound()
 
-  const { title, description, featuredImage, productVariants_on_product: variants, id } = product
+  const { title, description, featuredImage, variants, id } = product
 
   const options = variants?.reduce(
     (acc, variant) => {
@@ -77,7 +76,7 @@ export default async function ProductPage(props: Props) {
       )
     ) ?? variants?.[0]
 
-  const averageRating = productReviews.reduce((sum, r) => sum + r.rating, 0) / productReviews.length;
+  const averageRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
   return (
     <>
@@ -92,7 +91,7 @@ export default async function ProductPage(props: Props) {
       />
       <Features
         list={[
-          { name: 'Reviews', description: `(${productReviews.length})` },
+          { name: 'Reviews', description: `(${reviews.length})` },
           { icon: <Truck />, name: 'Shipping & Returns' }
         ]}
         inline
@@ -147,19 +146,9 @@ export default async function ProductPage(props: Props) {
         ]}
       />
       <Reviews
-        reviews={productReviews}
+        reviews={reviews}
         avgRating={Number(averageRating)}
-        productDetails={{
-          productID: product.id,
-          productSlug: product.handle,
-          productName: product.title,
-          variantTitle: product.title,
-          variantPrice: new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD'
-          }).format(Number(currentVariant?.price)),
-          variantImage: featuredImage
-        }}
+        product={product}
       />
     </>
   )
@@ -170,9 +159,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
   const {
     data: { product }
-  } = await getProductByHandle(getDataConnect(), { handle: params.handle })
+  } = await getProduct(getDataConnect(), { id: params.id })
 
-  if (!product?.id) return notFound()
+  if (!product) return notFound()
 
   const { seo, title, description, featuredImage } = product
 

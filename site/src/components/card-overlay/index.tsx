@@ -8,7 +8,12 @@ type CardOverlayProps = {
     label: string
     href: string
   }
-  image: string
+  image: {
+    url: string
+    altText?: string | null
+    width: number
+    height: number
+  }
   align?: 'center' | 'right'
 }
 

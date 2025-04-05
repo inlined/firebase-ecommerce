@@ -25,22 +25,18 @@ type Props = {
     }
   }[]
   avgRating: number
-  productDetails: {
-    productID: string
-    productSlug: string
-    productName: string
-    variantTitle?: string
-    variantPrice?: string
-    variantImage?: {
+  product: {
+    id: string
+    title: string
+    featuredImage: {
       url: string
-      altText?: string | null
-      width: number
-      height: number
+      altText: string
     }
+    variants: { price: number }[]
   }
 }
 
-export default function Reviews({ reviews, avgRating, productDetails }: Props) {
+export default function Reviews({ reviews, avgRating, product }: Props) {
   const [showReviewModal, setShowReviewModal] = useState(false)
   const summaryRef = useRef<HTMLParagraphElement | null>(null)
   const [summary, setSummary] = useState('')
@@ -49,7 +45,7 @@ export default function Reviews({ reviews, avgRating, productDetails }: Props) {
     async function fetchSummary() {
       const { stream, output } = streamFlow<typeof summarizeReviews>({
           url:"/api/reviews/summary",
-          input: { productId: productDetails.productID }, 
+          input: { productId: product.id },
       });
       let accum = "";
       for await (const chunk of stream) {
@@ -59,7 +55,7 @@ export default function Reviews({ reviews, avgRating, productDetails }: Props) {
       setSummary(await output);
     }
     fetchSummary();
-  }, [reviews, productDetails])
+  }, [reviews, product])
 
   return (
     <>
@@ -79,6 +75,7 @@ export default function Reviews({ reviews, avgRating, productDetails }: Props) {
         <section className="text-foreground bg-background py-10 lg:py-20 space-y-10">
           <div className="lg:container space-y-10">
             <div className="flex flex-col gap-10 px-3">
+              { /* TODO: Make this dynamic based on whether the user is logged in */ }
               <Button variant="link" onClick={() => setShowReviewModal(true)}>
                 Write a review
               </Button>
@@ -120,7 +117,7 @@ export default function Reviews({ reviews, avgRating, productDetails }: Props) {
       <ReviewModal
         isOpen={showReviewModal}
         onClose={() => setShowReviewModal(false)}
-        productDetails={productDetails}
+        product={{...product, price: Math.min(...product.variants.map((variant) => variant.price))}}
       />
     </>
   )

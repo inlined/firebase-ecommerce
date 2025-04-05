@@ -7,21 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export const extractVariantOptions = (
   products: {
-    id: string
-    title: string
-    handle: string
-    featuredImage: {
-      url: string
-      altText?: string | null
-      width: number
-      height: number
-    }
     variants: {
-      id: string
-      price: number
-      availableForSale: boolean
-      inventoryQuantity: number
-      selectedOptions_on_productVariant: {
+      selectedOptions: {
         name?: string | null
         value?: string | null
       }[]
@@ -33,7 +20,7 @@ export const extractVariantOptions = (
   return products.reduce(
     (acc, product) => {
       product.variants.forEach((variant) => {
-        variant.selectedOptions_on_productVariant.forEach((option) => {
+        variant.selectedOptions.forEach((option) => {
           if (!option.name || !option.value) return
 
           const name = option.name.toLowerCase()
