@@ -52,7 +52,11 @@ export default function ProductGrid({ title, products, variant = 'character' }: 
                   price={minPrice(product)}
                   slug={product.id}
                   title={product.title}
-                  tags={product.variants?.map(v => v.title)?.join(' | ') || ''}
+                  tags={
+                    // TODO: This used to be something along the lines of selected options (passed in as a variants string from srx/page)
+                    // but there was never any actual data. Leaving this for someone who knows what was intended to be here to either
+                    // implement or clean up the code
+                    ''}
                 />
               ) : (
                 <ProductGridItem
@@ -63,7 +67,11 @@ export default function ProductGrid({ title, products, variant = 'character' }: 
                   name={product.title}
                   price={minPrice(product)}
                   slug={product.id}
-                  tags={product.variants?.map(v => v.title).join(' | ') || ''}
+                  tags={
+                    // TODO: This used to be something along the lines of selected options (passed in as a variants string from srx/page)
+                    // but there was never any actual data. Leaving this for someone who knows what was intended to be here to either
+                    // implement or clean up the code
+                    ''}
                 />
               )
             )}
