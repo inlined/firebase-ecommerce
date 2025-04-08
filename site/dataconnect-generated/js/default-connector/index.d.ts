@@ -31,6 +31,11 @@ export interface CreateOrderItemVariables {
 export interface CreateOrderVariables {
   chargeId?: string | null;
   customerId?: string | null;
+  shippingStreet1: string;
+  shippingStreet2?: string | null;
+  shippingCity: string;
+  shippingState: string;
+  shippingZip: string;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
   subtotalPrice: number;
@@ -195,6 +200,11 @@ export interface GetOrderData {
   order?: {
     id: UUIDString;
     customerId: string;
+    shippingStreet1: string;
+    shippingStreet2?: string | null;
+    shippingCity: string;
+    shippingState: string;
+    shippingZip: string;
     processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;

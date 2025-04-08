@@ -1,5 +1,6 @@
 'use client'
 
+import { Address } from '@/lib/stores/cart-store'
 import { useEffect, useState } from 'react'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -12,15 +13,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY!)
 type Props = {
   amount: number
   products: Product[]
-  shippingInfo?: {
-    name: string
-    email: string
-    address1: string
-    address2: string
-    city: string
-    state: string
-    zipCode: string
-  }
+  shippingInfo: Address
 }
 
 export default function StripeCheckout({ amount, products, shippingInfo }: Props) {

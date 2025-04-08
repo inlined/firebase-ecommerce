@@ -18,9 +18,18 @@ export type Product = {
   }[]
 }
 
+export type Address = {
+  street1: string
+  street2?: string
+  city: string
+  state: string
+  zipCode: string
+}
+
 type CartStore = {
   products: Product[]
   totalQuantity: number
+  address: Address | null
   addProduct: (product: Product) => void
   removeProduct: ({
     productId,
@@ -38,6 +47,7 @@ type CartStore = {
     quantity: number
     selectedOption: Product['selectedOption']
   }) => void
+  updateAddress: (address: Address) => void
   clearCart: () => void
 }
 
@@ -47,6 +57,7 @@ export const useCartStore = create<CartStore>()(
       products: [],
 
       totalQuantity: get()?.products?.reduce((acc, product) => acc + product.quantity, 0) ?? 0,
+      address: null,
 
       addProduct: (product: Product) => {
         const existingProductIndex = get().products.findIndex(
@@ -134,6 +145,10 @@ export const useCartStore = create<CartStore>()(
             totalQuantity: get().totalQuantity - oldQuantity + quantity
           })
         }
+      },
+
+      updateAddress: (address: Address) => {
+        set({ address })
       },
 
       clearCart: () => {

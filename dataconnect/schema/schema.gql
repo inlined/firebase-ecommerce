@@ -75,6 +75,11 @@ type OrderItem @table {
 type Order @table {
   id: UUID! @default(expr: "uuidV4()")
   customer: Customer!
+  shippingStreet1: String! @col(name: "shipping_street1", dataType: "varchar(100)")
+  shippingStreet2: String @col(name: "shipping_street2", dataType: "varchar(100)")
+  shippingCity: String! @col(name: "shipping_city", dataType: "varchar(100)")
+  shippingState: String! @col(name: "shipping_state", dataType: "varchar(2)")
+  shippingZip: String! @col(name: "shipping_zip", dataType: "varchar(5)")
   chargeId: String @col(name: "charge_id", dataType: "varchar(100)")
   paymentIntentId: String @col(name: "payment_intent_id", dataType: "varchar(100)")
   receiptUrl: String @col(name: "receipt_url", dataType: "varchar(255)")

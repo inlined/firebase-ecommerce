@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import getStripe from '@/lib/stripe'
 import Stripe from 'stripe'
 import { createOrder, createOrderItem, updateOrderByPaymentIntentId } from './graphql'
+import { Address } from '@/lib/stores/cart-store'
 
 export const config = {
   api: {
@@ -115,9 +116,15 @@ async function processPaymentIntentCreated({data: { object: paymentIntent }}: St
     quantity: number
     price: number
   }[]
+  const shippingInfo = JSON.parse(metadata.shipping_info || '{}') as Address
 
   const { order_insert: order } = await createOrder({
     customerId: metadata.customer_id,
+    shippingStreet1: shippingInfo.street1,
+    shippingStreet2: shippingInfo.street2,
+    shippingCity: shippingInfo.city,
+    shippingState: shippingInfo.state,
+    shippingZip: shippingInfo.zipCode,
     paymentIntentId: paymentIntent.id,
     subtotalPrice: paymentIntent.amount,
     totalTax: 0,

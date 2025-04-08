@@ -791,6 +791,11 @@ export interface GetOrderData {
   order?: {
     id: UUIDString;
     customerId: string;
+    shippingStreet1: string;
+    shippingStreet2?: string | null;
+    shippingCity: string;
+    shippingState: string;
+    shippingZip: string;
     processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;
@@ -1273,6 +1278,11 @@ The `CreateOrder` Mutation requires an argument of type `CreateOrderVariables`, 
 export interface CreateOrderVariables {
   chargeId?: string | null;
   customerId?: string | null;
+  shippingStreet1: string;
+  shippingStreet2?: string | null;
+  shippingCity: string;
+  shippingState: string;
+  shippingZip: string;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
   subtotalPrice: number;
@@ -1332,6 +1342,11 @@ export default function CreateOrderComponent() {
   const createOrderVars: CreateOrderVariables = {
     chargeId: ..., // optional
     customerId: ..., // optional
+    shippingStreet1: ..., 
+    shippingStreet2: ..., // optional
+    shippingCity: ..., 
+    shippingState: ..., 
+    shippingZip: ..., 
     paymentIntentId: ..., // optional
     receiptUrl: ..., // optional
     subtotalPrice: ..., 
@@ -1343,7 +1358,7 @@ export default function CreateOrderComponent() {
   };
   mutation.mutate(createOrderVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ chargeId: ..., customerId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
+  mutation.mutate({ chargeId: ..., customerId: ..., shippingStreet1: ..., shippingStreet2: ..., shippingCity: ..., shippingState: ..., shippingZip: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {

@@ -8,8 +8,13 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function CartSection() {
-  const { products, totalQuantity } = useCartStore(
-    useShallow((state) => ({ products: state.products, totalQuantity: state.totalQuantity }))
+  const { products, totalQuantity, address, updateAddress } = useCartStore(
+    useShallow((state) => ({ 
+      products: state.products,
+      totalQuantity: state.totalQuantity,
+      address: state.address,
+      updateAddress: state.updateAddress
+    }))
   )
   const { user } = useAuth()
   const isSignedIn = !!user?.uid
@@ -17,24 +22,29 @@ export default function CartSection() {
   const [shippingInfo, setShippingInfo] = useState({
     name: '',
     email: '',
-    address1: '',
-    address2: '',
+    street1: '',
+    street2: '',
     city: '',
     state: '',
     zipCode: ''
   })
 
   useEffect(() => {
+    updateAddress(shippingInfo)
+  }, [shippingInfo, updateAddress]);
+
+  useEffect(() => {
     if (isSignedIn && user.displayName) {
-      setShippingInfo({
+      setShippingInfo((prevShippingInfo) => ({
+        ...prevShippingInfo,
         name: user?.displayName ?? '',
         email: user?.email ?? '',
-        address1: '',
-        address2: '',
-        city: '',
-        state: '',
-        zipCode: ''
-      })
+        street1: address?.street1 ?? '',
+        street2: address?.street2 ?? '',
+        city: address?.city ?? '',
+        state: address?.state ?? '',
+        zipCode: address?.zipCode ?? ''
+      }));
     }
   }, [isSignedIn, user?.displayName, user?.email])
 
@@ -43,7 +53,7 @@ export default function CartSection() {
     totalQuantity === 0 ||
     !shippingInfo.name ||
     !shippingInfo.email ||
-    !shippingInfo.address1 ||
+    !shippingInfo.street1 ||
     !shippingInfo.city ||
     !shippingInfo.state ||
     !shippingInfo.zipCode
@@ -130,15 +140,15 @@ export default function CartSection() {
                   <input
                     type="text"
                     placeholder="Address Line 1"
-                    value={shippingInfo.address1}
-                    onChange={(e) => setShippingInfo({ ...shippingInfo, address1: e.target.value })}
+                    value={shippingInfo.street1}
+                    onChange={(e) => setShippingInfo({ ...shippingInfo, street1: e.target.value })}
                     className="px-4 py-2 rounded-full bg-gray-200 border-2 border-gray-200 hover:border-gray-300 focus:border-foreground transition-colors outline-none md:col-span-2"
                   />
                   <input
                     type="text"
                     placeholder="Address Line 2"
-                    value={shippingInfo.address2}
-                    onChange={(e) => setShippingInfo({ ...shippingInfo, address2: e.target.value })}
+                    value={shippingInfo.street2}
+                    onChange={(e) => setShippingInfo({ ...shippingInfo, street2: e.target.value })}
                     className="px-4 py-2 rounded-full bg-gray-200 border-2 border-gray-200 hover:border-gray-300 focus:border-foreground transition-colors outline-none md:col-span-2"
                   />
                   <input

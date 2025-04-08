@@ -5,6 +5,11 @@ import { executeGQL } from "@/lib/firebase/admin/getDataConnect";
 
 export interface CreateOrderRequest {
     customerId: string
+    shippingStreet1: string
+    shippingStreet2?: string
+    shippingCity: string
+    shippingState: string
+    shippingZip: string
     chargeId?: String
     paymentIntentId?: string
     receiptUrl?: string
@@ -24,31 +29,43 @@ export interface CreateOrderResponse {
 
 export function createOrder(req: CreateOrderRequest): Promise<CreateOrderResponse> {
     const query = `
-    mutation CreateOrder(
-        $chargeId: String
-        $customerId: String
-        $paymentIntentId: String
-        $receiptUrl: String
-        $subtotalPrice: Float!
-        $totalTax: Float!
-        $totalShippingPrice: Float!
-        $totalPrice: Float!
-        $financialStatus: String!
-        $fulfillmentStatus: String!
-    ) @auth(level: NO_ACCESS) {
-        order_insert(data: {
-            customerId: $customerId
-            chargeId: $chargeId
-            paymentIntentId: $paymentIntentId
-            receiptUrl: $receiptUrl
-            subtotalPrice: $subtotalPrice
-            totalTax: $totalTax
-            totalShippingPrice: $totalShippingPrice
-            totalPrice: $totalPrice
-            financialStatus: $financialStatus
-            fulfillmentStatus: $fulfillmentStatus
-        })
-    }`;
+        mutation CreateOrder(
+            $chargeId: String
+            $customerId: String
+            $shippingStreet1: String!
+            $shippingStreet2: String
+            $shippingCity: String!
+            $shippingState: String!
+            $shippingZip: String!
+            $paymentIntentId: String
+            $receiptUrl: String
+            $subtotalPrice: Float!
+            $totalTax: Float!
+            $totalShippingPrice: Float!
+            $totalPrice: Float!
+            $financialStatus: String!
+            $fulfillmentStatus: String!
+        ) @auth(level: NO_ACCESS) {
+            order_insert(
+                data: {
+                    customerId: $customerId
+                    shippingStreet1: $shippingStreet1
+                    shippingStreet2: $shippingStreet2
+                    shippingCity: $shippingCity
+                    shippingState: $shippingState
+                    shippingZip: $shippingZip
+                    chargeId: $chargeId
+                    paymentIntentId: $paymentIntentId
+                    receiptUrl: $receiptUrl
+                    subtotalPrice: $subtotalPrice
+                    totalTax: $totalTax
+                    totalShippingPrice: $totalShippingPrice
+                    totalPrice: $totalPrice
+                    financialStatus: $financialStatus
+                    fulfillmentStatus: $fulfillmentStatus
+                }
+            )
+        }`;
     return executeGQL(query, req);
 }
 

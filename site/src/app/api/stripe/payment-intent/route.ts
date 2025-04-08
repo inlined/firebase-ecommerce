@@ -4,7 +4,6 @@ import { Product } from '@/lib/stores/cart-store'
 import getServerApp from '@/lib/firebase/getServerApp'
 import getAuth from '@/lib/firebase/getAuth'
 
-// TODO: Use real user credentials!!!
 export async function POST(request: Request) {
   try {
     const { amount, products, shippingInfo } = await request.json()

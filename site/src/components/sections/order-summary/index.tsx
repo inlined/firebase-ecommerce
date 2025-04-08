@@ -14,13 +14,6 @@ type Props = {
 export default function OrderSummary({ order }: Props) {
   const { user: customer } = useAuth()
 
-  const shippingAddress = {
-    address1: '575 Market St',
-    city: 'San Francisco',
-    province: 'CA',
-    zip: '94101'
-  }
-
   if (!order) return null
 
   const {
@@ -29,7 +22,12 @@ export default function OrderSummary({ order }: Props) {
     id,
     items,
     financialStatus,
-    fulfillmentStatus
+    fulfillmentStatus,
+    shippingStreet1,
+    shippingStreet2,
+    shippingCity,
+    shippingState,
+    shippingZip
   } = order
 
   return (
@@ -88,9 +86,10 @@ export default function OrderSummary({ order }: Props) {
             )}
             <h3 className="text-gray-400">Shipping Address</h3>
             <address className="not-italic w-32">
-              {shippingAddress.address1}
+              {shippingStreet1}
+              {shippingStreet2 && <br />}
               <br />
-              {shippingAddress.city}, {shippingAddress.province} {shippingAddress.zip}
+              {shippingCity}, {shippingState} {shippingZip}
             </address>
           </aside>
 

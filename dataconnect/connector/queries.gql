@@ -202,6 +202,11 @@ query GetOrder($id: UUID!) @auth(level: USER, insecureReason: "Checked manually 
     id
     customerId
       @check(expr: "this == auth.uid", message: "Customers can only view orders they placed.")
+    shippingStreet1
+    shippingStreet2
+    shippingCity
+    shippingState
+    shippingZip
     processedAt
     receiptUrl
     totalPrice

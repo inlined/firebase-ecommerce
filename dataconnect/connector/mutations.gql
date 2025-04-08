@@ -46,6 +46,11 @@ mutation CreateProductReview(
 mutation CreateOrder(
   $chargeId: String
   $customerId: String
+  $shippingStreet1: String!
+  $shippingStreet2: String
+  $shippingCity: String!
+  $shippingState: String!
+  $shippingZip: String!
   $paymentIntentId: String
   $receiptUrl: String
   $subtotalPrice: Float!
@@ -58,6 +63,11 @@ mutation CreateOrder(
   order_insert(
     data: {
       customerId: $customerId
+      shippingStreet1: $shippingStreet1
+      shippingStreet2: $shippingStreet2
+      shippingCity: $shippingCity
+      shippingState: $shippingState
+      shippingZip: $shippingZip
       chargeId: $chargeId
       paymentIntentId: $paymentIntentId
       receiptUrl: $receiptUrl

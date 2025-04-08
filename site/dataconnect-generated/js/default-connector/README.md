@@ -806,6 +806,11 @@ export interface GetOrderData {
   order?: {
     id: UUIDString;
     customerId: string;
+    shippingStreet1: string;
+    shippingStreet2?: string | null;
+    shippingCity: string;
+    shippingState: string;
+    shippingZip: string;
     processedAt: TimestampString;
     receiptUrl?: string | null;
     totalPrice: number;
@@ -1308,6 +1313,11 @@ The `CreateOrder` mutation requires an argument of type `CreateOrderVariables`, 
 export interface CreateOrderVariables {
   chargeId?: string | null;
   customerId?: string | null;
+  shippingStreet1: string;
+  shippingStreet2?: string | null;
+  shippingCity: string;
+  shippingState: string;
+  shippingZip: string;
   paymentIntentId?: string | null;
   receiptUrl?: string | null;
   subtotalPrice: number;
@@ -1337,6 +1347,11 @@ import { connectorConfig, createOrder, CreateOrderVariables } from '@firebasegen
 const createOrderVars: CreateOrderVariables = {
   chargeId: ..., // optional
   customerId: ..., // optional
+  shippingStreet1: ..., 
+  shippingStreet2: ..., // optional
+  shippingCity: ..., 
+  shippingState: ..., 
+  shippingZip: ..., 
   paymentIntentId: ..., // optional
   receiptUrl: ..., // optional
   subtotalPrice: ..., 
@@ -1351,7 +1366,7 @@ const createOrderVars: CreateOrderVariables = {
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await createOrder(createOrderVars);
 // Variables can be defined inline as well.
-const { data } = await createOrder({ chargeId: ..., customerId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
+const { data } = await createOrder({ chargeId: ..., customerId: ..., shippingStreet1: ..., shippingStreet2: ..., shippingCity: ..., shippingState: ..., shippingZip: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1376,6 +1391,11 @@ import { connectorConfig, createOrderRef, CreateOrderVariables } from '@firebase
 const createOrderVars: CreateOrderVariables = {
   chargeId: ..., // optional
   customerId: ..., // optional
+  shippingStreet1: ..., 
+  shippingStreet2: ..., // optional
+  shippingCity: ..., 
+  shippingState: ..., 
+  shippingZip: ..., 
   paymentIntentId: ..., // optional
   receiptUrl: ..., // optional
   subtotalPrice: ..., 
@@ -1389,7 +1409,7 @@ const createOrderVars: CreateOrderVariables = {
 // Call the `createOrderRef()` function to get a reference to the mutation.
 const ref = createOrderRef(createOrderVars);
 // Variables can be defined inline as well.
-const ref = createOrderRef({ chargeId: ..., customerId: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
+const ref = createOrderRef({ chargeId: ..., customerId: ..., shippingStreet1: ..., shippingStreet2: ..., shippingCity: ..., shippingState: ..., shippingZip: ..., paymentIntentId: ..., receiptUrl: ..., subtotalPrice: ..., totalTax: ..., totalShippingPrice: ..., totalPrice: ..., financialStatus: ..., fulfillmentStatus: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);

@@ -9,8 +9,8 @@ import { useShallow } from 'zustand/shallow'
 export default function CheckoutPage() {
   const { user } = useAuth()
 
-  const { products, totalQuantity } = useCartStore(
-    useShallow((state) => ({ products: state.products, totalQuantity: state.totalQuantity }))
+  const { products, totalQuantity, address: shippingInfo } = useCartStore(
+    useShallow((state) => ({ products: state.products, totalQuantity: state.totalQuantity, address: state.address }))
   )
 
   const isSignedIn = !!user?.uid
@@ -119,7 +119,7 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <StripeCheckout amount={total} products={products} />
+        <StripeCheckout amount={total} products={products} shippingInfo={shippingInfo!}/>
       </div>
     </section>
   )
