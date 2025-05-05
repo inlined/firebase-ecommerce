@@ -599,15 +599,24 @@ export interface SearchData {
   productsByDescription: ({
     id: string;
     title: string;
+    _metadata?: {
+      distance?: number | null;
+    };
   } & Product_Key)[];
     productsByTitle: ({
       id: string;
       title: string;
+      _metadata?: {
+        distance?: number | null;
+      };
     } & Product_Key)[];
       reviews: ({
         product: {
           id: string;
           title: string;
+          _metadata?: {
+            distance?: number | null;
+          };
         } & Product_Key;
       })[];
 }

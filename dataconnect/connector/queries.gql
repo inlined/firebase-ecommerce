@@ -141,6 +141,9 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
   ) {
     id
     title
+    _metadata {
+      distance
+    }
   }
   productsByTitle: products_titleEmbedding_similarity(
     compare_embed: { model: "text-embedding-005", text: $query }
@@ -150,6 +153,9 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
   ) {
     id
     title
+    _metadata {
+      distance
+    }
   }
   reviews: productReviews_contentEmbedding_similarity(
     compare_embed: { model: "text-embedding-005", text: $query }
@@ -160,6 +166,9 @@ query Search($query: String!) @auth(level: PUBLIC, insecureReason: "public data"
     product {
       id
       title
+      _metadata {
+        distance
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 # Table of Contents
-- [**Overview**](#generated-typescript-readme)
+- [**Overview**](#generated-javascript-readme)
 - [**Accessing the connector**](#accessing-the-connector)
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
@@ -21,7 +21,7 @@
   - [*UpdateOrderByChargeId*](#updateorderbychargeid)
 
 # Generated TypeScript README
-This README will guide you through the process of using the generated TypeScript SDK package for the connector `default`. It will also provide examples on how to use your generated SDK to call your Data Connect queries and mutations.
+This README will guide you through the process of using the generated JavaScript SDK package for the connector `default`. It will also provide examples on how to use your generated SDK to call your Data Connect queries and mutations.
 
 ***NOTE:** This README is generated alongside the generated SDK. If you make changes to this file, they will be overwritten when the SDK is regenerated.*
 
@@ -34,7 +34,7 @@ A connector is a collection of Queries and Mutations. One SDK is generated for e
 
 You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig } from '@firebasegen/default-connector';
 
@@ -47,7 +47,7 @@ By default, the connector will connect to the production service.
 To connect to the emulator, you can use the following code.
 You can also follow the emulator instructions from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#instrument-clients).
 
-```javascript
+```typescript
 import { connectDataConnectEmulator, getDataConnect } from 'firebase/data-connect';
 import { connectorConfig } from '@firebasegen/default-connector';
 
@@ -74,22 +74,37 @@ Below are examples of how to use the `default` connector's generated functions t
 
 ## GetProduct
 You can execute the `GetProduct` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 getProduct(vars: GetProductVariables): QueryPromise<GetProductData, GetProductVariables>;
 
-getProductRef(vars: GetProductVariables): QueryRef<GetProductData, GetProductVariables>;
+interface GetProductRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetProductVariables): QueryRef<GetProductData, GetProductVariables>;
+}
+export const getProductRef: GetProductRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 getProduct(dc: DataConnect, vars: GetProductVariables): QueryPromise<GetProductData, GetProductVariables>;
 
-getProductRef(dc: DataConnect, vars: GetProductVariables): QueryRef<GetProductData, GetProductVariables>;
+interface GetProductRef {
+  ...
+  (dc: DataConnect, vars: GetProductVariables): QueryRef<GetProductData, GetProductVariables>;
+}
+export const getProductRef: GetProductRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getProductRef:
+```typescript
+const name = getProductRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `GetProduct` query requires an argument of type `GetProductVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface GetProductVariables {
   id: string;
 }
@@ -98,7 +113,7 @@ export interface GetProductVariables {
 Recall that executing the `GetProduct` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `GetProductData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface GetProductData {
   product?: {
     id: string;
@@ -133,7 +148,7 @@ export interface GetProductData {
 ```
 ### Using `GetProduct`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getProduct, GetProductVariables } from '@firebasegen/default-connector';
 
@@ -163,7 +178,7 @@ getProduct(getProductVars).then((response) => {
 
 ### Using `GetProduct`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getProductRef, GetProductVariables } from '@firebasegen/default-connector';
 
@@ -196,22 +211,37 @@ executeQuery(ref).then((response) => {
 
 ## GetProductReviews
 You can execute the `GetProductReviews` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 getProductReviews(vars: GetProductReviewsVariables): QueryPromise<GetProductReviewsData, GetProductReviewsVariables>;
 
-getProductReviewsRef(vars: GetProductReviewsVariables): QueryRef<GetProductReviewsData, GetProductReviewsVariables>;
+interface GetProductReviewsRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetProductReviewsVariables): QueryRef<GetProductReviewsData, GetProductReviewsVariables>;
+}
+export const getProductReviewsRef: GetProductReviewsRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 getProductReviews(dc: DataConnect, vars: GetProductReviewsVariables): QueryPromise<GetProductReviewsData, GetProductReviewsVariables>;
 
-getProductReviewsRef(dc: DataConnect, vars: GetProductReviewsVariables): QueryRef<GetProductReviewsData, GetProductReviewsVariables>;
+interface GetProductReviewsRef {
+  ...
+  (dc: DataConnect, vars: GetProductReviewsVariables): QueryRef<GetProductReviewsData, GetProductReviewsVariables>;
+}
+export const getProductReviewsRef: GetProductReviewsRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getProductReviewsRef:
+```typescript
+const name = getProductReviewsRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `GetProductReviews` query requires an argument of type `GetProductReviewsVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface GetProductReviewsVariables {
   productId: string;
 }
@@ -220,7 +250,7 @@ export interface GetProductReviewsVariables {
 Recall that executing the `GetProductReviews` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `GetProductReviewsData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface GetProductReviewsData {
   reviews: ({
     id: UUIDString;
@@ -237,7 +267,7 @@ export interface GetProductReviewsData {
 ```
 ### Using `GetProductReviews`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getProductReviews, GetProductReviewsVariables } from '@firebasegen/default-connector';
 
@@ -267,7 +297,7 @@ getProductReviews(getProductReviewsVars).then((response) => {
 
 ### Using `GetProductReviews`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getProductReviewsRef, GetProductReviewsVariables } from '@firebasegen/default-connector';
 
@@ -300,22 +330,37 @@ executeQuery(ref).then((response) => {
 
 ## GetCollection
 You can execute the `GetCollection` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 getCollection(vars: GetCollectionVariables): QueryPromise<GetCollectionData, GetCollectionVariables>;
 
-getCollectionRef(vars: GetCollectionVariables): QueryRef<GetCollectionData, GetCollectionVariables>;
+interface GetCollectionRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetCollectionVariables): QueryRef<GetCollectionData, GetCollectionVariables>;
+}
+export const getCollectionRef: GetCollectionRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 getCollection(dc: DataConnect, vars: GetCollectionVariables): QueryPromise<GetCollectionData, GetCollectionVariables>;
 
-getCollectionRef(dc: DataConnect, vars: GetCollectionVariables): QueryRef<GetCollectionData, GetCollectionVariables>;
+interface GetCollectionRef {
+  ...
+  (dc: DataConnect, vars: GetCollectionVariables): QueryRef<GetCollectionData, GetCollectionVariables>;
+}
+export const getCollectionRef: GetCollectionRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getCollectionRef:
+```typescript
+const name = getCollectionRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `GetCollection` query requires an argument of type `GetCollectionVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface GetCollectionVariables {
   id: string;
 }
@@ -324,7 +369,7 @@ export interface GetCollectionVariables {
 Recall that executing the `GetCollection` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `GetCollectionData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface GetCollectionData {
   collection?: {
     id: string;
@@ -371,7 +416,7 @@ export interface GetCollectionData {
 ```
 ### Using `GetCollection`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getCollection, GetCollectionVariables } from '@firebasegen/default-connector';
 
@@ -401,7 +446,7 @@ getCollection(getCollectionVars).then((response) => {
 
 ### Using `GetCollection`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getCollectionRef, GetCollectionVariables } from '@firebasegen/default-connector';
 
@@ -434,22 +479,37 @@ executeQuery(ref).then((response) => {
 
 ## GetCollectionsByPage
 You can execute the `GetCollectionsByPage` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 getCollectionsByPage(vars?: GetCollectionsByPageVariables): QueryPromise<GetCollectionsByPageData, GetCollectionsByPageVariables>;
 
-getCollectionsByPageRef(vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+interface GetCollectionsByPageRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+}
+export const getCollectionsByPageRef: GetCollectionsByPageRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 getCollectionsByPage(dc: DataConnect, vars?: GetCollectionsByPageVariables): QueryPromise<GetCollectionsByPageData, GetCollectionsByPageVariables>;
 
-getCollectionsByPageRef(dc: DataConnect, vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+interface GetCollectionsByPageRef {
+  ...
+  (dc: DataConnect, vars?: GetCollectionsByPageVariables): QueryRef<GetCollectionsByPageData, GetCollectionsByPageVariables>;
+}
+export const getCollectionsByPageRef: GetCollectionsByPageRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getCollectionsByPageRef:
+```typescript
+const name = getCollectionsByPageRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `GetCollectionsByPage` query has an optional argument of type `GetCollectionsByPageVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface GetCollectionsByPageVariables {
   page?: string | null;
 }
@@ -458,7 +518,7 @@ export interface GetCollectionsByPageVariables {
 Recall that executing the `GetCollectionsByPage` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `GetCollectionsByPageData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface GetCollectionsByPageData {
   collections: ({
     id: string;
@@ -496,7 +556,7 @@ export interface GetCollectionsByPageData {
 ```
 ### Using `GetCollectionsByPage`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getCollectionsByPage, GetCollectionsByPageVariables } from '@firebasegen/default-connector';
 
@@ -528,7 +588,7 @@ getCollectionsByPage(getCollectionsByPageVars).then((response) => {
 
 ### Using `GetCollectionsByPage`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getCollectionsByPageRef, GetCollectionsByPageVariables } from '@firebasegen/default-connector';
 
@@ -563,22 +623,37 @@ executeQuery(ref).then((response) => {
 
 ## Search
 You can execute the `Search` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 search(vars: SearchVariables): QueryPromise<SearchData, SearchVariables>;
 
-searchRef(vars: SearchVariables): QueryRef<SearchData, SearchVariables>;
+interface SearchRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: SearchVariables): QueryRef<SearchData, SearchVariables>;
+}
+export const searchRef: SearchRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 search(dc: DataConnect, vars: SearchVariables): QueryPromise<SearchData, SearchVariables>;
 
-searchRef(dc: DataConnect, vars: SearchVariables): QueryRef<SearchData, SearchVariables>;
+interface SearchRef {
+  ...
+  (dc: DataConnect, vars: SearchVariables): QueryRef<SearchData, SearchVariables>;
+}
+export const searchRef: SearchRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the searchRef:
+```typescript
+const name = searchRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `Search` query requires an argument of type `SearchVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface SearchVariables {
   query: string;
 }
@@ -587,27 +662,36 @@ export interface SearchVariables {
 Recall that executing the `Search` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `SearchData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface SearchData {
   productsByDescription: ({
     id: string;
     title: string;
+    _metadata?: {
+      distance?: number | null;
+    };
   } & Product_Key)[];
     productsByTitle: ({
       id: string;
       title: string;
+      _metadata?: {
+        distance?: number | null;
+      };
     } & Product_Key)[];
       reviews: ({
         product: {
           id: string;
           title: string;
+          _metadata?: {
+            distance?: number | null;
+          };
         } & Product_Key;
       })[];
 }
 ```
 ### Using `Search`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, search, SearchVariables } from '@firebasegen/default-connector';
 
@@ -641,7 +725,7 @@ search(searchVars).then((response) => {
 
 ### Using `Search`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, searchRef, SearchVariables } from '@firebasegen/default-connector';
 
@@ -678,16 +762,31 @@ executeQuery(ref).then((response) => {
 
 ## GetCurrentUserOrders
 You can execute the `GetCurrentUserOrders` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 getCurrentUserOrders(): QueryPromise<GetCurrentUserOrdersData, undefined>;
 
-getCurrentUserOrdersRef(): QueryRef<GetCurrentUserOrdersData, undefined>;
+interface GetCurrentUserOrdersRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetCurrentUserOrdersData, undefined>;
+}
+export const getCurrentUserOrdersRef: GetCurrentUserOrdersRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 getCurrentUserOrders(dc: DataConnect): QueryPromise<GetCurrentUserOrdersData, undefined>;
 
-getCurrentUserOrdersRef(dc: DataConnect): QueryRef<GetCurrentUserOrdersData, undefined>;
+interface GetCurrentUserOrdersRef {
+  ...
+  (dc: DataConnect): QueryRef<GetCurrentUserOrdersData, undefined>;
+}
+export const getCurrentUserOrdersRef: GetCurrentUserOrdersRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getCurrentUserOrdersRef:
+```typescript
+const name = getCurrentUserOrdersRef.operationName;
+console.log(name);
 ```
 
 ### Variables
@@ -696,7 +795,7 @@ The `GetCurrentUserOrders` query has no variables.
 Recall that executing the `GetCurrentUserOrders` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `GetCurrentUserOrdersData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface GetCurrentUserOrdersData {
   orders: ({
     id: UUIDString;
@@ -726,7 +825,7 @@ export interface GetCurrentUserOrdersData {
 ```
 ### Using `GetCurrentUserOrders`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getCurrentUserOrders } from '@firebasegen/default-connector';
 
@@ -750,7 +849,7 @@ getCurrentUserOrders().then((response) => {
 
 ### Using `GetCurrentUserOrders`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getCurrentUserOrdersRef } from '@firebasegen/default-connector';
 
@@ -777,22 +876,37 @@ executeQuery(ref).then((response) => {
 
 ## GetOrder
 You can execute the `GetOrder` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 getOrder(vars: GetOrderVariables): QueryPromise<GetOrderData, GetOrderVariables>;
 
-getOrderRef(vars: GetOrderVariables): QueryRef<GetOrderData, GetOrderVariables>;
+interface GetOrderRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetOrderVariables): QueryRef<GetOrderData, GetOrderVariables>;
+}
+export const getOrderRef: GetOrderRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 getOrder(dc: DataConnect, vars: GetOrderVariables): QueryPromise<GetOrderData, GetOrderVariables>;
 
-getOrderRef(dc: DataConnect, vars: GetOrderVariables): QueryRef<GetOrderData, GetOrderVariables>;
+interface GetOrderRef {
+  ...
+  (dc: DataConnect, vars: GetOrderVariables): QueryRef<GetOrderData, GetOrderVariables>;
+}
+export const getOrderRef: GetOrderRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getOrderRef:
+```typescript
+const name = getOrderRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `GetOrder` query requires an argument of type `GetOrderVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface GetOrderVariables {
   id: UUIDString;
 }
@@ -801,7 +915,7 @@ export interface GetOrderVariables {
 Recall that executing the `GetOrder` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `GetOrderData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface GetOrderData {
   order?: {
     id: UUIDString;
@@ -836,7 +950,7 @@ export interface GetOrderData {
 ```
 ### Using `GetOrder`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getOrder, GetOrderVariables } from '@firebasegen/default-connector';
 
@@ -866,7 +980,7 @@ getOrder(getOrderVars).then((response) => {
 
 ### Using `GetOrder`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getOrderRef, GetOrderVariables } from '@firebasegen/default-connector';
 
@@ -899,16 +1013,31 @@ executeQuery(ref).then((response) => {
 
 ## GetAllOrders
 You can execute the `GetAllOrders` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 getAllOrders(): QueryPromise<GetAllOrdersData, undefined>;
 
-getAllOrdersRef(): QueryRef<GetAllOrdersData, undefined>;
+interface GetAllOrdersRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetAllOrdersData, undefined>;
+}
+export const getAllOrdersRef: GetAllOrdersRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 getAllOrders(dc: DataConnect): QueryPromise<GetAllOrdersData, undefined>;
 
-getAllOrdersRef(dc: DataConnect): QueryRef<GetAllOrdersData, undefined>;
+interface GetAllOrdersRef {
+  ...
+  (dc: DataConnect): QueryRef<GetAllOrdersData, undefined>;
+}
+export const getAllOrdersRef: GetAllOrdersRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getAllOrdersRef:
+```typescript
+const name = getAllOrdersRef.operationName;
+console.log(name);
 ```
 
 ### Variables
@@ -917,7 +1046,7 @@ The `GetAllOrders` query has no variables.
 Recall that executing the `GetAllOrders` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `GetAllOrdersData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface GetAllOrdersData {
   orders: ({
     id: UUIDString;
@@ -941,7 +1070,7 @@ export interface GetAllOrdersData {
 ```
 ### Using `GetAllOrders`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getAllOrders } from '@firebasegen/default-connector';
 
@@ -965,7 +1094,7 @@ getAllOrders().then((response) => {
 
 ### Using `GetAllOrders`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getAllOrdersRef } from '@firebasegen/default-connector';
 
@@ -992,16 +1121,31 @@ executeQuery(ref).then((response) => {
 
 ## ListAllCustomers
 You can execute the `ListAllCustomers` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 listAllCustomers(): QueryPromise<ListAllCustomersData, undefined>;
 
-listAllCustomersRef(): QueryRef<ListAllCustomersData, undefined>;
+interface ListAllCustomersRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListAllCustomersData, undefined>;
+}
+export const listAllCustomersRef: ListAllCustomersRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
-```javascript
+```typescript
 listAllCustomers(dc: DataConnect): QueryPromise<ListAllCustomersData, undefined>;
 
-listAllCustomersRef(dc: DataConnect): QueryRef<ListAllCustomersData, undefined>;
+interface ListAllCustomersRef {
+  ...
+  (dc: DataConnect): QueryRef<ListAllCustomersData, undefined>;
+}
+export const listAllCustomersRef: ListAllCustomersRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the listAllCustomersRef:
+```typescript
+const name = listAllCustomersRef.operationName;
+console.log(name);
 ```
 
 ### Variables
@@ -1010,7 +1154,7 @@ The `ListAllCustomers` query has no variables.
 Recall that executing the `ListAllCustomers` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `ListAllCustomersData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface ListAllCustomersData {
   customers: ({
     id: string;
@@ -1022,7 +1166,7 @@ export interface ListAllCustomersData {
 ```
 ### Using `ListAllCustomers`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, listAllCustomers } from '@firebasegen/default-connector';
 
@@ -1046,7 +1190,7 @@ listAllCustomers().then((response) => {
 
 ### Using `ListAllCustomers`'s `QueryRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, listAllCustomersRef } from '@firebasegen/default-connector';
 
@@ -1088,22 +1232,37 @@ Below are examples of how to use the `default` connector's generated functions t
 
 ## UpsertCustomer
 You can execute the `UpsertCustomer` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 upsertCustomer(vars: UpsertCustomerVariables): MutationPromise<UpsertCustomerData, UpsertCustomerVariables>;
 
-upsertCustomerRef(vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
+interface UpsertCustomerRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
+}
+export const upsertCustomerRef: UpsertCustomerRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
-```javascript
+```typescript
 upsertCustomer(dc: DataConnect, vars: UpsertCustomerVariables): MutationPromise<UpsertCustomerData, UpsertCustomerVariables>;
 
-upsertCustomerRef(dc: DataConnect, vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
+interface UpsertCustomerRef {
+  ...
+  (dc: DataConnect, vars: UpsertCustomerVariables): MutationRef<UpsertCustomerData, UpsertCustomerVariables>;
+}
+export const upsertCustomerRef: UpsertCustomerRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the upsertCustomerRef:
+```typescript
+const name = upsertCustomerRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `UpsertCustomer` mutation requires an argument of type `UpsertCustomerVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface UpsertCustomerVariables {
   firstName: string;
   lastName: string;
@@ -1116,14 +1275,14 @@ export interface UpsertCustomerVariables {
 Recall that executing the `UpsertCustomer` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `UpsertCustomerData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface UpsertCustomerData {
   customer_upsert: Customer_Key;
 }
 ```
 ### Using `UpsertCustomer`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, upsertCustomer, UpsertCustomerVariables } from '@firebasegen/default-connector';
 
@@ -1157,7 +1316,7 @@ upsertCustomer(upsertCustomerVars).then((response) => {
 
 ### Using `UpsertCustomer`'s `MutationRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, upsertCustomerRef, UpsertCustomerVariables } from '@firebasegen/default-connector';
 
@@ -1194,22 +1353,37 @@ executeMutation(ref).then((response) => {
 
 ## CreateProductReview
 You can execute the `CreateProductReview` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 createProductReview(vars: CreateProductReviewVariables): MutationPromise<CreateProductReviewData, CreateProductReviewVariables>;
 
-createProductReviewRef(vars: CreateProductReviewVariables): MutationRef<CreateProductReviewData, CreateProductReviewVariables>;
+interface CreateProductReviewRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: CreateProductReviewVariables): MutationRef<CreateProductReviewData, CreateProductReviewVariables>;
+}
+export const createProductReviewRef: CreateProductReviewRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
-```javascript
+```typescript
 createProductReview(dc: DataConnect, vars: CreateProductReviewVariables): MutationPromise<CreateProductReviewData, CreateProductReviewVariables>;
 
-createProductReviewRef(dc: DataConnect, vars: CreateProductReviewVariables): MutationRef<CreateProductReviewData, CreateProductReviewVariables>;
+interface CreateProductReviewRef {
+  ...
+  (dc: DataConnect, vars: CreateProductReviewVariables): MutationRef<CreateProductReviewData, CreateProductReviewVariables>;
+}
+export const createProductReviewRef: CreateProductReviewRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the createProductReviewRef:
+```typescript
+const name = createProductReviewRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `CreateProductReview` mutation requires an argument of type `CreateProductReviewVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface CreateProductReviewVariables {
   productId: string;
   rating: number;
@@ -1220,14 +1394,14 @@ export interface CreateProductReviewVariables {
 Recall that executing the `CreateProductReview` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `CreateProductReviewData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface CreateProductReviewData {
   productReview_insert: ProductReview_Key;
 }
 ```
 ### Using `CreateProductReview`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, createProductReview, CreateProductReviewVariables } from '@firebasegen/default-connector';
 
@@ -1259,7 +1433,7 @@ createProductReview(createProductReviewVars).then((response) => {
 
 ### Using `CreateProductReview`'s `MutationRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, createProductReviewRef, CreateProductReviewVariables } from '@firebasegen/default-connector';
 
@@ -1294,22 +1468,37 @@ executeMutation(ref).then((response) => {
 
 ## CreateOrder
 You can execute the `CreateOrder` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 createOrder(vars: CreateOrderVariables): MutationPromise<CreateOrderData, CreateOrderVariables>;
 
-createOrderRef(vars: CreateOrderVariables): MutationRef<CreateOrderData, CreateOrderVariables>;
+interface CreateOrderRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: CreateOrderVariables): MutationRef<CreateOrderData, CreateOrderVariables>;
+}
+export const createOrderRef: CreateOrderRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
-```javascript
+```typescript
 createOrder(dc: DataConnect, vars: CreateOrderVariables): MutationPromise<CreateOrderData, CreateOrderVariables>;
 
-createOrderRef(dc: DataConnect, vars: CreateOrderVariables): MutationRef<CreateOrderData, CreateOrderVariables>;
+interface CreateOrderRef {
+  ...
+  (dc: DataConnect, vars: CreateOrderVariables): MutationRef<CreateOrderData, CreateOrderVariables>;
+}
+export const createOrderRef: CreateOrderRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the createOrderRef:
+```typescript
+const name = createOrderRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `CreateOrder` mutation requires an argument of type `CreateOrderVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface CreateOrderVariables {
   chargeId?: string | null;
   customerId?: string | null;
@@ -1332,14 +1521,14 @@ export interface CreateOrderVariables {
 Recall that executing the `CreateOrder` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `CreateOrderData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface CreateOrderData {
   order_insert: Order_Key;
 }
 ```
 ### Using `CreateOrder`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, createOrder, CreateOrderVariables } from '@firebasegen/default-connector';
 
@@ -1383,7 +1572,7 @@ createOrder(createOrderVars).then((response) => {
 
 ### Using `CreateOrder`'s `MutationRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, createOrderRef, CreateOrderVariables } from '@firebasegen/default-connector';
 
@@ -1430,22 +1619,37 @@ executeMutation(ref).then((response) => {
 
 ## CreateOrderItem
 You can execute the `CreateOrderItem` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 createOrderItem(vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
 
-createOrderItemRef(vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+interface CreateOrderItemRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+}
+export const createOrderItemRef: CreateOrderItemRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
-```javascript
+```typescript
 createOrderItem(dc: DataConnect, vars: CreateOrderItemVariables): MutationPromise<CreateOrderItemData, CreateOrderItemVariables>;
 
-createOrderItemRef(dc: DataConnect, vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+interface CreateOrderItemRef {
+  ...
+  (dc: DataConnect, vars: CreateOrderItemVariables): MutationRef<CreateOrderItemData, CreateOrderItemVariables>;
+}
+export const createOrderItemRef: CreateOrderItemRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the createOrderItemRef:
+```typescript
+const name = createOrderItemRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `CreateOrderItem` mutation requires an argument of type `CreateOrderItemVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface CreateOrderItemVariables {
   orderId: UUIDString;
   productId: string;
@@ -1457,14 +1661,14 @@ export interface CreateOrderItemVariables {
 Recall that executing the `CreateOrderItem` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `CreateOrderItemData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface CreateOrderItemData {
   orderItem_insert: OrderItem_Key;
 }
 ```
 ### Using `CreateOrderItem`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, createOrderItem, CreateOrderItemVariables } from '@firebasegen/default-connector';
 
@@ -1497,7 +1701,7 @@ createOrderItem(createOrderItemVars).then((response) => {
 
 ### Using `CreateOrderItem`'s `MutationRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, createOrderItemRef, CreateOrderItemVariables } from '@firebasegen/default-connector';
 
@@ -1533,22 +1737,37 @@ executeMutation(ref).then((response) => {
 
 ## UpdateOrderByPaymentIntentId
 You can execute the `UpdateOrderByPaymentIntentId` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 updateOrderByPaymentIntentId(vars: UpdateOrderByPaymentIntentIdVariables): MutationPromise<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
 
-updateOrderByPaymentIntentIdRef(vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+interface UpdateOrderByPaymentIntentIdRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+}
+export const updateOrderByPaymentIntentIdRef: UpdateOrderByPaymentIntentIdRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
-```javascript
+```typescript
 updateOrderByPaymentIntentId(dc: DataConnect, vars: UpdateOrderByPaymentIntentIdVariables): MutationPromise<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
 
-updateOrderByPaymentIntentIdRef(dc: DataConnect, vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+interface UpdateOrderByPaymentIntentIdRef {
+  ...
+  (dc: DataConnect, vars: UpdateOrderByPaymentIntentIdVariables): MutationRef<UpdateOrderByPaymentIntentIdData, UpdateOrderByPaymentIntentIdVariables>;
+}
+export const updateOrderByPaymentIntentIdRef: UpdateOrderByPaymentIntentIdRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the updateOrderByPaymentIntentIdRef:
+```typescript
+const name = updateOrderByPaymentIntentIdRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `UpdateOrderByPaymentIntentId` mutation requires an argument of type `UpdateOrderByPaymentIntentIdVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface UpdateOrderByPaymentIntentIdVariables {
   paymentIntentId: string;
   financialStatus?: string | null;
@@ -1562,14 +1781,14 @@ export interface UpdateOrderByPaymentIntentIdVariables {
 Recall that executing the `UpdateOrderByPaymentIntentId` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `UpdateOrderByPaymentIntentIdData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface UpdateOrderByPaymentIntentIdData {
   order_update?: Order_Key | null;
 }
 ```
 ### Using `UpdateOrderByPaymentIntentId`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, updateOrderByPaymentIntentId, UpdateOrderByPaymentIntentIdVariables } from '@firebasegen/default-connector';
 
@@ -1604,7 +1823,7 @@ updateOrderByPaymentIntentId(updateOrderByPaymentIntentIdVars).then((response) =
 
 ### Using `UpdateOrderByPaymentIntentId`'s `MutationRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, updateOrderByPaymentIntentIdRef, UpdateOrderByPaymentIntentIdVariables } from '@firebasegen/default-connector';
 
@@ -1642,22 +1861,37 @@ executeMutation(ref).then((response) => {
 
 ## UpdateOrderByChargeId
 You can execute the `UpdateOrderByChargeId` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
-```javascript
+```typescript
 updateOrderByChargeId(vars?: UpdateOrderByChargeIdVariables): MutationPromise<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
 
-updateOrderByChargeIdRef(vars?: UpdateOrderByChargeIdVariables): MutationRef<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+interface UpdateOrderByChargeIdRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars?: UpdateOrderByChargeIdVariables): MutationRef<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+}
+export const updateOrderByChargeIdRef: UpdateOrderByChargeIdRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
-```javascript
+```typescript
 updateOrderByChargeId(dc: DataConnect, vars?: UpdateOrderByChargeIdVariables): MutationPromise<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
 
-updateOrderByChargeIdRef(dc: DataConnect, vars?: UpdateOrderByChargeIdVariables): MutationRef<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+interface UpdateOrderByChargeIdRef {
+  ...
+  (dc: DataConnect, vars?: UpdateOrderByChargeIdVariables): MutationRef<UpdateOrderByChargeIdData, UpdateOrderByChargeIdVariables>;
+}
+export const updateOrderByChargeIdRef: UpdateOrderByChargeIdRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the updateOrderByChargeIdRef:
+```typescript
+const name = updateOrderByChargeIdRef.operationName;
+console.log(name);
 ```
 
 ### Variables
 The `UpdateOrderByChargeId` mutation has an optional argument of type `UpdateOrderByChargeIdVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
 
-```javascript
+```typescript
 export interface UpdateOrderByChargeIdVariables {
   financialStatus?: string | null;
   fulfillmentStatus?: string | null;
@@ -1670,14 +1904,14 @@ export interface UpdateOrderByChargeIdVariables {
 Recall that executing the `UpdateOrderByChargeId` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
 The `data` property is an object of type `UpdateOrderByChargeIdData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
-```javascript
+```typescript
 export interface UpdateOrderByChargeIdData {
   order_update?: Order_Key | null;
 }
 ```
 ### Using `UpdateOrderByChargeId`'s action shortcut function
 
-```javascript
+```typescript
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, updateOrderByChargeId, UpdateOrderByChargeIdVariables } from '@firebasegen/default-connector';
 
@@ -1713,7 +1947,7 @@ updateOrderByChargeId(updateOrderByChargeIdVars).then((response) => {
 
 ### Using `UpdateOrderByChargeId`'s `MutationRef` function
 
-```javascript
+```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, updateOrderByChargeIdRef, UpdateOrderByChargeIdVariables } from '@firebasegen/default-connector';
 

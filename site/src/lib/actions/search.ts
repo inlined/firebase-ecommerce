@@ -10,14 +10,19 @@ type Error = {
 export type Product = {
   title: string
   id: string
+  _metadata: {
+    distance: number
+  }
 }
 
 function dedupeProducts(results: Product[]): Product[] {
   const deduped: Record<string, Product> = {}
   for (const result of results) {
-    deduped[result.id] = result;
+    if (!(result.id in deduped) || deduped[result.id]._metadata.distance > result._metadata.distance) {
+      deduped[result.id] = result;
+    }
   }
-  return Object.values(deduped);
+  return Object.values(deduped).sort((a, b) => a._metadata.distance - b._metadata.distance);
 }
 
 export const handleSearch = async ({ query }: { query: string }): Promise<Product[] | Error> => {
